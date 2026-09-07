@@ -1,95 +1,27 @@
-<div class="student-form">
+<div class="student-actions">
 
-  <div class="form-group">
+  <button class="operation-card add" (click)="showAddStudent()">
+    <span class="operation-icon">＋</span>
+    <span class="operation-title">Add Student</span>
+    <span class="operation-text">Create a new student record</span>
+  </button>
 
-    <label for="name">
-      Name <span>*</span>
-    </label>
+  <button class="operation-card view" (click)="viewStudents()">
+    <span class="operation-icon">☷</span>
+    <span class="operation-title">View Students</span>
+    <span class="operation-text">View all student records</span>
+  </button>
 
-    <input
-      id="name"
-      type="text"
-      name="name"
-      [(ngModel)]="student.name"
-      placeholder="Enter student name"
-      required>
+  <button class="operation-card update" (click)="showUpdateStudent()">
+    <span class="operation-icon">✎</span>
+    <span class="operation-title">Update Student</span>
+    <span class="operation-text">Modify student information</span>
+  </button>
 
-  </div>
-
-
-  <div class="form-group">
-
-    <label for="email">
-      Email <span>*</span>
-    </label>
-
-    <input
-      id="email"
-      type="email"
-      name="email"
-      [(ngModel)]="student.email"
-      placeholder="Enter student email"
-      required>
-
-  </div>
-
-
-  <div class="form-group">
-
-    <label for="course">
-      Course <span>*</span>
-    </label>
-
-    <input
-      id="course"
-      type="text"
-      name="course"
-      [(ngModel)]="student.course"
-      placeholder="Enter course"
-      required>
-
-  </div>
-
-
-  <div class="form-group">
-
-    <label for="age">
-      Age <span>*</span>
-    </label>
-
-    <input
-      id="age"
-      type="number"
-      name="age"
-      [(ngModel)]="student.age"
-      placeholder="Enter age"
-      min="1"
-      required>
-
-  </div>
-
-
-  <div class="form-actions">
-
-    <button
-      type="button"
-      class="add-btn"
-      (click)="addStudent()">
-
-      Add Student
-
-    </button>
-
-
-    <button
-      type="button"
-      class="cancel-btn"
-      (click)="clearForm()">
-
-      Cancel
-
-    </button>
-
-  </div>
+  <button class="operation-card delete" (click)="showDeleteStudent()">
+    <span class="operation-icon">⌫</span>
+    <span class="operation-title">Delete Student</span>
+    <span class="operation-text">Remove a student record</span>
+  </button>
 
 </div>

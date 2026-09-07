@@ -15,61 +15,38 @@
         </p>
 
         <!-- Error message -->
-        <div
-          *ngIf="errorMessage"
-          class="alert alert-danger"
-        >
+        <div *ngIf="errorMessage" class="alert alert-danger">
           {{ errorMessage }}
         </div>
 
         <form (ngSubmit)="login()">
 
           <!-- Username -->
-
           <div class="mb-3">
 
             <label class="form-label">
               Username
             </label>
 
-            <input
-              type="text"
-              class="form-control"
-              name="username"
-              [(ngModel)]="username"
-              placeholder="Enter username"
-            >
+            <input type="text" class="form-control" name="username" [(ngModel)]="username" (input)="errorMessage = ''"
+              placeholder="Enter username" autocomplete="username">
 
           </div>
 
-
           <!-- Password -->
-
           <div class="mb-3">
 
             <label class="form-label">
               Password
             </label>
 
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              [(ngModel)]="password"
-              placeholder="Enter password"
-            >
+            <input type="password" class="form-control" name="password" [(ngModel)]="password"
+              (input)="errorMessage = ''" placeholder="Enter password" autocomplete="current-password">
 
           </div>
 
-
           <!-- Login button -->
-
-          <button
-            type="submit"
-            class="btn btn-primary w-100"
-            [disabled]="loading"
-          >
-
+          <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
             <span *ngIf="!loading">
               Login
             </span>
@@ -77,7 +54,6 @@
             <span *ngIf="loading">
               Logging in...
             </span>
-
           </button>
 
         </form>

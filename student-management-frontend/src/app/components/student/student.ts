@@ -10,6 +10,44 @@ import { StudentService } from '../../services/student.service';
 })
 export class StudentComponent {
 
+  // ================================
+  // OPERATION TOGGLE
+  // ================================
+
+  selectedOperation = '';
+
+  showAddStudent() {
+    this.toggleOperation('add');
+  }
+
+  viewStudents() {
+    this.toggleOperation('view');
+  }
+
+  showUpdateStudent() {
+    this.toggleOperation('update');
+  }
+
+  showDeleteStudent() {
+    this.toggleOperation('delete');
+  }
+
+  private toggleOperation(operation: string) {
+
+    if (this.selectedOperation === operation) {
+      // Click same card again = close it
+      this.selectedOperation = '';
+    } else {
+      // Click another card = open that one
+      this.selectedOperation = operation;
+    }
+  }
+
+
+  // ================================
+  // ADD STUDENT
+  // ================================
+
   student = {
     name: '',
     email: '',
@@ -18,6 +56,7 @@ export class StudentComponent {
   };
 
   constructor(private studentService: StudentService) {}
+
 
   addStudent() {
 
@@ -61,6 +100,7 @@ export class StudentComponent {
 
     });
   }
+
 
   clearForm() {
 

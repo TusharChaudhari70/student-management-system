@@ -27,12 +27,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    // ================================
+    // EXISTING USER APIs
+    // ================================
+
     @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
@@ -55,8 +58,36 @@ public class UserController {
     public Long deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
-@GetMapping("/teachers")
-public List<User> getAllTeachers() {
-    return userService.getAllTeachers();
-}
+
+
+    // ================================
+    // TEACHER APIs
+    // ================================
+
+    // Get all teachers
+    @GetMapping("/teachers")
+    public List<User> getAllTeachers() {
+        return userService.getAllTeachers();
+    }
+
+    // Add teacher
+    @PostMapping("/teachers")
+    public User createTeacher(@RequestBody User user) {
+        return userService.createTeacher(user);
+    }
+
+    // Get teacher by ID
+    @GetMapping("/teachers/{id}")
+    public User getTeacherById(@PathVariable Long id) {
+        return userService.getTeacherById(id);
+    }
+
+    // Update teacher
+    @PutMapping("/teachers/{id}")
+    public User updateTeacher(
+            @PathVariable Long id,
+            @RequestBody User teacherDetails) {
+
+        return userService.updateTeacher(id, teacherDetails);
+    }
 }

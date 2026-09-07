@@ -8,22 +8,22 @@
 
   <div class="nav-right">
 
+    <span class="admin-user">
+      {{ username }}
+    </span>
 
-<span class="admin-user">
-  {{ username }}
-</span>
+    <span class="admin-role">
+      {{ role }}
+    </span>
 
-<span class="admin-role">
-  {{ role }}
-</span>
-
-<button class="logout-btn" (click)="logout()">
-  Logout
-</button>
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
 
   </div>
 
 </nav>
+
 
 <!-- MAIN LAYOUT -->
 
@@ -33,763 +33,1355 @@
 
   <aside class="sidebar">
 
-
-<div class="sidebar-title">
-  ADMIN PANEL
-</div>
-
-<!-- DASHBOARD -->
-<button
-  class="sidebar-item"
-  [class.active]="selectedSection === 'dashboard'"
-  (click)="selectSection('dashboard')">
-
-  Dashboard
-
-</button>
+    <div class="sidebar-title">
+      ADMIN PANEL
+    </div>
 
 
-<!-- STUDENTS -->
-<button
-  class="sidebar-item"
-  [class.active]="selectedSection === 'students'"
-  (click)="selectSection('students')">
+    <!-- DASHBOARD -->
 
-  Students
+    <button class="sidebar-item" [class.active]="selectedSection === 'dashboard'" (click)="selectSection('dashboard')">
 
-</button>
+      Dashboard
+
+    </button>
 
 
-<!-- STUDENT CRUD MENU -->
-@if (selectedSection === 'students') {
+    <!-- STUDENTS -->
 
-<div class="submenu">
+    <button class="sidebar-item" [class.active]="selectedSection === 'students'" (click)="selectSection('students')">
 
-  <button
-    [class.sub-active]="selectedStudentAction === 'add'"
-    (click)="selectStudentAction('add')">
+      Students
 
-    Add Student
-
-  </button>
+    </button>
 
 
-  <button
-    [class.sub-active]="selectedStudentAction === 'list'"
-    (click)="selectStudentAction('list')">
+    <!-- STUDENT CRUD MENU -->
 
-    View All Students
+    @if (selectedSection === 'students') {
 
-  </button>
+    <div class="submenu">
+
+      <button [class.sub-active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">
+
+        Add Student
+
+      </button>
+
+      <button [class.sub-active]="selectedStudentAction === 'list'" (click)="selectStudentAction('list')">
+
+        View All Students
+
+      </button>
+
+      <button [class.sub-active]="selectedStudentAction === 'update'" (click)="selectStudentAction('update')">
+
+        Update Student
+
+      </button>
+
+      <button [class.sub-active]="selectedStudentAction === 'delete'" (click)="selectStudentAction('delete')">
+
+        Delete Student
+
+      </button>
+
+    </div>
+
+    }
 
 
-  <button
-    [class.sub-active]="selectedStudentAction === 'update'"
-    (click)="selectStudentAction('update')">
+    <!-- TEACHERS -->
 
-    Update Student
+    <button class="sidebar-item" [class.active]="selectedSection === 'teachers'" (click)="selectSection('teachers')">
 
-  </button>
+      Teachers
+
+    </button>
 
 
-  <button
-    [class.sub-active]="selectedStudentAction === 'delete'"
-    (click)="selectStudentAction('delete')">
+    <!-- TEACHER CRUD MENU -->
 
-    Delete Student
+    @if (selectedSection === 'teachers') {
 
-  </button>
+    <div class="submenu">
 
-</div>
+      <button [class.sub-active]="selectedTeacherAction === 'add'" (click)="selectTeacherAction('add')">
 
-}
+        Add Teacher
 
+      </button>
+
+      <button [class.sub-active]="selectedTeacherAction === 'view'" (click)="selectTeacherAction('view')">
+
+        View All Teachers
+
+      </button>
+
+      <button [class.sub-active]="selectedTeacherAction === 'update'" (click)="selectTeacherAction('update')">
+
+        Update Teacher
+
+      </button>
+
+      <button [class.sub-active]="selectedTeacherAction === 'delete'" (click)="selectTeacherAction('delete')">
+
+        Delete Teacher
+
+      </button>
+
+    </div>
+
+    }
 
   </aside>
+
 
   <!-- MAIN CONTENT -->
 
   <main class="main-content">
 
 
-<!-- DASHBOARD -->
-@if (selectedSection === 'dashboard') {
+    <!-- ================================ -->
+    <!-- DASHBOARD -->
+    <!-- ================================ -->
 
-<div class="page-header">
+    @if (selectedSection === 'dashboard') {
 
-  <h1>Admin Dashboard</h1>
+    <div class="page-header">
 
-  <p>
-    Welcome back, {{ username }}
-  </p>
+      <h1>Admin Dashboard</h1>
 
-</div>
-
-
-<div class="dashboard-cards">
-
-  <div class="dashboard-card">
-
-    <h3>Students</h3>
-
-    <p>
-      Manage student records
-    </p>
-
-  </div>
-
-</div>
-
-}
-
-
-<!-- STUDENTS -->
-@if (selectedSection === 'students') {
-
-<div class="page-header">
-
-  <h1>Student Management</h1>
-
-  <p>
-    Manage student records
-  </p>
-
-</div>
-
-
-<div class="action-bar">
-
-  <button
-    class="action-btn"
-    [class.action-active]="selectedStudentAction === 'add'"
-    (click)="selectStudentAction('add')">
-
-    Add Student
-
-  </button>
-
-
-  <button
-    class="action-btn"
-    [class.action-active]="selectedStudentAction === 'list'"
-    (click)="selectStudentAction('list')">
-
-    View All
-
-  </button>
-
-
-  <button
-    class="action-btn"
-    [class.action-active]="selectedStudentAction === 'update'"
-    (click)="selectStudentAction('update')">
-
-    Update
-
-  </button>
-
-
-  <button
-    class="action-btn"
-    [class.action-active]="selectedStudentAction === 'delete'"
-    (click)="selectStudentAction('delete')">
-
-    Delete
-
-  </button>
-
-</div>
-
-
-<!-- ================================= -->
-<!-- ADD STUDENT -->
-<!-- ================================= -->
-
-@if (selectedStudentAction === 'add') {
-
-<div class="content-card add-student-card">
-
-  <h2>Add Student</h2>
-
-
-  <form
-    #studentForm="ngForm"
-    (ngSubmit)="addStudent(studentForm)">
-
-
-    <!-- NAME -->
-    <div class="form-group">
-
-      <label>
-        Name <span>*</span>
-      </label>
-
-      <input
-        type="text"
-        name="name"
-        [(ngModel)]="newStudent.name"
-        required
-        #name="ngModel"
-        placeholder="Enter student name">
-
-
-      @if (name.invalid && name.touched) {
-
-      <small class="error">
-        Name is required
-      </small>
-
-      }
+      <p>
+        Welcome back, {{ username }}
+      </p>
 
     </div>
 
 
-    <!-- EMAIL -->
-    <div class="form-group">
+    <div class="dashboard-cards">
 
-      <label>
-        Email <span>*</span>
-      </label>
+      <div class="dashboard-card">
 
-      <input
-        type="email"
-        name="email"
-        [(ngModel)]="newStudent.email"
-        required
-        email
-        #email="ngModel"
-        placeholder="Enter student email">
+        <h3>Students</h3>
+
+        <p>
+          Manage student records
+        </p>
+
+      </div>
 
 
-      @if (email.invalid && email.touched) {
+      <div class="dashboard-card">
 
-      <small class="error">
-        Enter a valid email
-      </small>
+        <h3>Teachers</h3>
 
-      }
+        <p>
+          Manage teacher records
+        </p>
+
+      </div>
+
+    </div>
+
+    }
+
+
+    <!-- ====================================================== -->
+    <!-- STUDENTS -->
+    <!-- ====================================================== -->
+
+    @if (selectedSection === 'students') {
+
+    <div class="page-header">
+
+      <h1>Student Management</h1>
+
+      <p>
+        Manage student records
+      </p>
 
     </div>
 
 
-    <!-- COURSE -->
-    <div class="form-group">
+    <div class="action-bar">
 
-      <label>
-        Course <span>*</span>
-      </label>
-
-      <input
-        type="text"
-        name="course"
-        [(ngModel)]="newStudent.course"
-        required
-        #course="ngModel"
-        placeholder="Enter course">
-
-
-      @if (course.invalid && course.touched) {
-
-      <small class="error">
-        Course is required
-      </small>
-
-      }
-
-    </div>
-
-
-    <!-- AGE -->
-    <div class="form-group">
-
-      <label>
-        Age <span>*</span>
-      </label>
-
-      <input
-        type="number"
-        name="age"
-        [(ngModel)]="newStudent.age"
-        required
-        min="1"
-        #age="ngModel"
-        placeholder="Enter age">
-
-
-      @if (age.invalid && age.touched) {
-
-      <small class="error">
-        Enter a valid age
-      </small>
-
-      }
-
-    </div>
-
-
-    <!-- TEACHER -->
-    <div class="form-group">
-
-      <label>
-        Teacher <span>*</span>
-      </label>
-
-
-      <select
-        name="teacher"
-        [(ngModel)]="selectedTeacherId"
-        required
-        #teacher="ngModel">
-
-        <option
-          [ngValue]="null"
-          disabled>
-
-          Select Teacher
-
-        </option>
-
-
-        @if (loadingTeachers) {
-
-        <option disabled>
-
-          Loading teachers...
-
-        </option>
-
-        }
-
-
-        @for (
-          teacherItem of teachers;
-          track teacherItem.id
-        ) {
-
-        <option
-          [ngValue]="teacherItem.id">
-
-          {{ teacherItem.name || teacherItem.username }}
-
-        </option>
-
-        }
-
-      </select>
-
-
-      @if (teacher.invalid && teacher.touched) {
-
-      <small class="error">
-
-        Teacher is required
-
-      </small>
-
-      }
-
-    </div>
-
-
-    <!-- BUTTONS -->
-    <div class="form-actions">
-
-      <button
-        type="submit"
-        class="add-btn"
-        [disabled]="studentForm.invalid">
+      <button class="action-btn" [class.action-active]="selectedStudentAction === 'add'"
+        (click)="selectStudentAction('add')">
 
         Add Student
 
       </button>
 
 
-      <button
-        type="button"
-        class="cancel-btn"
-        (click)="cancelAddStudent(studentForm)">
+      <button class="action-btn" [class.action-active]="selectedStudentAction === 'list'"
+        (click)="selectStudentAction('list')">
 
-        Cancel
+        View All
+
+      </button>
+
+
+      <button class="action-btn" [class.action-active]="selectedStudentAction === 'update'"
+        (click)="selectStudentAction('update')">
+
+        Update
+
+      </button>
+
+
+      <button class="action-btn" [class.action-active]="selectedStudentAction === 'delete'"
+        (click)="selectStudentAction('delete')">
+
+        Delete
 
       </button>
 
     </div>
 
 
-  </form>
+    <!-- ================================ -->
+    <!-- ADD STUDENT -->
+    <!-- ================================ -->
 
-</div>
+    @if (selectedStudentAction === 'add') {
 
-}
+    <div class="content-card add-student-card">
 
+      <h2>Add Student</h2>
 
-<!-- ================================= -->
-<!-- VIEW ALL -->
-<!-- ================================= -->
-
-@if (selectedStudentAction === 'list') {
-
-<div class="content-card">
-
-  <h2>All Students</h2>
-
-  <app-student-list></app-student-list>
-
-</div>
-
-}
+      <form #studentForm="ngForm" (ngSubmit)="addStudent(studentForm)">
 
 
-<!-- ================================= -->
-<!-- UPDATE STUDENT -->
-<!-- ================================= -->
-
-@if (selectedStudentAction === 'update') {
-
-<div class="content-card update-student-card">
-
-  <h2>Update Student</h2>
-
-  <p class="update-description">
-    Enter the student ID to load the student's existing information.
-  </p>
+        <div class="form-grid">
 
 
-  <!-- SEARCH STUDENT -->
+          <!-- NAME -->
 
-  <div class="student-search">
+          <div class="form-group">
 
-    <div class="form-group">
+            <label>
+              Name <span>*</span>
+            </label>
 
-      <label>
-        Student ID <span>*</span>
-      </label>
+            <input type="text" name="name" [(ngModel)]="newStudent.name" required #name="ngModel"
+              placeholder="Enter student name">
 
-      <input
-        type="number"
-        name="updateStudentId"
-        [(ngModel)]="updateStudentId"
-        min="1"
-        placeholder="Enter student ID">
+
+            @if (name.invalid && name.touched) {
+
+            <small class="error">
+              Name is required
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+              Email <span>*</span>
+            </label>
+
+            <input type="email" name="email" [(ngModel)]="newStudent.email" required email #email="ngModel"
+              placeholder="Enter student email">
+
+
+            @if (email.invalid && email.touched) {
+
+            <small class="error">
+              Enter a valid email
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- COURSE -->
+
+          <div class="form-group">
+
+            <label>
+              Course <span>*</span>
+            </label>
+
+            <input type="text" name="course" [(ngModel)]="newStudent.course" required #course="ngModel"
+              placeholder="Enter course">
+
+
+            @if (course.invalid && course.touched) {
+
+            <small class="error">
+              Course is required
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- AGE -->
+
+          <div class="form-group">
+
+            <label>
+              Age <span>*</span>
+            </label>
+
+            <input type="number" name="age" [(ngModel)]="newStudent.age" required min="1" #age="ngModel"
+              placeholder="Enter age">
+
+
+            @if (age.invalid && age.touched) {
+
+            <small class="error">
+              Enter a valid age
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- TEACHER -->
+
+          <div class="form-group">
+
+            <label>
+              Teacher <span>*</span>
+            </label>
+
+            <select name="teacher" [(ngModel)]="selectedTeacherId" required #teacher="ngModel">
+
+              <option [ngValue]="null" disabled>
+
+                Select Teacher
+
+              </option>
+
+
+              @if (loadingTeachers) {
+
+              <option disabled>
+                Loading teachers...
+              </option>
+
+              }
+
+
+              @for (
+              teacherItem of teachers;
+              track teacherItem.id
+              ) {
+
+              <option [ngValue]="teacherItem.id">
+
+                {{ teacherItem.name || teacherItem.username }}
+
+              </option>
+
+              }
+
+            </select>
+
+
+            @if (teacher.invalid && teacher.touched) {
+
+            <small class="error">
+              Teacher is required
+            </small>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button type="submit" class="add-btn" [disabled]="studentForm.invalid">
+
+            Add Student
+
+          </button>
+
+
+          <button type="button" class="cancel-btn" (click)="cancelAddStudent(studentForm)">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </form>
 
     </div>
 
-
-    <button
-      type="button"
-      class="search-btn"
-      (click)="findStudentForUpdate()"
-      [disabled]="searchingStudent">
-
-      {{ searchingStudent ? 'Searching...' : 'Search Student' }}
-
-    </button>
-
-  </div>
+    }
 
 
-  <!-- UPDATE FORM -->
+    <!-- ================================ -->
+    <!-- VIEW ALL STUDENTS -->
+    <!-- ================================ -->
 
-  @if (studentFound) {
+    @if (selectedStudentAction === 'list') {
 
-  <div class="update-form-section">
+    <div class="content-card">
 
-    <h3>Student Details</h3>
+      <h2>All Students</h2>
 
+      <app-student-list></app-student-list>
 
-    <form
-      #updateForm="ngForm"
-      (ngSubmit)="updateExistingStudent(updateForm)">
+    </div>
 
-
-      <!-- NAME -->
-
-      <div class="form-group">
-
-        <label>
-          Name <span>*</span>
-        </label>
-
-        <input
-          type="text"
-          name="updateName"
-          [(ngModel)]="updateStudent.name"
-          required
-          #updateName="ngModel"
-          placeholder="Enter student name">
+    }
 
 
-        @if (updateName.invalid && updateName.touched) {
+    <!-- ================================ -->
+    <!-- UPDATE STUDENT -->
+    <!-- ================================ -->
 
-        <small class="error">
-          Name is required
-        </small>
+    @if (selectedStudentAction === 'update') {
 
-        }
+    <div class="content-card update-student-card">
 
-      </div>
+      <h2>Update Student</h2>
 
-
-      <!-- EMAIL -->
-
-      <div class="form-group">
-
-        <label>
-          Email <span>*</span>
-        </label>
-
-        <input
-          type="email"
-          name="updateEmail"
-          [(ngModel)]="updateStudent.email"
-          required
-          email
-          #updateEmail="ngModel"
-          placeholder="Enter student email">
+      <p class="update-description">
+        Enter the student ID to load the student's existing information.
+      </p>
 
 
-        @if (updateEmail.invalid && updateEmail.touched) {
+      <div class="student-search">
 
-        <small class="error">
-          Enter a valid email
-        </small>
+        <div class="form-group">
 
-        }
+          <label>
+            Student ID <span>*</span>
+          </label>
 
-      </div>
+          <input type="number" name="updateStudentId" [(ngModel)]="updateStudentId" min="1"
+            placeholder="Enter student ID">
 
-
-      <!-- COURSE -->
-
-      <div class="form-group">
-
-        <label>
-          Course <span>*</span>
-        </label>
-
-        <input
-          type="text"
-          name="updateCourse"
-          [(ngModel)]="updateStudent.course"
-          required
-          #updateCourse="ngModel"
-          placeholder="Enter course">
+        </div>
 
 
-        @if (updateCourse.invalid && updateCourse.touched) {
+        <button type="button" class="search-btn" (click)="findStudentForUpdate()" [disabled]="searchingStudent">
 
-        <small class="error">
-          Course is required
-        </small>
-
-        }
-
-      </div>
-
-
-      <!-- AGE -->
-
-      <div class="form-group">
-
-        <label>
-          Age <span>*</span>
-        </label>
-
-        <input
-          type="number"
-          name="updateAge"
-          [(ngModel)]="updateStudent.age"
-          required
-          min="1"
-          #updateAge="ngModel"
-          placeholder="Enter age">
-
-
-        @if (updateAge.invalid && updateAge.touched) {
-
-        <small class="error">
-          Enter a valid age
-        </small>
-
-        }
-
-      </div>
-
-
-      <!-- BUTTONS -->
-
-      <div class="form-actions">
-
-        <button
-          type="submit"
-          class="update-btn"
-          [disabled]="updateForm.invalid">
-
-          Update Student
-
-        </button>
-
-
-        <button
-          type="button"
-          class="cancel-btn"
-          (click)="resetUpdate()">
-
-          Cancel
+          {{ searchingStudent ? 'Searching...' : 'Search Student' }}
 
         </button>
 
       </div>
 
 
-    </form>
+      @if (studentFound) {
 
-  </div>
+      <div class="update-form-section">
+
+        <h3>Student Details</h3>
+
+        <form #updateForm="ngForm" (ngSubmit)="updateExistingStudent(updateForm)">
+
+          <div class="form-grid">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+              <label>
+                Name <span>*</span>
+              </label>
+
+              <input type="text" name="updateName" [(ngModel)]="updateStudent.name" required #updateName="ngModel"
+                placeholder="Enter student name">
+
+
+              @if (updateName.invalid && updateName.touched) {
+
+              <small class="error">
+                Name is required
+              </small>
+
+              }
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label>
+                Email <span>*</span>
+              </label>
+
+              <input type="email" name="updateEmail" [(ngModel)]="updateStudent.email" required email
+                #updateEmail="ngModel" placeholder="Enter student email">
+
+
+              @if (updateEmail.invalid && updateEmail.touched) {
+
+              <small class="error">
+                Enter a valid email
+              </small>
+
+              }
+
+            </div>
+
+
+            <!-- COURSE -->
+
+            <div class="form-group">
+
+              <label>
+                Course <span>*</span>
+              </label>
+
+              <input type="text" name="updateCourse" [(ngModel)]="updateStudent.course" required #updateCourse="ngModel"
+                placeholder="Enter course">
+
+
+              @if (updateCourse.invalid && updateCourse.touched) {
+
+              <small class="error">
+                Course is required
+              </small>
+
+              }
+
+            </div>
+
+
+            <!-- AGE -->
+
+            <div class="form-group">
+
+              <label>
+                Age <span>*</span>
+              </label>
+
+              <input type="number" name="updateAge" [(ngModel)]="updateStudent.age" required min="1"
+                #updateAge="ngModel" placeholder="Enter age">
+
+
+              @if (updateAge.invalid && updateAge.touched) {
+
+              <small class="error">
+                Enter a valid age
+              </small>
+
+              }
+
+            </div>
+
+          </div>
+         <!-- TEACHER -->
+
+<div class="form-group">
+
+  <label for="updateTeacher">
+    Teacher <span>*</span>
+  </label>
+
+  <select
+    id="updateTeacher"
+    name="updateTeacher"
+    [(ngModel)]="selectedUpdateTeacherId"
+    required
+    #updateTeacherSelect="ngModel">
+
+    <option [ngValue]="null" disabled>
+      Select Teacher
+    </option>
+
+    @if (loadingTeachers) {
+
+      <option disabled>
+        Loading teachers...
+      </option>
+
+    }
+
+    @for (teacher of teachers; track teacher.id) {
+
+      <option [ngValue]="teacher.id">
+        {{ teacher.name || teacher.username }}
+      </option>
+
+    }
+
+  </select>
+
+  @if (updateTeacherSelect.invalid && updateTeacherSelect.touched) {
+
+    <small class="error">
+      Teacher is required
+    </small>
 
   }
 
 </div>
 
-}
+          <div class="form-actions">
+
+            <button type="submit" class="update-btn" [disabled]="updateForm.invalid">
+
+              Update Student
+
+            </button>
 
 
-<!-- ================================= -->
-<!-- DELETE STUDENT -->
-<!-- ================================= -->
+            <button type="button" class="cancel-btn" (click)="resetUpdate()">
 
-@if (selectedStudentAction === 'delete') {
+              Cancel
 
-<div class="content-card delete-student-card">
+            </button>
 
-  <h2>Delete Student</h2>
+          </div>
 
-  <p class="update-description">
-    Enter the student ID to load the student's existing information.
-  </p>
+        </form>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
 
 
-  <!-- SEARCH STUDENT -->
+    <!-- ================================ -->
+    <!-- DELETE STUDENT -->
+    <!-- ================================ -->
 
-  <div class="student-search">
+    @if (selectedStudentAction === 'delete') {
 
-    <div class="form-group">
+    <div class="content-card delete-student-card">
 
-      <label>
-        Student ID <span>*</span>
-      </label>
+      <h2>Delete Student</h2>
 
-      <input
-        type="number"
-        name="deleteStudentId"
-        [(ngModel)]="deleteStudentId"
-        min="1"
-        placeholder="Enter student ID">
+      <p class="update-description">
+        Enter the student ID to load the student's existing information.
+      </p>
+
+
+      <div class="student-search">
+
+        <div class="form-group">
+
+          <label>
+            Student ID <span>*</span>
+          </label>
+
+          <input type="number" name="deleteStudentId" [(ngModel)]="deleteStudentId" min="1"
+            placeholder="Enter student ID">
+
+        </div>
+
+
+        <button type="button" class="search-btn" (click)="findStudentForDelete()" [disabled]="searchingDeleteStudent">
+
+          {{ searchingDeleteStudent ? 'Searching...' : 'Search Student' }}
+
+        </button>
+
+      </div>
+
+
+      @if (deleteStudentFound) {
+
+      <div class="update-form-section">
+
+        <h3>Student Details</h3>
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label>Name</label>
+
+            <input type="text" [value]="deleteStudent.name" readonly>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Email</label>
+
+            <input type="text" [value]="deleteStudent.email" readonly>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Course</label>
+
+            <input type="text" [value]="deleteStudent.course" readonly>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Age</label>
+
+            <input type="number" [value]="deleteStudent.age" readonly>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button type="button" class="delete-btn" (click)="deleteExistingStudent()">
+
+            Delete Student
+
+          </button>
+
+
+          <button type="button" class="cancel-btn" (click)="resetDelete()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
+
+    }
+
+
+    <!-- ====================================================== -->
+    <!-- TEACHERS -->
+    <!-- ====================================================== -->
+
+    @if (selectedSection === 'teachers') {
+
+    <div class="page-header">
+
+      <h1>Teacher Management</h1>
+
+      <p>
+        Manage teacher accounts and records
+      </p>
 
     </div>
 
 
-    <button
-      type="button"
-      class="search-btn"
-      (click)="findStudentForDelete()"
-      [disabled]="searchingDeleteStudent">
+    <!-- TEACHER ACTION BAR -->
 
-      {{ searchingDeleteStudent ? 'Searching...' : 'Search Student' }}
+    <div class="action-bar">
 
-    </button>
+      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'add'"
+        (click)="selectTeacherAction('add')">
 
-  </div>
-
-
-  <!-- STUDENT DETAILS -->
-
-  @if (deleteStudentFound) {
-
-  <div class="update-form-section">
-
-    <h3>Student Details</h3>
-
-
-    <div class="form-group">
-
-      <label>Name</label>
-
-      <input
-        type="text"
-        [value]="deleteStudent.name"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>Email</label>
-
-      <input
-        type="text"
-        [value]="deleteStudent.email"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>Course</label>
-
-      <input
-        type="text"
-        [value]="deleteStudent.course"
-        readonly>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>Age</label>
-
-      <input
-        type="number"
-        [value]="deleteStudent.age"
-        readonly>
-
-    </div>
-
-
-    <div class="form-actions">
-
-      <button
-        type="button"
-        class="delete-btn"
-        (click)="deleteExistingStudent()">
-
-        Delete Student
+        Add Teacher
 
       </button>
 
 
-      <button
-        type="button"
-        class="cancel-btn"
-        (click)="resetDelete()">
+      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'view'"
+        (click)="selectTeacherAction('view')">
 
-        Cancel
+        View All
+
+      </button>
+
+
+      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'update'"
+        (click)="selectTeacherAction('update')">
+
+        Update
+
+      </button>
+
+
+      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'delete'"
+        (click)="selectTeacherAction('delete')">
+
+        Delete
 
       </button>
 
     </div>
 
-  </div>
 
-  }
+    <!-- ================================ -->
+    <!-- ADD TEACHER -->
+    <!-- ================================ -->
 
-</div>
+    @if (selectedTeacherAction === 'add') {
 
-}
+    <div class="content-card teacher-card">
 
-}
+      <h2>Add Teacher</h2>
+
+      <p class="update-description">
+        Create a new teacher account.
+      </p>
+
+
+      <form #teacherForm="ngForm" (ngSubmit)="addTeacher(teacherForm)">
+
+
+        <div class="form-grid">
+
+
+          <!-- USERNAME -->
+
+          <div class="form-group">
+
+            <label>
+              Username <span>*</span>
+            </label>
+
+            <input type="text" name="teacherUsername" [(ngModel)]="newTeacher.username" required minlength="3"
+              #teacherUsername="ngModel" placeholder="Enter username">
+
+
+            @if (
+            teacherUsername.invalid &&
+            teacherUsername.touched
+            ) {
+
+            <small class="error">
+
+              Username is required and must be at least 3 characters
+
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label>
+              Name <span>*</span>
+            </label>
+
+            <input type="text" name="teacherName" [(ngModel)]="newTeacher.name" required #teacherName="ngModel"
+              placeholder="Enter teacher name">
+
+
+            @if (
+            teacherName.invalid &&
+            teacherName.touched
+            ) {
+
+            <small class="error">
+              Name is required
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+              Email <span>*</span>
+            </label>
+
+            <input type="email" name="teacherEmail" [(ngModel)]="newTeacher.email" required email
+              #teacherEmail="ngModel" placeholder="Enter teacher email">
+
+
+            @if (
+            teacherEmail.invalid &&
+            teacherEmail.touched
+            ) {
+
+            <small class="error">
+              Enter a valid email
+            </small>
+
+            }
+
+          </div>
+
+
+          <!-- PASSWORD -->
+
+          <div class="form-group">
+
+            <label>
+              Password <span>*</span>
+            </label>
+
+            <input type="password" name="teacherPassword" [(ngModel)]="newTeacher.password" required minlength="6"
+              #teacherPassword="ngModel" placeholder="Enter password">
+
+
+            @if (
+            teacherPassword.invalid &&
+            teacherPassword.touched
+            ) {
+
+            <small class="error">
+
+              Password is required and must be at least 6 characters
+
+            </small>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button type="submit" class="add-btn" [disabled]="teacherForm.invalid">
+
+            Add Teacher
+
+          </button>
+
+
+          <button type="button" class="cancel-btn" (click)="teacherForm.resetForm(); clearTeacherForm()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+    }
+
+
+    <!-- ================================ -->
+    <!-- VIEW ALL TEACHERS -->
+    <!-- ================================ -->
+
+    @if (selectedTeacherAction === 'view') {
+
+    <div class="content-card teacher-list-card">
+
+      <h2>All Teachers</h2>
+
+
+      @if (loadingTeacherList) {
+
+      <div class="loading-message">
+        Loading teachers...
+      </div>
+
+      }
+
+
+      @if (!loadingTeacherList && teacherList.length === 0) {
+
+      <div class="empty-message">
+        No teachers found.
+      </div>
+
+      }
+
+
+      @if (!loadingTeacherList && teacherList.length > 0) {
+
+      <div class="teacher-table-wrapper">
+
+        <table class="teacher-table">
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (
+            teacher of teacherList;
+            track teacher.id
+            ) {
+
+            <tr>
+
+              <td>
+                {{ teacher.id }}
+              </td>
+
+              <td>
+                {{ teacher.username }}
+              </td>
+
+              <td>
+                {{ teacher.name }}
+              </td>
+
+              <td>
+                {{ teacher.email }}
+              </td>
+
+              <td>
+                <span class="role-badge">
+                  {{ teacher.role }}
+                </span>
+              </td>
+
+            </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
+
+
+    <!-- ================================ -->
+    <!-- UPDATE TEACHER -->
+    <!-- ================================ -->
+
+    @if (selectedTeacherAction === 'update') {
+
+    <div class="content-card teacher-card">
+
+      <h2>Update Teacher</h2>
+
+      <p class="update-description">
+        Enter the teacher ID to load the teacher's existing information.
+      </p>
+
+
+      <!-- SEARCH -->
+
+      <div class="student-search">
+
+        <div class="form-group">
+
+          <label>
+            Teacher ID <span>*</span>
+          </label>
+
+          <input type="number" name="updateTeacherId" [(ngModel)]="updateTeacherId" min="1"
+            placeholder="Enter teacher ID">
+
+        </div>
+
+
+        <button type="button" class="search-btn" (click)="findTeacherForUpdate()" [disabled]="searchingTeacher">
+
+          {{ searchingTeacher ? 'Searching...' : 'Search Teacher' }}
+
+        </button>
+
+      </div>
+
+
+      <!-- DETAILS -->
+
+      @if (teacherFound) {
+
+      <div class="update-form-section">
+
+        <h3>Teacher Details</h3>
+
+
+        <form #updateTeacherForm="ngForm" (ngSubmit)="updateExistingTeacher(updateTeacherForm)">
+
+
+          <div class="form-grid">
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+              <label>
+                Username <span>*</span>
+              </label>
+
+              <input type="text" name="updateTeacherUsername" [(ngModel)]="updateTeacher.username" required
+                minlength="3" #updateTeacherUsername="ngModel" placeholder="Enter username">
+
+
+              @if (
+              updateTeacherUsername.invalid &&
+              updateTeacherUsername.touched
+              ) {
+
+              <small class="error">
+
+                Username is required
+
+              </small>
+
+              }
+
+            </div>
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+              <label>
+                Name <span>*</span>
+              </label>
+
+              <input type="text" name="updateTeacherName" [(ngModel)]="updateTeacher.name" required
+                #updateTeacherName="ngModel" placeholder="Enter teacher name">
+
+
+              @if (
+              updateTeacherName.invalid &&
+              updateTeacherName.touched
+              ) {
+
+              <small class="error">
+                Name is required
+              </small>
+
+              }
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label>
+                Email <span>*</span>
+              </label>
+
+              <input type="email" name="updateTeacherEmail" [(ngModel)]="updateTeacher.email" required email
+                #updateTeacherEmail="ngModel" placeholder="Enter teacher email">
+
+
+              @if (
+              updateTeacherEmail.invalid &&
+              updateTeacherEmail.touched
+              ) {
+
+              <small class="error">
+                Enter a valid email
+              </small>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button type="submit" class="update-btn" [disabled]="updateTeacherForm.invalid">
+
+              Update Teacher
+
+            </button>
+
+
+            <button type="button" class="cancel-btn" (click)="resetTeacherUpdate()">
+
+              Cancel
+
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
+
+
+    <!-- ================================ -->
+    <!-- DELETE TEACHER -->
+    <!-- ================================ -->
+
+    @if (selectedTeacherAction === 'delete') {
+
+    <div class="content-card teacher-card">
+
+      <h2>Delete Teacher</h2>
+
+      <p class="update-description">
+        Enter the teacher ID to load the teacher's existing information.
+      </p>
+
+
+      <!-- SEARCH -->
+
+      <div class="student-search">
+
+        <div class="form-group">
+
+          <label>
+            Teacher ID <span>*</span>
+          </label>
+
+          <input type="number" name="deleteTeacherId" [(ngModel)]="deleteTeacherId" min="1"
+            placeholder="Enter teacher ID">
+
+        </div>
+
+
+        <button type="button" class="search-btn" (click)="findTeacherForDelete()" [disabled]="searchingDeleteTeacher">
+
+          {{ searchingDeleteTeacher
+          ? 'Searching...'
+          : 'Search Teacher'
+          }}
+
+        </button>
+
+      </div>
+
+
+      <!-- DETAILS -->
+
+      @if (deleteTeacherFound) {
+
+      <div class="update-form-section">
+
+        <h3>Teacher Details</h3>
+
+
+        <div class="form-grid">
+
+
+          <!-- USERNAME -->
+
+          <div class="form-group">
+
+            <label>
+              Username
+            </label>
+
+            <input type="text" [value]="deleteTeacher.username" readonly>
+
+          </div>
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label>
+              Name
+            </label>
+
+            <input type="text" [value]="deleteTeacher.name" readonly>
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+              Email
+            </label>
+
+            <input type="text" [value]="deleteTeacher.email" readonly>
+
+          </div>
+
+
+          <!-- ROLE -->
+
+          <div class="form-group">
+
+            <label>
+              Role
+            </label>
+
+            <input type="text" value="TEACHER" readonly>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <button type="button" class="delete-btn" (click)="deleteExistingTeacher()">
+
+            Delete Teacher
+
+          </button>
+
+
+          <button type="button" class="cancel-btn" (click)="resetTeacherDelete()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+    }
+
+    }
+    
 
   </main>
 

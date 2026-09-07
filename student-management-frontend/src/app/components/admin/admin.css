@@ -18,11 +18,9 @@
   height: 64px;
   background: #1f2937;
   color: white;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 0 30px;
   box-sizing: border-box;
 }
@@ -55,10 +53,8 @@
   border: none;
   background: #dc3545;
   color: white;
-
   padding: 8px 16px;
   border-radius: 5px;
-
   cursor: pointer;
   font-size: 13px;
 }
@@ -86,38 +82,28 @@
   width: 240px;
   background: #111827;
   color: white;
-
   padding: 25px 15px;
   box-sizing: border-box;
-
   flex-shrink: 0;
 }
 
 .sidebar-title {
   font-size: 13px;
   font-weight: 700;
-
   color: #9ca3af;
-
   margin-bottom: 20px;
   padding: 0 12px;
 }
 
 .sidebar-item {
   width: 100%;
-
   background: transparent;
   border: none;
-
   color: #d1d5db;
-
   text-align: left;
-
   padding: 12px 14px;
   margin-bottom: 5px;
-
   border-radius: 6px;
-
   cursor: pointer;
   font-size: 14px;
 }
@@ -134,32 +120,24 @@
 
 
 /* ================================
-   STUDENT SUBMENU
+   SUBMENU
 ================================ */
 
 .submenu {
   margin: 5px 0 15px 12px;
   padding-left: 10px;
-
   border-left: 2px solid #374151;
 }
 
 .submenu button {
   display: block;
-
   width: 100%;
-
   background: transparent;
   border: none;
-
   color: #9ca3af;
-
   text-align: left;
-
   padding: 9px 12px;
-
   border-radius: 5px;
-
   cursor: pointer;
   font-size: 13px;
 }
@@ -181,12 +159,10 @@
 
 .main-content {
   flex: 1;
-
   padding: 35px;
-
   box-sizing: border-box;
-
   overflow-x: auto;
+  min-width: 0;
 }
 
 
@@ -200,18 +176,14 @@
 
 .page-header h1 {
   margin: 0 0 8px 0;
-
   font-size: 28px;
   font-weight: 600;
-
   color: #1f2937;
 }
 
 .page-header p {
   margin: 0;
-
   color: #6b7280;
-
   font-size: 14px;
 }
 
@@ -223,61 +195,49 @@
 .dashboard-cards {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .dashboard-card {
   background: white;
-
   width: 250px;
-
   padding: 25px;
-
   border-radius: 10px;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
   box-sizing: border-box;
 }
 
 .dashboard-card h3 {
   margin: 0 0 10px 0;
-
   color: #1f2937;
   font-size: 18px;
 }
 
 .dashboard-card p {
   margin: 0;
-
   color: #6b7280;
   font-size: 14px;
 }
 
 
 /* ================================
-   STUDENT ACTION BAR
+   ACTION BAR
 ================================ */
 
 .action-bar {
   display: flex;
   gap: 10px;
-
   margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 
 .action-btn {
   border: 1px solid #d1d5db;
-
   background: white;
-
   color: #374151;
-
   padding: 10px 18px;
-
   border-radius: 6px;
-
   cursor: pointer;
-
   font-size: 14px;
 }
 
@@ -288,7 +248,6 @@
 .action-btn.action-active {
   background: #3867f4;
   color: white;
-
   border-color: #3867f4;
 }
 
@@ -299,141 +258,145 @@
 
 .content-card {
   background: white;
-
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 32px;
   border-radius: 10px;
-
-  padding: 25px;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
   box-sizing: border-box;
 }
 
 .content-card h2 {
-  margin-top: 0;
-
-  margin-bottom: 20px;
-
+  margin: 0 0 20px 0;
   color: #1f2937;
-
   font-size: 20px;
 }
 
 
 /* ================================
-   EMPTY CONTENT
+   CRUD CARD SIZE
 ================================ */
 
-.empty-content {
-  background: white;
-
-  border-radius: 10px;
-
-  padding: 40px;
-
-  text-align: center;
-
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.empty-content h2 {
-  margin-top: 0;
-
-  color: #1f2937;
-}
-
-.empty-content p {
-  color: #6b7280;
+.teacher-card,
+.add-student-card,
+.update-student-card,
+.delete-student-card {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 0;
 }
 
 
 /* ================================
-   ADD STUDENT FORM
+   FORM GRID
+   2 OPERATIONS / FIELDS PER ROW
 ================================ */
 
-.add-student-card {
-  margin-top: 20px;
-  max-width: 700px;
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 30px;
+  row-gap: 18px;
+  width: 100%;
 }
 
-.add-student-card h2 {
-  margin-bottom: 25px;
-}
+
+/* ================================
+   FORM GROUP
+================================ */
 
 .form-group {
-  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .form-group label {
   display: block;
-
-  margin-bottom: 7px;
-
+  margin-bottom: 6px;
   font-weight: 600;
-
   color: #374151;
+  font-size: 14px;
 }
 
 .form-group label span {
   color: red;
 }
 
-.form-group input {
+
+/* ================================
+   INPUT + SELECT
+================================ */
+
+.form-group input,
+.form-group select {
   width: 100%;
-
-  padding: 11px 12px;
-
-  border: 1px solid #ccc;
-
+  height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #cfd4dc;
   border-radius: 6px;
-
   font-size: 14px;
-
+  background: white;
+  color: #1f2937;
   box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   outline: none;
-
   border-color: #3867f4;
-
   box-shadow: 0 0 0 2px rgba(56, 103, 244, 0.1);
 }
 
+.form-group input[readonly] {
+  background: #f8fafc;
+  cursor: default;
+}
+
+
+/* ================================
+   ERROR
+================================ */
+
 .error {
   display: block;
-
   margin-top: 5px;
-
   color: #dc3545;
-
-  font-size: 13px;
+  font-size: 12px;
 }
+
+
+/* ================================
+   FORM ACTIONS
+================================ */
 
 .form-actions {
   display: flex;
-
   gap: 12px;
-
   margin-top: 25px;
 }
 
+
+/* ================================
+   BUTTONS
+================================ */
+
 .add-btn,
-.cancel-btn {
-  padding: 10px 22px;
-
+.cancel-btn,
+.update-btn,
+.delete-btn,
+.search-btn {
+  height: 42px;
+  padding: 0 22px;
   border: none;
-
   border-radius: 6px;
-
   cursor: pointer;
-
   font-size: 14px;
+  font-weight: 500;
 }
 
 .add-btn {
   background: #3867f4;
-
   color: white;
 }
 
@@ -443,13 +406,11 @@
 
 .add-btn:disabled {
   opacity: 0.5;
-
   cursor: not-allowed;
 }
 
 .cancel-btn {
   background: #6c757d;
-
   color: white;
 }
 
@@ -457,10 +418,219 @@
   background: #5a6268;
 }
 
+.update-btn {
+  background: #3867f4;
+  color: white;
+}
+
+.update-btn:hover {
+  background: #2854d9;
+}
+
+.update-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+.search-btn {
+  background: #3867f4;
+  color: white;
+}
+
+.search-btn:hover {
+  background: #2854d9;
+}
+
+.search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* ================================
+   STUDENT / TEACHER SEARCH
+================================ */
+
+.student-search {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.student-search .form-group {
+  flex: 1;
+  max-width: 500px;
+}
+
+.student-search .search-btn {
+  min-width: 145px;
+  white-space: nowrap;
+}
+
+
+/* ================================
+   UPDATE FORM SECTION
+================================ */
+
+.update-form-section {
+  margin-top: 20px;
+  padding-top: 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.update-form-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color: #374151;
+}
+
+.update-description {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 22px 0;
+}
+
+
+/* ================================
+   EMPTY CONTENT
+================================ */
+
+.empty-content {
+  background: white;
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-content h2 {
+  margin-top: 0;
+  color: #1f2937;
+}
+
+.empty-content p {
+  color: #6b7280;
+}
+
+
+/* ================================
+   TEACHER TABLE
+================================ */
+
+.teacher-list-card {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.teacher-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid #cfd4dc;
+  border-radius: 8px;
+  background: white;
+}
+
+.teacher-table {
+  width: 100%;
+  min-width: 750px;
+  border-collapse: collapse;
+  background: white;
+}
+
+.teacher-table th,
+.teacher-table td {
+  padding: 13px 15px;
+  text-align: left;
+  border: 1px solid #cfd4dc;
+  white-space: nowrap;
+}
+
+.teacher-table th {
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.teacher-table td {
+  background: white;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.teacher-table tbody tr:hover td {
+  background: #f9fafb;
+}
+
+
+/* ================================
+   ROLE BADGE
+================================ */
+
+.role-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #e8edff;
+  color: #3867f4;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   LOADING / EMPTY
+================================ */
+
+.loading-message,
+.empty-message {
+  padding: 35px;
+  text-align: center;
+  color: #6b7280;
+}
+
 
 /* ================================
    RESPONSIVE
 ================================ */
+
+@media (max-width: 800px) {
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    row-gap: 18px;
+  }
+
+  .student-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .student-search .form-group {
+    max-width: none;
+  }
+
+  .student-search .search-btn {
+    width: 100%;
+  }
+
+  .content-card {
+    padding: 22px;
+  }
+}
+
 
 @media (max-width: 768px) {
 
@@ -488,4 +658,19 @@
     flex-wrap: wrap;
   }
 
+  .dashboard-cards {
+    flex-direction: column;
+  }
+
+  .dashboard-card {
+    width: 100%;
+  }
+
+  .nav-right {
+    gap: 8px;
+  }
+
+  .admin-user {
+    display: none;
+  }
 }

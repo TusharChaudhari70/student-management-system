@@ -101,4 +101,64 @@ public User findByUsernameForLogin(String username) {
             );
 }
     
+@PreAuthorize("hasRole('ADMIN')")
+public User createTeacher(User user) {
+
+    user.setRole("TEACHER");
+
+    user.setPassword(
+        passwordEncoder.encode(user.getPassword())
+    );
+
+    return userRepo.save(user);
+}
+
+@PreAuthorize("hasRole('ADMIN')")
+public User updateTeacher(Long id, User teacherDetails) {
+
+    User existingTeacher = userRepo.findById(id)
+            .orElseThrow(() ->
+                new RuntimeException(
+                    "Teacher not found with id: " + id
+                )
+            );
+
+    if (!"TEACHER".equals(existingTeacher.getRole())) {
+        throw new RuntimeException(
+            "User with id " + id + " is not a teacher"
+        );
+    }
+
+    existingTeacher.setUsername(teacherDetails.getUsername());
+    existingTeacher.setName(teacherDetails.getName());
+    existingTeacher.setEmail(teacherDetails.getEmail());
+
+    // IMPORTANT:
+    // Do not take role from frontend.
+    // Teacher remains TEACHER.
+    existingTeacher.setRole("TEACHER");
+
+    // Password is intentionally not changed here.
+
+    return userRepo.save(existingTeacher);
+}
+
+@PreAuthorize("hasRole('ADMIN')")
+public User getTeacherById(Long id) {
+
+    User teacher = userRepo.findById(id)
+            .orElseThrow(() ->
+                new RuntimeException(
+                    "Teacher not found with id: " + id
+                )
+            );
+
+    if (!"TEACHER".equals(teacher.getRole())) {
+        throw new RuntimeException(
+            "User with id " + id + " is not a teacher"
+        );
+    }
+
+    return teacher;
+}
 }

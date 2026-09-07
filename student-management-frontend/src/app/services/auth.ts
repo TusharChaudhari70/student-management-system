@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable, timeout } from 'rxjs'; import { Router } from '@angular/router';
 
 export interface LoginRequest {
   username: string;
@@ -24,14 +23,17 @@ export class Auth {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) { }
 
-  login(data: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
-      `${this.apiUrl}/login`,
-      data
-    );
-  }
+login(data: LoginRequest): Observable<LoginResponse> {
+  return this.http.post<LoginResponse>(
+    `${this.apiUrl}/login`,
+    data,
+    {
+      timeout: 10000
+    }
+  );
+}
 
   logout() {
     localStorage.removeItem('token');

@@ -215,120 +215,137 @@ return studRepo.save(student);
        UPDATE STUDENT
     ========================= */
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public Student updateStudent(
-            Long id,
-            Student studentDetails) {
+    /* =========================
+   UPDATE STUDENT
+========================= */
 
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+public Student updateStudent(
+        Long id,
+        Student studentDetails) {
 
-        String username =
-                authentication.getName();
+    Authentication authentication =
+            SecurityContextHolder
+                    .getContext()
+                    .getAuthentication();
 
+    String username =
+            authentication.getName();
 
-        boolean isAdmin =
-                authentication.getAuthorities()
-                        .stream()
-                        .anyMatch(
-                                a -> a.getAuthority()
-                                        .equals("ROLE_ADMIN")
-                        );
+    boolean isAdmin =
+            authentication.getAuthorities()
+                    .stream()
+                    .anyMatch(
+                            a -> a.getAuthority()
+                                    .equals("ROLE_ADMIN")
+                    );
 
-
-        Student existingStudent =
-                studRepo.findById(id)
-                        .orElseThrow(() ->
-                                new StudentNotFoundException(
-                                        "Student with ID "
-                                                + id
-                                                + " does not exist"
-                                )
-                        );
-
-
-        // TEACHER can update only
-        // their own student
-        if (!isAdmin) {
-
-            if (
-                    existingStudent.getTeacher() == null ||
-                    !existingStudent
-                            .getTeacher()
-                            .getUsername()
-                            .equals(username)
-            ) {
-
-                throw new RuntimeException(
-                        "You are not authorized to update this student"
-                );
-            }
-        }
-
-
-        // Update basic student information
-        existingStudent.setName(
-                studentDetails.getName()
-        );
-
-        existingStudent.setEmail(
-                studentDetails.getEmail()
-        );
-
-        existingStudent.setCourse(
-                studentDetails.getCourse()
-        );
-
-        existingStudent.setAge(
-                studentDetails.getAge()
-        );
-
-
-        // ADMIN can change teacher
-        if (
-                isAdmin &&
-                studentDetails.getTeacher() != null
-        ) {
-
-            String teacherUsername =
-                    studentDetails
-                            .getTeacher()
-                            .getUsername();
-
-
-            User teacher =
-                    userRepo.findByUsername(
-                            teacherUsername
-                    ).orElseThrow(() ->
-                            new RuntimeException(
-                                    "Teacher not found"
+    Student existingStudent =
+            studRepo.findById(id)
+                    .orElseThrow(() ->
+                            new StudentNotFoundException(
+                                    "Student with ID "
+                                            + id
+                                            + " does not exist"
                             )
                     );
 
 
-            if (
-                    !"TEACHER".equals(
-                            teacher.getRole()
-                    )
-            ) {
+    // =========================================
+    // TEACHER AUTHORIZATION
+    // =========================================
 
-                throw new RuntimeException(
-                        "Selected user is not a TEACHER"
-                );
-            }
+    // Teacher can update ONLY their own student
+    if (!isAdmin) {
+
+        if (
+                existingStudent.getTeacher() == null ||
+                !existingStudent
+                        .getTeacher()
+                        .getUsername()
+                        .equals(username)
+        ) {
+
+            throw new RuntimeException(
+                    "You are not authorized to update this student"
+            );
+        }
+    }
 
 
-            existingStudent.setTeacher(teacher);
+    // =========================================
+    // UPDATE BASIC STUDENT INFORMATION
+    // =========================================
+
+    existingStudent.setName(
+            studentDetails.getName()
+    );
+
+    existingStudent.setEmail(
+            studentDetails.getEmail()
+    );
+
+    existingStudent.setCourse(
+            studentDetails.getCourse()
+    );
+
+    existingStudent.setAge(
+            studentDetails.getAge()
+    );
+
+
+    // =========================================
+    // ADMIN CAN CHANGE TEACHER
+    // =========================================
+
+    if (isAdmin) {
+
+        if (
+                studentDetails.getTeacher() == null ||
+                studentDetails.getTeacher().getId() == null
+        ) {
+
+            throw new RuntimeException(
+                    "Please select a teacher"
+            );
         }
 
 
-        return studRepo.save(
-                existingStudent
-        );
+        Long teacherId =
+                studentDetails
+                        .getTeacher()
+                        .getId();
+
+
+        User teacher =
+                userRepo.findById(teacherId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Selected teacher not found"
+                                )
+                        );
+
+
+        // Make sure selected user is actually a teacher
+        if (
+                !"TEACHER".equals(
+                        teacher.getRole()
+                )
+        ) {
+
+            throw new RuntimeException(
+                    "Selected user is not a TEACHER"
+            );
+        }
+
+
+        // Change student's assigned teacher
+        existingStudent.setTeacher(teacher);
     }
 
+
+    return studRepo.save(existingStudent);
+}
 
     /* =========================
        DELETE STUDENT

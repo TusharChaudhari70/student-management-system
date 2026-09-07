@@ -1,11 +1,14 @@
-import { ChangeDetectorRef, Component } from '@angular/core';import { FormsModule, NgForm } from '@angular/forms';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { Auth } from '../../services/auth';
 import {
   StudentService,
   Teacher
-} from '../../services/student.service';import { StudentList } from '../student-list/student-list';
+} from '../../services/student.service';
+import { TeacherService } from '../../services/teacher.service';
+import { StudentList } from '../student-list/student-list';
 
 @Component({
   selector: 'app-admin',
@@ -23,55 +26,52 @@ export class Admin {
 
   selectedSection = 'dashboard';
   selectedStudentAction = '';
+  selectedTeacherAction = '';
 
-
-  /* =========================
-     ADD STUDENT
-  ========================= */
+  // =====================================================
+  // STUDENT ADD
+  // =====================================================
 
   newStudent = {
-  name: '',
-  email: '',
-  course: '',
-  age: 0,
-  teacher: null as { id: number } | null
-};
+    name: '',
+    email: '',
+    course: '',
+    age: 0,
+    teacher: null as { id: number } | null
+  };
 
   teachers: Teacher[] = [];
+  selectedTeacherId: number | null = null;
+  loadingTeachers = false;
 
-selectedTeacherId: number | null = null;
 
-loadingTeachers = false;
+  // =====================================================
+  // STUDENT UPDATE
+  // =====================================================
 
-  /* =========================
-     UPDATE STUDENT
-  ========================= */
-
-  // ID currently typed by user
   updateStudentId: number | null = null;
-
-  // ID of student actually loaded from database
   searchedStudentId: number | null = null;
 
   updateStudent = {
     name: '',
     email: '',
     course: '',
-    age: 0
+    age: 0,
+    teacher: null as { id: number } | null
   };
+
+  // Separate selected teacher ID for update
+  selectedUpdateTeacherId: number | null = null;
 
   searchingStudent = false;
   studentFound = false;
 
 
-  /* =========================
-     DELETE STUDENT
-  ========================= */
+  // =====================================================
+  // STUDENT DELETE
+  // =====================================================
 
-  // ID currently typed by user
   deleteStudentId: number | null = null;
-
-  // ID of student actually loaded from database
   searchedDeleteStudentId: number | null = null;
 
   deleteStudent = {
@@ -85,544 +85,709 @@ loadingTeachers = false;
   deleteStudentFound = false;
 
 
-  /* =========================
-     CONSTRUCTOR
-  ========================= */
+  // =====================================================
+  // TEACHER ADD
+  // =====================================================
 
-constructor(
-  private authService: Auth,
-  private studentService: StudentService,
-  private cdr: ChangeDetectorRef
-) {}
+  newTeacher = {
+    username: '',
+    name: '',
+    email: '',
+    password: ''
+  };
+
+  teacherList: Teacher[] = [];
+  loadingTeacherList = false;
 
 
-  /* =========================
-     LOGOUT
-  ========================= */
+  // =====================================================
+  // TEACHER UPDATE
+  // =====================================================
+
+  updateTeacherId: number | null = null;
+  searchedTeacherId: number | null = null;
+
+  updateTeacher = {
+    username: '',
+    name: '',
+    email: ''
+  };
+
+  searchingTeacher = false;
+  teacherFound = false;
+
+
+  // =====================================================
+  // TEACHER DELETE
+  // =====================================================
+
+  deleteTeacherId: number | null = null;
+  searchedDeleteTeacherId: number | null = null;
+
+  deleteTeacher = {
+    username: '',
+    name: '',
+    email: ''
+  };
+
+  searchingDeleteTeacher = false;
+  deleteTeacherFound = false;
+
+
+  // =====================================================
+  // CONSTRUCTOR
+  // =====================================================
+
+  constructor(
+    private authService: Auth,
+    private studentService: StudentService,
+    private teacherService: TeacherService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+
+  // =====================================================
+  // LOGOUT
+  // =====================================================
 
   logout() {
     this.authService.logout();
   }
 
 
-  /* =========================
-     SECTION NAVIGATION
-  ========================= */
+  // =====================================================
+  // SECTION TOGGLE
+  // =====================================================
 
   selectSection(section: string) {
 
+    // ================================
+    // STUDENTS TOGGLE
+    // ================================
+
+    if (section === 'students') {
+
+      if (this.selectedSection === 'students') {
+
+        this.selectedSection = '';
+        this.selectedStudentAction = '';
+
+        this.resetUpdate();
+        this.resetDelete();
+
+        return;
+      }
+
+      this.selectedSection = 'students';
+      this.selectedStudentAction = '';
+      this.selectedTeacherAction = '';
+
+      this.resetUpdate();
+      this.resetDelete();
+      this.resetTeacherUpdate();
+      this.resetTeacherDelete();
+
+      return;
+    }
+
+
+    // ================================
+    // TEACHERS TOGGLE
+    // ================================
+
+    if (section === 'teachers') {
+
+      if (this.selectedSection === 'teachers') {
+
+        this.selectedSection = '';
+        this.selectedTeacherAction = '';
+
+        this.resetTeacherUpdate();
+        this.resetTeacherDelete();
+
+        return;
+      }
+
+      this.selectedSection = 'teachers';
+      this.selectedTeacherAction = '';
+      this.selectedStudentAction = '';
+
+      this.resetUpdate();
+      this.resetDelete();
+      this.resetTeacherUpdate();
+      this.resetTeacherDelete();
+
+      this.loadTeacherList();
+
+      return;
+    }
+
+
+    // ================================
+    // OTHER SECTIONS
+    // ================================
+
     this.selectedSection = section;
     this.selectedStudentAction = '';
+    this.selectedTeacherAction = '';
 
-    // Clear all temporary student forms
     this.resetUpdate();
     this.resetDelete();
+    this.resetTeacherUpdate();
+    this.resetTeacherDelete();
   }
 
 
-  /* =========================
-     STUDENT ACTION NAVIGATION
-  ========================= */
+  // =====================================================
+  // STUDENT ACTION
+  // =====================================================
 
   selectStudentAction(action: string) {
 
-  this.selectedSection = 'students';
-  this.selectedStudentAction = action;
+    // Double-click / click same operation again = close
+    if (
+      this.selectedSection === 'students' &&
+      this.selectedStudentAction === action
+    ) {
 
-  // Always clear old Update data
-  this.resetUpdate();
+      this.selectedStudentAction = '';
 
-  // Always clear old Delete data
-  this.resetDelete();
+      this.resetUpdate();
+      this.resetDelete();
 
+      return;
+    }
 
-  // Load teachers only for Add Student
-  if (action === 'add') {
+    this.selectedSection = 'students';
+    this.selectedStudentAction = action;
+    this.selectedTeacherAction = '';
 
-    this.loadTeachers();
+    this.resetUpdate();
+    this.resetDelete();
 
+    if (action === 'add' || action === 'update') {
+      this.loadTeachers();
+    }
   }
-}
-loadTeachers() {
 
-  this.loadingTeachers = true;
 
-  this.studentService
-    .getAllTeachers()
-    .pipe(
-      finalize(() => {
+  // =====================================================
+  // TEACHER ACTION
+  // =====================================================
 
-        this.loadingTeachers = false;
+  selectTeacherAction(action: string) {
 
-        this.cdr.detectChanges();
+    if (
+      this.selectedSection === 'teachers' &&
+      this.selectedTeacherAction === action
+    ) {
 
-      })
-    )
-    .subscribe({
+      this.selectedTeacherAction = '';
 
-      next: (teachers) => {
+      this.resetTeacherUpdate();
+      this.resetTeacherDelete();
 
-        console.log(
-          'Teachers received from DB:',
-          teachers
-        );
+      return;
+    }
 
-        this.teachers = teachers;
+    this.selectedSection = 'teachers';
+    this.selectedTeacherAction = action;
+    this.selectedStudentAction = '';
 
-        this.cdr.detectChanges();
-      },
+    this.resetTeacherUpdate();
+    this.resetTeacherDelete();
 
-      error: (error) => {
+    if (action === 'view') {
+      this.loadTeacherList();
+    }
+  }
 
-        console.error(
-          'Error loading teachers:',
-          error
-        );
 
-        this.teachers = [];
+  // =====================================================
+  // LOAD TEACHERS
+  // =====================================================
 
-        if (error.status === 401) {
+  loadTeachers() {
 
-          alert(
-            'Session expired. Please login again.'
+    this.loadingTeachers = true;
+
+    this.studentService
+      .getAllTeachers()
+      .pipe(
+        finalize(() => {
+          this.loadingTeachers = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (teachers) => {
+
+          console.log(
+            'Teachers received from DB:',
+            teachers
           );
 
-        } else if (error.status === 403) {
+          this.teachers = teachers;
 
-          alert(
-            'You are not authorized to load teachers.'
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error loading teachers:',
+            error
           );
 
-        } else {
+          this.teachers = [];
 
-          alert(
-            'Failed to load teachers.'
-          );
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to load teachers.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to load teachers.'
+            );
+          }
+
+          this.cdr.detectChanges();
         }
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
 
 
-  /* =========================
-     ADD STUDENT
-  ========================= */
+  // =====================================================
+  // ADD STUDENT
+  // =====================================================
 
   addStudent(form: NgForm) {
 
-  if (
-    form.invalid ||
-    this.selectedTeacherId === null
-  ) {
+    if (
+      form.invalid ||
+      this.selectedTeacherId === null
+    ) {
 
-    Object.values(form.controls).forEach(control => {
-      control.markAsTouched();
-    });
+      Object.values(form.controls).forEach(
+        control => {
+          control.markAsTouched();
+        }
+      );
 
-    return;
+      return;
+    }
+
+    const studentToAdd = {
+      ...this.newStudent,
+      teacher: {
+        id: this.selectedTeacherId
+      }
+    };
+
+    this.studentService
+      .addStudent(studentToAdd)
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+            'Student added:',
+            response
+          );
+
+          alert(
+            'Student added successfully'
+          );
+
+          form.resetForm({
+            name: '',
+            email: '',
+            course: '',
+            age: 0,
+            teacher: null
+          });
+
+          this.clearStudentForm();
+
+          this.selectedTeacherId = null;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error adding student:',
+            error
+          );
+
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to add students.'
+            );
+
+          } else if (error.status === 400) {
+
+            alert(
+              error.error?.message ||
+              'Invalid student data.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to add student.'
+            );
+          }
+        }
+      });
   }
 
 
-  // Create student object with selected teacher
-  const studentToAdd = {
-
-    ...this.newStudent,
-
-    teacher: {
-      id: this.selectedTeacherId
-    }
-
-  };
-
-
-  console.log(
-    'Student being added:',
-    studentToAdd
-  );
-
-
-  this.studentService
-    .addStudent(studentToAdd)
-    .subscribe({
-
-      next: (response) => {
-
-        console.log(
-          'Student added:',
-          response
-        );
-
-        alert(
-          'Student added successfully'
-        );
-
-
-        // Clear form
-        form.resetForm({
-
-          name: '',
-
-          email: '',
-
-          course: '',
-
-          age: 0,
-
-          teacher: null
-
-        });
-
-
-        // Clear student object
-        this.clearStudentForm();
-
-
-        // Clear selected teacher
-        this.selectedTeacherId = null;
-
-
-        this.cdr.detectChanges();
-
-      },
-
-      error: (error) => {
-
-        console.error(
-          'Error adding student:',
-          error
-        );
-
-
-        if (error.status === 401) {
-
-          alert(
-            'Session expired. Please login again.'
-          );
-
-        } else if (error.status === 403) {
-
-          alert(
-            'You are not authorized to add students.'
-          );
-
-        } else if (error.status === 400) {
-
-          alert(
-            error.error?.message ||
-            'Invalid student data.'
-          );
-
-        } else {
-
-          alert(
-            'Failed to add student.'
-          );
-        }
-      }
-    });
-}
-
-
-  /* =========================
-     CANCEL ADD STUDENT
-  ========================= */
+  // =====================================================
+  // CANCEL ADD STUDENT
+  // =====================================================
 
   cancelAddStudent(form: NgForm) {
 
-  form.resetForm({
-    name: '',
-    email: '',
-    course: '',
-    age: 0,
-    teacher: null
-  });
+    form.resetForm({
+      name: '',
+      email: '',
+      course: '',
+      age: 0,
+      teacher: null
+    });
 
-  this.clearStudentForm();
+    this.clearStudentForm();
 
-  this.selectedStudentAction = '';
-}
+    this.selectedStudentAction = '';
+  }
 
 
-  /* =========================
-     CLEAR ADD STUDENT FORM
-  ========================= */
+  // =====================================================
+  // CLEAR STUDENT FORM
+  // =====================================================
 
   clearStudentForm() {
 
-  this.newStudent = {
-    name: '',
-    email: '',
-    course: '',
-    age: 0,
-    teacher: null
-  };
+    this.newStudent = {
+      name: '',
+      email: '',
+      course: '',
+      age: 0,
+      teacher: null
+    };
 
-  this.selectedTeacherId = null;
-}
-
-
-  /* =========================
-     FIND STUDENT FOR UPDATE
-  ========================= */
-
- findStudentForUpdate() {
-
-  if (
-    this.updateStudentId === null ||
-    this.updateStudentId <= 0
-  ) {
-    alert('Please enter a valid student ID.');
-    return;
+    this.selectedTeacherId = null;
   }
 
-  const studentId = this.updateStudentId;
 
-  console.log('Searching student ID:', studentId);
+  // =====================================================
+  // FIND STUDENT FOR UPDATE
+  // =====================================================
 
-  this.searchingStudent = true;
-  this.studentFound = false;
-  this.searchedStudentId = null;
+  findStudentForUpdate() {
 
-  this.clearUpdateStudent();
+    if (
+      this.updateStudentId === null ||
+      this.updateStudentId <= 0
+    ) {
 
-  // Immediately update UI
-  this.cdr.detectChanges();
+      alert(
+        'Please enter a valid student ID.'
+      );
 
-  this.studentService
-    .getStudentById(studentId)
-    .pipe(
-      finalize(() => {
+      return;
+    }
 
-        this.searchingStudent = false;
+    const studentId =
+      this.updateStudentId;
 
-        // Force UI refresh
-        this.cdr.detectChanges();
+    this.searchingStudent = true;
+    this.studentFound = false;
+    this.searchedStudentId = null;
 
-      })
-    )
-    .subscribe({
+    this.clearUpdateStudent();
 
-      next: (student) => {
+    // Clear old teacher selection
+    this.selectedUpdateTeacherId = null;
 
-        console.log(
-          'Student received from DB:',
-          student
-        );
+    // Load teacher list
+    this.loadTeachers();
 
-        if (!student) {
+    this.cdr.detectChanges();
+
+    this.studentService
+      .getStudentById(studentId)
+      .pipe(
+        finalize(() => {
+
+          this.searchingStudent = false;
+
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (student) => {
+
+          if (!student) {
+
+            this.studentFound = false;
+            this.searchedStudentId = null;
+
+            this.clearUpdateStudent();
+
+            alert(
+              `Student with ID ${studentId} does not exist.`
+            );
+
+            this.cdr.detectChanges();
+
+            return;
+          }
+
+          this.searchedStudentId =
+            student.id ?? null;
+
+
+          // Fill student information
+          this.updateStudent = {
+
+            name: student.name,
+
+            email: student.email,
+
+            course: student.course,
+
+            age: student.age,
+
+            teacher: student.teacher
+              ? {
+                  id: student.teacher.id
+                }
+              : null
+          };
+
+
+          // IMPORTANT:
+          // Keep the currently assigned teacher selected
+          this.selectedUpdateTeacherId =
+            student.teacher?.id ?? null;
+
+
+          this.studentFound = true;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'UPDATE SEARCH ERROR:',
+            error
+          );
 
           this.studentFound = false;
           this.searchedStudentId = null;
+
           this.clearUpdateStudent();
 
-          alert(
-            `Student with ID ${studentId} does not exist.`
-          );
+          this.selectedUpdateTeacherId = null;
+
+
+          if (error.status === 404) {
+
+            alert(
+              `Student with ID ${studentId} does not exist.`
+            );
+
+          } else if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to access this student.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to fetch student.'
+            );
+          }
 
           this.cdr.detectChanges();
-
-          return;
         }
+      });
+  }
 
-        // Store actual database ID
-        this.searchedStudentId =
-          student.id ?? null;
 
-        // Populate update form
-        this.updateStudent = {
+  // =====================================================
+  // UPDATE EXISTING STUDENT
+  // =====================================================
 
-          name: student.name,
+  updateExistingStudent(form: NgForm) {
 
-          email: student.email,
+    if (
+      this.searchedStudentId === null ||
+      !this.studentFound
+    ) {
 
-          course: student.course,
+      alert(
+        'Please search for a student first.'
+      );
 
-          age: student.age
-        };
+      return;
+    }
 
-        // Tell Angular to display the form
-        this.studentFound = true;
 
-        console.log(
-          'Update form populated:',
-          this.updateStudent
-        );
+    if (
+      this.selectedUpdateTeacherId === null
+    ) {
 
-        console.log(
-          'Searched student ID:',
-          this.searchedStudentId
-        );
+      alert(
+        'Please select a teacher.'
+      );
 
-        // IMPORTANT:
-        // Refresh UI immediately
-        this.cdr.detectChanges();
-      },
+      return;
+    }
 
-      error: (error) => {
 
-        console.error(
-          'UPDATE SEARCH ERROR:',
-          error
-        );
+    if (form.invalid) {
 
-        this.studentFound = false;
-        this.searchedStudentId = null;
-
-        this.clearUpdateStudent();
-
-        if (error.status === 404) {
-
-          alert(
-            `Student with ID ${studentId} does not exist.`
-          );
-
-        } else if (error.status === 401) {
-
-          alert(
-            'Session expired. Please login again.'
-          );
-
-        } else if (error.status === 403) {
-
-          alert(
-            'You are not authorized to access this student.'
-          );
-
-        } else {
-
-          alert(
-            'Failed to fetch student.'
-          );
+      Object.values(form.controls).forEach(
+        control => {
+          control.markAsTouched();
         }
+      );
 
-        // Refresh UI after error
-        this.cdr.detectChanges();
+      return;
+    }
+
+
+    const confirmUpdate = confirm(
+      'Do you want to update this particular student?'
+    );
+
+    if (!confirmUpdate) {
+      return;
+    }
+
+
+    const studentId =
+      this.searchedStudentId;
+
+
+    // Send teacher ID to backend
+    const studentData = {
+
+      name: this.updateStudent.name,
+
+      email: this.updateStudent.email,
+
+      course: this.updateStudent.course,
+
+      age: this.updateStudent.age,
+
+      teacher: {
+        id: this.selectedUpdateTeacherId
       }
-    });
-}
+    };
 
 
-  /* =========================
-     UPDATE EXISTING STUDENT
-  ========================= */
+    this.studentService
+      .updateStudent(
+        studentId,
+        studentData
+      )
+      .subscribe({
 
- updateExistingStudent(form: NgForm) {
+        next: (response) => {
 
-  if (
-    this.searchedStudentId === null ||
-    !this.studentFound
-  ) {
-    alert('Please search for a student first.');
-    return;
-  }
-
-  if (form.invalid) {
-    Object.values(form.controls).forEach(control => {
-      control.markAsTouched();
-    });
-    return;
-  }
-
-  const confirmUpdate = confirm(
-    'Do you want to update this particular student?'
-  );
-
-  if (!confirmUpdate) {
-    return;
-  }
-
-  const studentId = this.searchedStudentId;
-
-  console.log('PUT student ID:', studentId);
-  console.log('PUT student data:', this.updateStudent);
-
-  this.studentService
-    .updateStudent(
-      studentId,
-      this.updateStudent
-    )
-    .subscribe({
-
-      next: (response) => {
-
-        console.log(
-          'UPDATE SUCCESS:',
-          response
-        );
-
-        alert(
-          'Student updated successfully'
-        );
-
-        // Clear everything
-        this.resetUpdate();
-
-        // IMPORTANT:
-        // Force Angular to immediately remove
-        // the update form from the screen
-        this.cdr.detectChanges();
-
-      },
-
-      error: (error) => {
-
-        console.error(
-          'UPDATE ERROR:',
-          error
-        );
-
-        console.error(
-          'UPDATE STATUS:',
-          error.status
-        );
-
-        console.error(
-          'UPDATE ERROR BODY:',
-          error.error
-        );
-
-        if (error.status === 401) {
-
-          alert(
-            'Session expired. Please login again.'
+          console.log(
+            'UPDATE SUCCESS:',
+            response
           );
 
-        } else if (error.status === 403) {
-
           alert(
-            'You are not authorized to update this student.'
+            'Student updated successfully'
           );
 
-        } else if (error.status === 404) {
+          this.resetUpdate();
 
-          alert(
-            'Student not found.'
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'UPDATE ERROR:',
+            error
           );
 
-        } else if (error.status === 400) {
+          if (error.status === 401) {
 
-          alert(
-            'Invalid student data.'
-          );
+            alert(
+              'Session expired. Please login again.'
+            );
 
-        } else {
+          } else if (error.status === 403) {
 
-          alert(
-            'Failed to update student.'
-          );
+            alert(
+              'You are not authorized to update this student.'
+            );
+
+          } else if (error.status === 404) {
+
+            alert(
+              'Student not found.'
+            );
+
+          } else if (error.status === 400) {
+
+            alert(
+              error.error?.message ||
+              'Invalid student data.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to update student.'
+            );
+          }
+
+          this.cdr.detectChanges();
         }
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
 
 
-  /* =========================
-     CLEAR UPDATE FORM
-  ========================= */
+  // =====================================================
+  // CLEAR UPDATE STUDENT
+  // =====================================================
 
   clearUpdateStudent() {
 
@@ -634,265 +799,242 @@ loadTeachers() {
 
       course: '',
 
-      age: 0
+      age: 0,
+
+      teacher: null
     };
+
+    this.selectedUpdateTeacherId = null;
   }
 
 
-  /* =========================
-     RESET UPDATE
-  ========================= */
+  // =====================================================
+  // RESET UPDATE STUDENT
+  // =====================================================
 
   resetUpdate() {
 
-    // Clear typed ID
     this.updateStudentId = null;
 
-    // Clear searched ID
     this.searchedStudentId = null;
 
-    // Hide form
     this.studentFound = false;
 
-    // Stop loading
     this.searchingStudent = false;
 
-    // Clear fields
     this.clearUpdateStudent();
 
-    console.log(
-      'Update form reset'
-    );
+    this.selectedUpdateTeacherId = null;
   }
 
 
-  /* =========================
-     FIND STUDENT FOR DELETE
-  ========================= */
+  // =====================================================
+  // FIND STUDENT FOR DELETE
+  // =====================================================
 
- findStudentForDelete() {
+  findStudentForDelete() {
 
-  if (
-    this.deleteStudentId === null ||
-    this.deleteStudentId <= 0
-  ) {
-    alert('Please enter a valid student ID.');
-    return;
-  }
+    if (
+      this.deleteStudentId === null ||
+      this.deleteStudentId <= 0
+    ) {
 
-  const studentId = this.deleteStudentId;
+      alert(
+        'Please enter a valid student ID.'
+      );
 
-  console.log(
-    'Searching student for delete:',
-    studentId
-  );
+      return;
+    }
 
-  this.searchingDeleteStudent = true;
-  this.deleteStudentFound = false;
-  this.searchedDeleteStudentId = null;
+    const studentId =
+      this.deleteStudentId;
 
-  this.clearDeleteStudent();
+    this.searchingDeleteStudent = true;
+    this.deleteStudentFound = false;
+    this.searchedDeleteStudentId = null;
 
-  // Immediately update UI
-  this.cdr.detectChanges();
+    this.clearDeleteStudent();
 
-  this.studentService
-    .getStudentById(studentId)
-    .pipe(
-      finalize(() => {
+    this.cdr.detectChanges();
 
-        this.searchingDeleteStudent = false;
+    this.studentService
+      .getStudentById(studentId)
+      .pipe(
+        finalize(() => {
 
-        // Force UI refresh
-        this.cdr.detectChanges();
+          this.searchingDeleteStudent = false;
 
-      })
-    )
-    .subscribe({
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
 
-      next: (student) => {
+        next: (student) => {
 
-        console.log(
-          'Student received for delete:',
-          student
-        );
+          if (!student) {
 
-        if (!student) {
+            this.deleteStudentFound = false;
+            this.searchedDeleteStudentId = null;
+
+            this.clearDeleteStudent();
+
+            alert(
+              `Student with ID ${studentId} does not exist.`
+            );
+
+            this.cdr.detectChanges();
+
+            return;
+          }
+
+          this.searchedDeleteStudentId =
+            student.id ?? null;
+
+          this.deleteStudent = {
+
+            name: student.name,
+
+            email: student.email,
+
+            course: student.course,
+
+            age: student.age
+          };
+
+          this.deleteStudentFound = true;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'DELETE SEARCH ERROR:',
+            error
+          );
 
           this.deleteStudentFound = false;
           this.searchedDeleteStudentId = null;
+
           this.clearDeleteStudent();
 
-          alert(
-            `Student with ID ${studentId} does not exist.`
-          );
+
+          if (error.status === 404) {
+
+            alert(
+              `Student with ID ${studentId} does not exist.`
+            );
+
+          } else if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to access this student.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to fetch student.'
+            );
+          }
 
           this.cdr.detectChanges();
-
-          return;
         }
-
-        this.searchedDeleteStudentId =
-          student.id ?? null;
-
-        this.deleteStudent = {
-
-          name: student.name,
-
-          email: student.email,
-
-          course: student.course,
-
-          age: student.age
-        };
-
-        this.deleteStudentFound = true;
-
-        console.log(
-          'Student found for delete:',
-          this.searchedDeleteStudentId
-        );
-
-        // Immediately show details
-        this.cdr.detectChanges();
-      },
-
-      error: (error) => {
-
-        console.error(
-          'DELETE SEARCH ERROR:',
-          error
-        );
-
-        this.deleteStudentFound = false;
-        this.searchedDeleteStudentId = null;
-
-        this.clearDeleteStudent();
-
-        if (error.status === 404) {
-
-          alert(
-            `Student with ID ${studentId} does not exist.`
-          );
-
-        } else if (error.status === 401) {
-
-          alert(
-            'Session expired. Please login again.'
-          );
-
-        } else if (error.status === 403) {
-
-          alert(
-            'You are not authorized to access this student.'
-          );
-
-        } else {
-
-          alert(
-            'Failed to fetch student.'
-          );
-        }
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
 
 
-  /* =========================
-     DELETE EXISTING STUDENT
-  ========================= */
+  // =====================================================
+  // DELETE EXISTING STUDENT
+  // =====================================================
 
   deleteExistingStudent() {
 
-  if (
-    this.searchedDeleteStudentId === null ||
-    !this.deleteStudentFound
-  ) {
-    alert('Please search for a student first.');
-    return;
-  }
+    if (
+      this.searchedDeleteStudentId === null ||
+      !this.deleteStudentFound
+    ) {
 
-  const confirmDelete = confirm(
-    'Do you want to delete this particular student?'
-  );
+      alert(
+        'Please search for a student first.'
+      );
 
-  if (!confirmDelete) {
-    return;
-  }
+      return;
+    }
 
-  const studentId = this.searchedDeleteStudentId;
+    const confirmDelete = confirm(
+      'Do you want to delete this particular student?'
+    );
 
-  console.log(
-    'DELETE student ID:',
-    studentId
-  );
+    if (!confirmDelete) {
+      return;
+    }
 
-  this.studentService
-    .deleteStudent(studentId)
-    .subscribe({
+    const studentId =
+      this.searchedDeleteStudentId;
 
-      next: () => {
+    this.studentService
+      .deleteStudent(studentId)
+      .subscribe({
 
-        console.log(
-          'DELETE SUCCESS:',
-          studentId
-        );
-
-        alert(
-          'Student deleted successfully'
-        );
-
-        // Clear all delete data
-        this.resetDelete();
-
-        // Force Angular UI refresh
-        this.cdr.detectChanges();
-
-      },
-
-      error: (error) => {
-
-        console.error(
-          'DELETE ERROR:',
-          error
-        );
-
-        if (error.status === 401) {
+        next: () => {
 
           alert(
-            'Session expired. Please login again.'
+            'Student deleted successfully'
           );
 
-        } else if (error.status === 403) {
+          this.resetDelete();
 
-          alert(
-            'You are not authorized to delete this student.'
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'DELETE ERROR:',
+            error
           );
 
-        } else if (error.status === 404) {
+          if (error.status === 401) {
 
-          alert(
-            'Student not found.'
-          );
+            alert(
+              'Session expired. Please login again.'
+            );
 
-        } else {
+          } else if (error.status === 403) {
 
-          alert(
-            'Failed to delete student.'
-          );
+            alert(
+              'You are not authorized to delete this student.'
+            );
+
+          } else if (error.status === 404) {
+
+            alert(
+              'Student not found.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to delete student.'
+            );
+          }
+
+          this.cdr.detectChanges();
         }
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
 
 
-  /* =========================
-     CLEAR DELETE FORM
-  ========================= */
+  // =====================================================
+  // CLEAR DELETE STUDENT
+  // =====================================================
 
   clearDeleteStudent() {
 
@@ -909,29 +1051,705 @@ loadTeachers() {
   }
 
 
-  /* =========================
-     RESET DELETE
-  ========================= */
+  // =====================================================
+  // RESET DELETE STUDENT
+  // =====================================================
 
   resetDelete() {
 
-    // Clear typed ID
     this.deleteStudentId = null;
 
-    // Clear searched ID
     this.searchedDeleteStudentId = null;
 
-    // Hide details
     this.deleteStudentFound = false;
 
-    // Stop loading
     this.searchingDeleteStudent = false;
 
-    // Clear student details
     this.clearDeleteStudent();
+  }
 
-    console.log(
-      'Delete form reset'
+
+  // =====================================================
+  // TEACHER CRUD
+  // =====================================================
+
+  addTeacher(form: NgForm) {
+
+    if (form.invalid) {
+
+      Object.values(form.controls).forEach(
+        control => {
+          control.markAsTouched();
+        }
+      );
+
+      return;
+    }
+
+    const teacherToAdd: Teacher = {
+
+      username: this.newTeacher.username,
+
+      name: this.newTeacher.name,
+
+      email: this.newTeacher.email,
+
+      role: 'TEACHER',
+
+      password: this.newTeacher.password
+
+    } as Teacher;
+
+
+    this.teacherService
+      .addTeacher(teacherToAdd)
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+            'Teacher added:',
+            response
+          );
+
+          alert(
+            'Teacher added successfully'
+          );
+
+          form.resetForm();
+
+          this.clearTeacherForm();
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error adding teacher:',
+            error
+          );
+
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to add teachers.'
+            );
+
+          } else if (error.status === 400) {
+
+            alert(
+              error.error?.message ||
+              'Invalid teacher data.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to add teacher.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // CLEAR TEACHER FORM
+  // =====================================================
+
+  clearTeacherForm() {
+
+    this.newTeacher = {
+
+      username: '',
+
+      name: '',
+
+      email: '',
+
+      password: ''
+    };
+  }
+
+
+  // =====================================================
+  // LOAD TEACHER LIST
+  // =====================================================
+
+  loadTeacherList() {
+
+    this.loadingTeacherList = true;
+
+    this.teacherService
+      .getAllTeachers()
+      .pipe(
+        finalize(() => {
+
+          this.loadingTeacherList = false;
+
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (teachers) => {
+
+          this.teacherList = teachers;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Error loading teacher list:',
+            error
+          );
+
+          this.teacherList = [];
+
+
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to view teachers.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to load teachers.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // FIND TEACHER FOR UPDATE
+  // =====================================================
+
+  findTeacherForUpdate() {
+
+    if (
+      this.updateTeacherId === null ||
+      this.updateTeacherId <= 0
+    ) {
+
+      alert(
+        'Please enter a valid teacher ID.'
+      );
+
+      return;
+    }
+
+    const teacherId =
+      this.updateTeacherId;
+
+    this.searchingTeacher = true;
+    this.teacherFound = false;
+    this.searchedTeacherId = null;
+
+    this.clearUpdateTeacher();
+
+    this.cdr.detectChanges();
+
+    this.teacherService
+      .getTeacherById(teacherId)
+      .pipe(
+        finalize(() => {
+
+          this.searchingTeacher = false;
+
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (teacher) => {
+
+          if (!teacher) {
+
+            alert(
+              `Teacher with ID ${teacherId} does not exist.`
+            );
+
+            return;
+          }
+
+          this.searchedTeacherId =
+            teacher.id ?? null;
+
+          this.updateTeacher = {
+
+            username: teacher.username,
+
+            name: teacher.name,
+
+            email: teacher.email
+          };
+
+          this.teacherFound = true;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Teacher update search error:',
+            error
+          );
+
+          this.teacherFound = false;
+          this.searchedTeacherId = null;
+
+          this.clearUpdateTeacher();
+
+
+          if (error.status === 404) {
+
+            alert(
+              `Teacher with ID ${teacherId} does not exist.`
+            );
+
+          } else if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to access this teacher.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to fetch teacher.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // UPDATE EXISTING TEACHER
+  // =====================================================
+
+  updateExistingTeacher(form: NgForm) {
+
+    if (
+      this.searchedTeacherId === null ||
+      !this.teacherFound
+    ) {
+
+      alert(
+        'Please search for a teacher first.'
+      );
+
+      return;
+    }
+
+    if (form.invalid) {
+
+      Object.values(form.controls).forEach(
+        control => {
+          control.markAsTouched();
+        }
+      );
+
+      return;
+    }
+
+    const confirmUpdate = confirm(
+      'Do you want to update this particular teacher?'
     );
+
+    if (!confirmUpdate) {
+      return;
+    }
+
+    const teacherId =
+      this.searchedTeacherId;
+
+    const teacherData: Teacher = {
+
+      id: teacherId,
+
+      username: this.updateTeacher.username,
+
+      name: this.updateTeacher.name,
+
+      email: this.updateTeacher.email,
+
+      role: 'TEACHER'
+
+    };
+
+
+    this.teacherService
+      .updateTeacher(
+        teacherId,
+        teacherData
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+            'Teacher updated:',
+            response
+          );
+
+          alert(
+            'Teacher updated successfully'
+          );
+
+          this.resetTeacherUpdate();
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Teacher update error:',
+            error
+          );
+
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to update this teacher.'
+            );
+
+          } else if (error.status === 404) {
+
+            alert(
+              'Teacher not found.'
+            );
+
+          } else if (error.status === 400) {
+
+            alert(
+              'Invalid teacher data.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to update teacher.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // CLEAR UPDATE TEACHER
+  // =====================================================
+
+  clearUpdateTeacher() {
+
+    this.updateTeacher = {
+
+      username: '',
+
+      name: '',
+
+      email: ''
+    };
+  }
+
+
+  // =====================================================
+  // RESET UPDATE TEACHER
+  // =====================================================
+
+  resetTeacherUpdate() {
+
+    this.updateTeacherId = null;
+
+    this.searchedTeacherId = null;
+
+    this.teacherFound = false;
+
+    this.searchingTeacher = false;
+
+    this.clearUpdateTeacher();
+  }
+
+
+  // =====================================================
+  // FIND TEACHER FOR DELETE
+  // =====================================================
+
+  findTeacherForDelete() {
+
+    if (
+      this.deleteTeacherId === null ||
+      this.deleteTeacherId <= 0
+    ) {
+
+      alert(
+        'Please enter a valid teacher ID.'
+      );
+
+      return;
+    }
+
+    const teacherId =
+      this.deleteTeacherId;
+
+    this.searchingDeleteTeacher = true;
+    this.deleteTeacherFound = false;
+    this.searchedDeleteTeacherId = null;
+
+    this.clearDeleteTeacher();
+
+    this.cdr.detectChanges();
+
+    this.teacherService
+      .getTeacherById(teacherId)
+      .pipe(
+        finalize(() => {
+
+          this.searchingDeleteTeacher = false;
+
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (teacher) => {
+
+          if (!teacher) {
+
+            alert(
+              `Teacher with ID ${teacherId} does not exist.`
+            );
+
+            return;
+          }
+
+          this.searchedDeleteTeacherId =
+            teacher.id ?? null;
+
+          this.deleteTeacher = {
+
+            username: teacher.username,
+
+            name: teacher.name,
+
+            email: teacher.email
+          };
+
+          this.deleteTeacherFound = true;
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Teacher delete search error:',
+            error
+          );
+
+          this.deleteTeacherFound = false;
+          this.searchedDeleteTeacherId = null;
+
+          this.clearDeleteTeacher();
+
+
+          if (error.status === 404) {
+
+            alert(
+              `Teacher with ID ${teacherId} does not exist.`
+            );
+
+          } else if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to access this teacher.'
+            );
+
+          } else {
+
+            alert(
+              'Failed to fetch teacher.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // DELETE EXISTING TEACHER
+  // =====================================================
+
+  deleteExistingTeacher() {
+
+    if (
+      this.searchedDeleteTeacherId === null ||
+      !this.deleteTeacherFound
+    ) {
+
+      alert(
+        'Please search for a teacher first.'
+      );
+
+      return;
+    }
+
+    const confirmDelete = confirm(
+      'Do you want to delete this particular teacher?'
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    const teacherId =
+      this.searchedDeleteTeacherId;
+
+
+    this.teacherService
+      .deleteTeacher(teacherId)
+      .subscribe({
+
+        next: () => {
+
+          alert(
+            'Teacher deleted successfully'
+          );
+
+          this.resetTeacherDelete();
+
+          this.loadTeacherList();
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Teacher delete error:',
+            error
+          );
+
+          if (error.status === 401) {
+
+            alert(
+              'Session expired. Please login again.'
+            );
+
+          } else if (error.status === 403) {
+
+            alert(
+              'You are not authorized to delete this teacher.'
+            );
+
+          } else if (error.status === 404) {
+
+            alert(
+              'Teacher not found.'
+            );
+
+          } else if (error.status === 400) {
+
+            alert(
+              error.error?.message ||
+              'Teacher cannot be deleted.'
+            );
+
+          } else {
+
+            alert(
+              error.error?.message ||
+              'Failed to delete teacher.'
+            );
+          }
+
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+
+  // =====================================================
+  // CLEAR DELETE TEACHER
+  // =====================================================
+
+  clearDeleteTeacher() {
+
+    this.deleteTeacher = {
+
+      username: '',
+
+      name: '',
+
+      email: ''
+    };
+  }
+
+
+  // =====================================================
+  // RESET DELETE TEACHER
+  // =====================================================
+
+  resetTeacherDelete() {
+
+    this.deleteTeacherId = null;
+
+    this.searchedDeleteTeacherId = null;
+
+    this.deleteTeacherFound = false;
+
+    this.searchingDeleteTeacher = false;
+
+    this.clearDeleteTeacher();
   }
 }
