@@ -1,0 +1,56 @@
+<div class="student-container">
+
+  <h2>All Students</h2>
+
+  @if (students$ | async; as students) {
+
+    <p>
+      Total Students: {{ students.length }}
+    </p>
+
+    <table class="table table-bordered table-striped">
+
+      <thead>
+
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Course</th>
+          <th>Age</th>
+          <th>Teacher</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (student of students; track student.id) {
+
+          <tr>
+
+            <td>{{ student.id }}</td>
+
+            <td>{{ student.name }}</td>
+
+            <td>{{ student.email }}</td>
+
+            <td>{{ student.course }}</td>
+
+            <td>{{ student.age }}</td>
+
+            <td>
+              {{ student.teacher?.username || 'Not Assigned' }}
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  }
+
+</div>

@@ -1,0 +1,491 @@
+/* ================================
+   GLOBAL PAGE
+================================ */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f5f7fb;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ================================
+   TOP NAVBAR
+================================ */
+
+.top-navbar {
+  height: 64px;
+  background: #1f2937;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-user {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.admin-role {
+  background: #374151;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.logout-btn {
+  border: none;
+  background: #dc3545;
+  color: white;
+
+  padding: 8px 16px;
+  border-radius: 5px;
+
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.logout-btn:hover {
+  background: #c82333;
+}
+
+
+/* ================================
+   MAIN LAYOUT
+================================ */
+
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+
+/* ================================
+   SIDEBAR
+================================ */
+
+.sidebar {
+  width: 240px;
+  background: #111827;
+  color: white;
+
+  padding: 25px 15px;
+  box-sizing: border-box;
+
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #9ca3af;
+
+  margin-bottom: 20px;
+  padding: 0 12px;
+}
+
+.sidebar-item {
+  width: 100%;
+
+  background: transparent;
+  border: none;
+
+  color: #d1d5db;
+
+  text-align: left;
+
+  padding: 12px 14px;
+  margin-bottom: 5px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sidebar-item:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.sidebar-item.active {
+  background: #3867f4;
+  color: white;
+}
+
+
+/* ================================
+   STUDENT SUBMENU
+================================ */
+
+.submenu {
+  margin: 5px 0 15px 12px;
+  padding-left: 10px;
+
+  border-left: 2px solid #374151;
+}
+
+.submenu button {
+  display: block;
+
+  width: 100%;
+
+  background: transparent;
+  border: none;
+
+  color: #9ca3af;
+
+  text-align: left;
+
+  padding: 9px 12px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.submenu button:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.submenu button.sub-active {
+  background: #374151;
+  color: white;
+}
+
+
+/* ================================
+   MAIN CONTENT
+================================ */
+
+.main-content {
+  flex: 1;
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  overflow-x: auto;
+}
+
+
+/* ================================
+   PAGE HEADER
+================================ */
+
+.page-header {
+  margin-bottom: 25px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px 0;
+
+  font-size: 28px;
+  font-weight: 600;
+
+  color: #1f2937;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+
+  width: 250px;
+
+  padding: 25px;
+
+  border-radius: 10px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 10px 0;
+
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.dashboard-card p {
+  margin: 0;
+
+  color: #6b7280;
+  font-size: 14px;
+}
+
+
+/* ================================
+   STUDENT ACTION BAR
+================================ */
+
+.action-bar {
+  display: flex;
+  gap: 10px;
+
+  margin-bottom: 25px;
+}
+
+.action-btn {
+  border: 1px solid #d1d5db;
+
+  background: white;
+
+  color: #374151;
+
+  padding: 10px 18px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.action-btn:hover {
+  background: #f3f4f6;
+}
+
+.action-btn.action-active {
+  background: #3867f4;
+  color: white;
+
+  border-color: #3867f4;
+}
+
+
+/* ================================
+   CONTENT CARD
+================================ */
+
+.content-card {
+  background: white;
+
+  border-radius: 10px;
+
+  padding: 25px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+.content-card h2 {
+  margin-top: 0;
+
+  margin-bottom: 20px;
+
+  color: #1f2937;
+
+  font-size: 20px;
+}
+
+
+/* ================================
+   EMPTY CONTENT
+================================ */
+
+.empty-content {
+  background: white;
+
+  border-radius: 10px;
+
+  padding: 40px;
+
+  text-align: center;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.empty-content h2 {
+  margin-top: 0;
+
+  color: #1f2937;
+}
+
+.empty-content p {
+  color: #6b7280;
+}
+
+
+/* ================================
+   ADD STUDENT FORM
+================================ */
+
+.add-student-card {
+  margin-top: 20px;
+  max-width: 700px;
+}
+
+.add-student-card h2 {
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+.form-group label span {
+  color: red;
+}
+
+.form-group input {
+  width: 100%;
+
+  padding: 11px 12px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+
+  border-color: #3867f4;
+
+  box-shadow: 0 0 0 2px rgba(56, 103, 244, 0.1);
+}
+
+.error {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #dc3545;
+
+  font-size: 13px;
+}
+
+.form-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.add-btn,
+.cancel-btn {
+  padding: 10px 22px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.add-btn {
+  background: #3867f4;
+
+  color: white;
+}
+
+.add-btn:hover {
+  background: #2854d9;
+}
+
+.add-btn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: #6c757d;
+
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+
+  .top-navbar {
+    padding: 0 15px;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .action-bar {
+    flex-wrap: wrap;
+  }
+
+}

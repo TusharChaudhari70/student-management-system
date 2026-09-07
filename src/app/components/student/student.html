@@ -1,0 +1,95 @@
+<div class="student-form">
+
+  <div class="form-group">
+
+    <label for="name">
+      Name <span>*</span>
+    </label>
+
+    <input
+      id="name"
+      type="text"
+      name="name"
+      [(ngModel)]="student.name"
+      placeholder="Enter student name"
+      required>
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="email">
+      Email <span>*</span>
+    </label>
+
+    <input
+      id="email"
+      type="email"
+      name="email"
+      [(ngModel)]="student.email"
+      placeholder="Enter student email"
+      required>
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="course">
+      Course <span>*</span>
+    </label>
+
+    <input
+      id="course"
+      type="text"
+      name="course"
+      [(ngModel)]="student.course"
+      placeholder="Enter course"
+      required>
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="age">
+      Age <span>*</span>
+    </label>
+
+    <input
+      id="age"
+      type="number"
+      name="age"
+      [(ngModel)]="student.age"
+      placeholder="Enter age"
+      min="1"
+      required>
+
+  </div>
+
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="add-btn"
+      (click)="addStudent()">
+
+      Add Student
+
+    </button>
+
+
+    <button
+      type="button"
+      class="cancel-btn"
+      (click)="clearForm()">
+
+      Cancel
+
+    </button>
+
+  </div>
+
+</div>
