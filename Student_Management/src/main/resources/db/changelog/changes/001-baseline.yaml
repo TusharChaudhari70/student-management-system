@@ -1,0 +1,154 @@
+databaseChangeLog:
+- changeSet:
+    id: 1788844369293-1
+    author: Tushar (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            computed: false
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: PK__students__3213E83F5C29C2D8
+            name: id
+            type: bigint
+        - column:
+            computed: false
+            name: age
+            type: int
+        - column:
+            computed: false
+            name: course
+            type: varchar(255)
+        - column:
+            computed: false
+            constraints:
+              nullable: false
+            name: email
+            type: varchar(255)
+        - column:
+            computed: false
+            name: name
+            type: varchar(255)
+        - column:
+            computed: false
+            name: teacher_id
+            type: bigint
+        - column:
+            computed: false
+            name: user_id
+            type: bigint
+        tableName: students
+- changeSet:
+    id: 1788844369293-2
+    author: Tushar (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            computed: false
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: PK__users__3213E83F84D76DAA
+            name: id
+            type: bigint
+        - column:
+            computed: false
+            name: email
+            type: varchar(255)
+        - column:
+            computed: false
+            name: name
+            type: varchar(255)
+        - column:
+            computed: false
+            constraints:
+              nullable: false
+            name: password
+            type: varchar(255)
+        - column:
+            computed: false
+            constraints:
+              nullable: false
+            name: role
+            type: varchar(255)
+        - column:
+            computed: false
+            constraints:
+              nullable: false
+            name: username
+            type: varchar(255)
+        tableName: users
+- changeSet:
+    id: 1788844369293-3
+    author: Tushar (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: UKe2rndfrsx22acpq2ty1caeuyw
+        tableName: students
+- changeSet:
+    id: 1788844369293-4
+    author: Tushar (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: user_id
+        indexName: UKg4fwvutq09fjdlb4bb0byp7t
+        tableName: students
+        unique: true
+- changeSet:
+    id: 1788844369293-5
+    author: Tushar (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: email
+        indexName: UK6dotkott2kjsp8vw4d0m25fb7
+        tableName: users
+        unique: true
+- changeSet:
+    id: 1788844369293-6
+    author: Tushar (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: UKr43af9ap4edm43mmtq01oddj6
+        tableName: users
+- changeSet:
+    id: 1788844369293-7
+    author: Tushar (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: students
+        constraintName: FKdt1cjx5ve5bdabmuuf3ibrwaq
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1788844369293-8
+    author: Tushar (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: teacher_id
+        baseTableName: students
+        constraintName: FKhs17wdi2vqjp3gu3ldvt61fs
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+
