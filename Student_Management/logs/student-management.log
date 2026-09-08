@@ -59,3 +59,37 @@
 2026-09-08 13:36:57.557 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
 2026-09-08 13:36:57.558 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
 2026-09-08 13:36:57.570 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 15 students
+2026-09-08 15:35:27.722 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 14748 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 15:35:27.730 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 15:35:37.179 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 10.036 seconds (process running for 10.76)
+2026-09-08 15:41:40.511 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 14748 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 15:41:40.513 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 15:54:47.082 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 15216 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 15:54:47.100 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 15:55:42.218 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 5988 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 15:55:42.228 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 15:57:36.856 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 16084 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 15:57:36.870 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:01:17.561 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 25284 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:01:17.571 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:02:55.003 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 3824 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:02:55.012 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:06:59.736 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 20476 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:06:59.748 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:08:21.835 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 13432 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:08:21.845 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:08:30.795 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.559 seconds (process running for 10.265)
+2026-09-08 16:35:11.005 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 13432 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:35:11.006 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:35:15.551 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 4.603 seconds (process running for 1615.021)
+2026-09-08 16:35:22.412 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 13432 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:35:22.412 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:35:26.494 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 4.128 seconds (process running for 1625.964)
+2026-09-08 16:38:49.314 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 15912 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-08 16:38:49.321 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-08 16:38:58.248 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.527 seconds (process running for 10.408)
+2026-09-08 16:39:04.567 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: Tushar
+2026-09-08 16:39:05.242 INFO  [http-nio-8080-exec-2] AuthController - Login successful for username: Tushar, role: ADMIN
+2026-09-08 16:39:09.882 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
+2026-09-08 16:39:09.885 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
+2026-09-08 16:39:09.976 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 15 students

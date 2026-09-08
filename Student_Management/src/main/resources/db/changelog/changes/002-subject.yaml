@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-subject-1
+      author: Tushar
+      changes:
+        - createTable:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-subject-2
+      author: Tushar
+      changes:
+        - createTable:
+            tableName: student_subject
+            columns:
+              - column:
+                  name: student_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subject_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-subject-3
+      author: Tushar
+      changes:
+        - addPrimaryKey:
+            tableName: student_subject
+            columnNames: student_id, subject_id
+            constraintName: pk_student_subject
+
+  - changeSet:
+      id: 002-subject-4
+      author: Tushar
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: student_subject
+            baseColumnNames: student_id
+            referencedTableName: students
+            referencedColumnNames: id
+            constraintName: fk_student_subject_student
+
+  - changeSet:
+      id: 002-subject-5
+      author: Tushar
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: student_subject
+            baseColumnNames: subject_id
+            referencedTableName: subjects
+            referencedColumnNames: id
+            constraintName: fk_student_subject_subject
