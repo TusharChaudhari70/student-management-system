@@ -101,13 +101,15 @@
                     Update
                   </button>
 
-                  <button
-                    type="button"
-                    class="delete-btn"
-                    (click)="onDelete(student)"
-                  >
-                    Delete
-                  </button>
+                  @if (isAdmin) {
+                    <button
+                      type="button"
+                      class="delete-btn"
+                      (click)="onDelete(student)"
+                    >
+                      Delete
+                    </button>
+                  }
 
                 </td>
 

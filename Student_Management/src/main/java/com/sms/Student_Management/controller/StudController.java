@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sms.Student_Management.entity.Student;
 import com.sms.Student_Management.service.StudService;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/students")
-@SecurityRequirement(name = "bearerAuth")
 public class StudController {
 
     private static final Logger log =

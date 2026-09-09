@@ -249,7 +249,7 @@ public class StudService {
         return updatedStudent;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Long deleteStudent(Long id) {
 
         Authentication authentication =
@@ -257,37 +257,17 @@ public class StudService {
 
         String username = authentication.getName();
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        log.info("Deleting student ID: {} by user: {}", id, username);
+        log.info("Soft-deleting student ID: {} by admin: {}", id, username);
 
         Student existingStudent = studRepo.findById(id)
                 .orElseThrow(() ->
                         new StudentNotFoundException(
                                 "Student with ID " + id + " does not exist"));
 
-        // Teacher can delete only their own student
-        if (!isAdmin) {
+        existingStudent.setIsDeleted(true);
+        studRepo.save(existingStudent);
 
-            if (existingStudent.getTeacher() == null ||
-                    !existingStudent.getTeacher()
-                            .getUsername()
-                            .equals(username)) {
-
-                log.warn(
-                        "Unauthorized delete attempt for student ID: {} by user: {}",
-                        id, username);
-
-                throw new RuntimeException(
-                        "You are not authorized to delete this student");
-            }
-        }
-
-        studRepo.delete(existingStudent);
-
-        log.info("Student ID: {} deleted successfully", id);
+        log.info("Student ID: {} soft-deleted successfully", id);
 
         return id;
     }

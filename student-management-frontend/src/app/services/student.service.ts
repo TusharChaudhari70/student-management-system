@@ -9,6 +9,7 @@ export interface Student {
   course: string;
   age: number;
   teacher?: any;
+  isDeleted?: boolean;
 }
 export interface Teacher {
   id: number;

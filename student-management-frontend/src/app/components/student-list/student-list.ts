@@ -29,6 +29,11 @@ export class StudentList implements OnChanges {
   @Output() updateStudent = new EventEmitter<Student>();
   @Output() deleteStudent = new EventEmitter<Student>();
 
+  get isAdmin(): boolean {
+    const role = localStorage.getItem('role');
+    return role === 'ADMIN' || role === 'ROLE_ADMIN';
+  }
+
   // Search
   searchText = '';
 
@@ -81,11 +86,13 @@ export class StudentList implements OnChanges {
 
   getFilteredStudents(students: Student[]): Student[] {
 
+    const activeStudents = students.filter(student => !student.isDeleted);
+
     if (!this.searchText) {
-      return students;
+      return activeStudents;
     }
 
-    return students.filter(student =>
+    return activeStudents.filter(student =>
       student.name?.toLowerCase().startsWith(this.searchText)
     );
   }
@@ -178,6 +185,10 @@ export class StudentList implements OnChanges {
   // ================================
 
   onDelete(student: Student): void {
+    if (!this.isAdmin) {
+      alert('Only administrators are authorized to delete students.');
+      return;
+    }
     this.deleteStudent.emit(student);
   }
 }

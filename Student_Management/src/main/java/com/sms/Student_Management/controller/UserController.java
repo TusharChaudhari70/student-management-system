@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sms.Student_Management.entity.User;
 import com.sms.Student_Management.service.UserService;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 @RestController
 @RequestMapping("/users")
-@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;
