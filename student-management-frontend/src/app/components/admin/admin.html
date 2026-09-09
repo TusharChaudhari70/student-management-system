@@ -1,838 +1,509 @@
-<!-- TOP NAVBAR -->
-
 <nav class="top-navbar">
-
-  <div class="brand">
-    Student Management System
-  </div>
-
+  <div class="brand">Student Management System</div>
   <div class="nav-right">
-
-    <span class="admin-user">
-      {{ username }}
-    </span>
-
-    <span class="admin-role">
-      {{ role }}
-    </span>
-
-    <button class="logout-btn" (click)="logout()">
-      Logout
-    </button>
-
+    <span class="admin-user">{{ username }}</span>
+    <span class="admin-role">{{ role }}</span>
+    <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
-
 </nav>
 
-
-<!-- MAIN LAYOUT -->
-
 <div class="admin-layout">
-
-  <!-- SIDEBAR -->
-
   <aside class="sidebar">
-
-    <div class="sidebar-title">
-      ADMIN PANEL
-    </div>
+    <div class="sidebar-title">ADMIN PANEL</div>
 
 
-    <!-- DASHBOARD -->
+<button class="sidebar-item"
+  [class.active]="selectedSection === 'dashboard'"
+  (click)="selectSection('dashboard')">
+  Dashboard
+</button>
 
-    <button class="sidebar-item" [class.active]="selectedSection === 'dashboard'" (click)="selectSection('dashboard')">
+<button class="sidebar-item"
+  [class.active]="selectedSection === 'students'"
+  (click)="selectSection('students')">
+  Students
+</button>
 
-      Dashboard
-
+@if (selectedSection === 'students') {
+  <div class="submenu">
+    <button
+      [class.sub-active]="selectedStudentAction === 'add'"
+      (click)="selectStudentAction('add')">
+      Add Student
     </button>
 
+    <button
+      [class.sub-active]="selectedStudentAction === 'list'"
+      (click)="selectStudentAction('list')">
+      View All Students
+    </button>
+  </div>
+}
 
-    <!-- STUDENTS -->
+<button class="sidebar-item"
+  [class.active]="selectedSection === 'teachers'"
+  (click)="selectSection('teachers')">
+  Teachers
+</button>
 
-    <button class="sidebar-item" [class.active]="selectedSection === 'students'" (click)="selectSection('students')">
-
-      Students
-
+@if (selectedSection === 'teachers') {
+  <div class="submenu">
+    <button
+      [class.sub-active]="selectedTeacherAction === 'add'"
+      (click)="selectTeacherAction('add')">
+      Add Teacher
     </button>
 
-
-    <!-- STUDENT CRUD MENU -->
-
-    @if (selectedSection === 'students') {
-
-    <div class="submenu">
-
-      <button [class.sub-active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">
-
-        Add Student
-
-      </button>
-
-      <button [class.sub-active]="selectedStudentAction === 'list'" (click)="selectStudentAction('list')">
-
-        View All Students
-
-      </button>
-
-      <button [class.sub-active]="selectedStudentAction === 'update'" (click)="selectStudentAction('update')">
-
-        Update Student
-
-      </button>
-
-      <button [class.sub-active]="selectedStudentAction === 'delete'" (click)="selectStudentAction('delete')">
-
-        Delete Student
-
-      </button>
-
-    </div>
-
-    }
-
-
-    <!-- TEACHERS -->
-
-    <button class="sidebar-item" [class.active]="selectedSection === 'teachers'" (click)="selectSection('teachers')">
-
-      Teachers
-
+    <button
+      [class.sub-active]="selectedTeacherAction === 'view'"
+      (click)="selectTeacherAction('view')">
+      View All Teachers
     </button>
+  </div>
+}
 
-
-    <!-- TEACHER CRUD MENU -->
-
-    @if (selectedSection === 'teachers') {
-
-    <div class="submenu">
-
-      <button [class.sub-active]="selectedTeacherAction === 'add'" (click)="selectTeacherAction('add')">
-
-        Add Teacher
-
-      </button>
-
-      <button [class.sub-active]="selectedTeacherAction === 'view'" (click)="selectTeacherAction('view')">
-
-        View All Teachers
-
-      </button>
-
-      <button [class.sub-active]="selectedTeacherAction === 'update'" (click)="selectTeacherAction('update')">
-
-        Update Teacher
-
-      </button>
-
-      <button [class.sub-active]="selectedTeacherAction === 'delete'" (click)="selectTeacherAction('delete')">
-
-        Delete Teacher
-
-      </button>
-
-    </div>
-
-    }
 
   </aside>
-
-
-  <!-- MAIN CONTENT -->
 
   <main class="main-content">
 
 
-    <!-- ================================ -->
-    <!-- DASHBOARD -->
-    <!-- ================================ -->
+@if (selectedSection === 'dashboard') {
+  <div class="page-header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome back, {{ username }}</p>
+  </div>
 
-    @if (selectedSection === 'dashboard') {
-
-    <div class="page-header">
-
-      <h1>Admin Dashboard</h1>
-
-      <p>
-        Welcome back, {{ username }}
-      </p>
-
+  <div class="dashboard-cards">
+    <div class="dashboard-card">
+      <h3>Students</h3>
+      <p>Manage student records</p>
     </div>
 
-
-    <div class="dashboard-cards">
-
-      <div class="dashboard-card">
-
-        <h3>Students</h3>
-
-        <p>
-          Manage student records
-        </p>
-
-      </div>
-
-
-      <div class="dashboard-card">
-
-        <h3>Teachers</h3>
-
-        <p>
-          Manage teacher records
-        </p>
-
-      </div>
-
+    <div class="dashboard-card">
+      <h3>Teachers</h3>
+      <p>Manage teacher records</p>
     </div>
+  </div>
+}
 
-    }
+@if (selectedSection === 'students') {
+  <div class="page-header">
+    <h1>Student Management</h1>
+    <p>Manage student records</p>
+  </div>
 
+  <!-- STUDENT ACTIONS -->
+  <div class="action-bar">
 
-    <!-- ====================================================== -->
-    <!-- STUDENTS -->
-    <!-- ====================================================== -->
+    <button
+      class="action-btn"
+      [class.action-active]="selectedStudentAction === 'add'"
+      (click)="selectStudentAction('add')">
+      Add Student
+    </button>
 
-    @if (selectedSection === 'students') {
+    <button
+      class="action-btn"
+      [class.action-active]="selectedStudentAction === 'list'"
+      (click)="selectStudentAction('list')">
+      View All
+    </button>
 
-    <div class="page-header">
+  </div>
 
-      <h1>Student Management</h1>
-
-      <p>
-        Manage student records
-      </p>
-
-    </div>
-
-
-    <div class="action-bar">
-
-      <button class="action-btn" [class.action-active]="selectedStudentAction === 'add'"
-        (click)="selectStudentAction('add')">
-
-        Add Student
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedStudentAction === 'list'"
-        (click)="selectStudentAction('list')">
-
-        View All
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedStudentAction === 'update'"
-        (click)="selectStudentAction('update')">
-
-        Update
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedStudentAction === 'delete'"
-        (click)="selectStudentAction('delete')">
-
-        Delete
-
-      </button>
-
-    </div>
-
-
-    <!-- ================================ -->
-    <!-- ADD STUDENT -->
-    <!-- ================================ -->
-
-    @if (selectedStudentAction === 'add') {
-
+  <!-- ADD STUDENT -->
+  @if (selectedStudentAction === 'add') {
     <div class="content-card add-student-card">
-
       <h2>Add Student</h2>
 
-      <form #studentForm="ngForm" (ngSubmit)="addStudent(studentForm)">
-
+      <form
+        #studentForm="ngForm"
+        (ngSubmit)="addStudent(studentForm)">
 
         <div class="form-grid">
 
-
-          <!-- NAME -->
-
           <div class="form-group">
+            <label>Name <span>*</span></label>
 
-            <label>
-              Name <span>*</span>
-            </label>
-
-            <input type="text" name="name" [(ngModel)]="newStudent.name" required #name="ngModel"
+            <input
+              type="text"
+              name="name"
+              [(ngModel)]="newStudent.name"
+              required
+              #name="ngModel"
               placeholder="Enter student name">
 
-
             @if (name.invalid && name.touched) {
-
-            <small class="error">
-              Name is required
-            </small>
-
+              <small class="error">
+                Name is required
+              </small>
             }
-
           </div>
 
-
-          <!-- EMAIL -->
-
           <div class="form-group">
+            <label>Email <span>*</span></label>
 
-            <label>
-              Email <span>*</span>
-            </label>
-
-            <input type="email" name="email" [(ngModel)]="newStudent.email" required email #email="ngModel"
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="newStudent.email"
+              required
+              email
+              #email="ngModel"
               placeholder="Enter student email">
 
-
             @if (email.invalid && email.touched) {
-
-            <small class="error">
-              Enter a valid email
-            </small>
-
+              <small class="error">
+                Enter a valid email
+              </small>
             }
-
           </div>
 
-
-          <!-- COURSE -->
-
           <div class="form-group">
+            <label>Course <span>*</span></label>
 
-            <label>
-              Course <span>*</span>
-            </label>
-
-            <input type="text" name="course" [(ngModel)]="newStudent.course" required #course="ngModel"
+            <input
+              type="text"
+              name="course"
+              [(ngModel)]="newStudent.course"
+              required
+              #course="ngModel"
               placeholder="Enter course">
 
-
             @if (course.invalid && course.touched) {
-
-            <small class="error">
-              Course is required
-            </small>
-
+              <small class="error">
+                Course is required
+              </small>
             }
-
           </div>
 
-
-          <!-- AGE -->
-
           <div class="form-group">
+            <label>Age <span>*</span></label>
 
-            <label>
-              Age <span>*</span>
-            </label>
-
-            <input type="number" name="age" [(ngModel)]="newStudent.age" required min="1" #age="ngModel"
+            <input
+              type="number"
+              name="age"
+              [(ngModel)]="newStudent.age"
+              required
+              min="1"
+              #age="ngModel"
               placeholder="Enter age">
 
-
             @if (age.invalid && age.touched) {
-
-            <small class="error">
-              Enter a valid age
-            </small>
-
+              <small class="error">
+                Enter a valid age
+              </small>
             }
-
           </div>
 
-
-          <!-- TEACHER -->
-
           <div class="form-group">
+            <label>Teacher <span>*</span></label>
 
-            <label>
-              Teacher <span>*</span>
-            </label>
+            <select
+              name="teacher"
+              [(ngModel)]="selectedTeacherId"
+              required
+              #teacher="ngModel">
 
-            <select name="teacher" [(ngModel)]="selectedTeacherId" required #teacher="ngModel">
-
-              <option [ngValue]="null" disabled>
-
+              <option
+                [ngValue]="null"
+                disabled>
                 Select Teacher
-
               </option>
-
 
               @if (loadingTeachers) {
-
-              <option disabled>
-                Loading teachers...
-              </option>
-
+                <option disabled>
+                  Loading teachers...
+                </option>
               }
 
-
-              @for (
-              teacherItem of teachers;
-              track teacherItem.id
-              ) {
-
-              <option [ngValue]="teacherItem.id">
-
-                {{ teacherItem.name || teacherItem.username }}
-
-              </option>
-
+              @for (teacherItem of teachers; track teacherItem.id) {
+                <option [ngValue]="teacherItem.id">
+                  {{ teacherItem.name || teacherItem.username }}
+                </option>
               }
 
             </select>
 
-
             @if (teacher.invalid && teacher.touched) {
-
-            <small class="error">
-              Teacher is required
-            </small>
-
+              <small class="error">
+                Teacher is required
+              </small>
             }
-
           </div>
 
         </div>
 
-
         <div class="form-actions">
 
-          <button type="submit" class="add-btn" [disabled]="studentForm.invalid">
-
+          <button
+            type="submit"
+            class="add-btn"
+            [disabled]="studentForm.invalid">
             Add Student
-
           </button>
 
-
-          <button type="button" class="cancel-btn" (click)="cancelAddStudent(studentForm)">
-
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="cancelAddStudent(studentForm)">
             Cancel
-
           </button>
 
         </div>
 
       </form>
-
     </div>
+  }
 
-    }
-
-
-    <!-- ================================ -->
-    <!-- VIEW ALL STUDENTS -->
-    <!-- ================================ -->
-
-    @if (selectedStudentAction === 'list') {
-
+  <!-- ALL STUDENTS -->
+  @if (selectedStudentAction === 'list') {
     <div class="content-card">
 
       <h2>All Students</h2>
 
-      <app-student-list></app-student-list>
+      <app-student-list
+        [refreshKey]="studentListRefreshKey"
+        (updateStudent)="openStudentUpdateModal($event)"
+        (deleteStudent)="openStudentDeleteModal($event)">
+      </app-student-list>
 
-    </div>
+      <!-- UPDATE STUDENT MODAL -->
+      @if (showStudentUpdateModal) {
 
-    }
+        <div class="modal-overlay">
 
+          <div class="modal-box">
 
-    <!-- ================================ -->
-    <!-- UPDATE STUDENT -->
-    <!-- ================================ -->
+            <div class="modal-header">
+              <h2>Update Student</h2>
 
-    @if (selectedStudentAction === 'update') {
+              <button
+                type="button"
+                class="modal-close"
+                (click)="closeStudentUpdateModal()">
+                ×
+              </button>
+            </div>
 
-    <div class="content-card update-student-card">
+            <form
+              #studentUpdateForm="ngForm"
+              (ngSubmit)="saveStudentFromModal(studentUpdateForm)">
 
-      <h2>Update Student</h2>
+              <div class="modal-body">
 
-      <p class="update-description">
-        Enter the student ID to load the student's existing information.
-      </p>
+                <div class="form-group">
+                  <label>Student ID</label>
 
+                  <input
+                    type="text"
+                    [value]="searchedStudentId"
+                    readonly>
+                </div>
 
-      <div class="student-search">
+                <div class="form-group">
+                  <label>Name</label>
 
-        <div class="form-group">
+                  <input
+                    type="text"
+                    name="updateName"
+                    [(ngModel)]="updateStudent.name"
+                    required>
+                </div>
 
-          <label>
-            Student ID <span>*</span>
-          </label>
+                <div class="form-group">
+                  <label>Email</label>
 
-          <input type="number" name="updateStudentId" [(ngModel)]="updateStudentId" min="1"
-            placeholder="Enter student ID">
+                  <input
+                    type="email"
+                    name="updateEmail"
+                    [(ngModel)]="updateStudent.email"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label>Course</label>
+
+                  <input
+                    type="text"
+                    name="updateCourse"
+                    [(ngModel)]="updateStudent.course"
+                    required>
+                </div>
+
+                <div class="form-group">
+                  <label>Age</label>
+
+                  <input
+                    type="number"
+                    name="updateAge"
+                    [(ngModel)]="updateStudent.age"
+                    required
+                    min="1">
+                </div>
+
+                <div class="form-group">
+                  <label>Teacher</label>
+
+                  <select
+                    name="updateTeacher"
+                    [(ngModel)]="selectedUpdateTeacherId"
+                    required>
+
+                    <option [ngValue]="null">
+                      Select Teacher
+                    </option>
+
+                    @for (teacher of teachers; track teacher.id) {
+                      <option [ngValue]="teacher.id">
+                        {{ teacher.name || teacher.username }}
+                      </option>
+                    }
+
+                  </select>
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+
+                <button
+                  type="button"
+                  class="cancel-btn"
+                  (click)="closeStudentUpdateModal()">
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  class="save-btn">
+                  Save Changes
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
 
         </div>
+      }
 
+      <!-- DELETE STUDENT MODAL -->
+      @if (showStudentDeleteModal) {
 
-        <button type="button" class="search-btn" (click)="findStudentForUpdate()" [disabled]="searchingStudent">
+        <div class="modal-overlay">
 
-          {{ searchingStudent ? 'Searching...' : 'Search Student' }}
+          <div class="modal-box delete-modal">
 
-        </button>
+            <div class="modal-header">
 
-      </div>
+              <h2>Delete Student</h2>
 
-
-      @if (studentFound) {
-
-      <div class="update-form-section">
-
-        <h3>Student Details</h3>
-
-        <form #updateForm="ngForm" (ngSubmit)="updateExistingStudent(updateForm)">
-
-          <div class="form-grid">
-
-
-            <!-- NAME -->
-
-            <div class="form-group">
-
-              <label>
-                Name <span>*</span>
-              </label>
-
-              <input type="text" name="updateName" [(ngModel)]="updateStudent.name" required #updateName="ngModel"
-                placeholder="Enter student name">
-
-
-              @if (updateName.invalid && updateName.touched) {
-
-              <small class="error">
-                Name is required
-              </small>
-
-              }
+              <button
+                type="button"
+                class="modal-close"
+                (click)="closeStudentDeleteModal()">
+                ×
+              </button>
 
             </div>
 
+            <div class="modal-body">
 
-            <!-- EMAIL -->
+              <p class="delete-warning">
+                Are you sure you want to delete this student?
+              </p>
 
-            <div class="form-group">
+              <div class="student-details">
 
-              <label>
-                Email <span>*</span>
-              </label>
+                <div>
+                  <strong>ID:</strong>
+                  {{ searchedDeleteStudentId }}
+                </div>
 
-              <input type="email" name="updateEmail" [(ngModel)]="updateStudent.email" required email
-                #updateEmail="ngModel" placeholder="Enter student email">
+                <div>
+                  <strong>Name:</strong>
+                  {{ deleteStudent.name }}
+                </div>
 
+                <div>
+                  <strong>Email:</strong>
+                  {{ deleteStudent.email }}
+                </div>
 
-              @if (updateEmail.invalid && updateEmail.touched) {
+                <div>
+                  <strong>Course:</strong>
+                  {{ deleteStudent.course }}
+                </div>
 
-              <small class="error">
-                Enter a valid email
-              </small>
+                <div>
+                  <strong>Age:</strong>
+                  {{ deleteStudent.age }}
+                </div>
 
-              }
-
-            </div>
-
-
-            <!-- COURSE -->
-
-            <div class="form-group">
-
-              <label>
-                Course <span>*</span>
-              </label>
-
-              <input type="text" name="updateCourse" [(ngModel)]="updateStudent.course" required #updateCourse="ngModel"
-                placeholder="Enter course">
-
-
-              @if (updateCourse.invalid && updateCourse.touched) {
-
-              <small class="error">
-                Course is required
-              </small>
-
-              }
+              </div>
 
             </div>
 
+            <div class="modal-footer">
 
-            <!-- AGE -->
+              <button
+                type="button"
+                class="cancel-btn"
+                (click)="closeStudentDeleteModal()">
+                Cancel
+              </button>
 
-            <div class="form-group">
-
-              <label>
-                Age <span>*</span>
-              </label>
-
-              <input type="number" name="updateAge" [(ngModel)]="updateStudent.age" required min="1"
-                #updateAge="ngModel" placeholder="Enter age">
-
-
-              @if (updateAge.invalid && updateAge.touched) {
-
-              <small class="error">
-                Enter a valid age
-              </small>
-
-              }
+              <button
+                type="button"
+                class="delete-confirm-btn"
+                (click)="confirmStudentDeleteFromModal()">
+                Delete
+              </button>
 
             </div>
 
           </div>
-         <!-- TEACHER -->
 
-<div class="form-group">
+        </div>
+      }
 
-  <label for="updateTeacher">
-    Teacher <span>*</span>
-  </label>
-
-  <select
-    id="updateTeacher"
-    name="updateTeacher"
-    [(ngModel)]="selectedUpdateTeacherId"
-    required
-    #updateTeacherSelect="ngModel">
-
-    <option [ngValue]="null" disabled>
-      Select Teacher
-    </option>
-
-    @if (loadingTeachers) {
-
-      <option disabled>
-        Loading teachers...
-      </option>
-
-    }
-
-    @for (teacher of teachers; track teacher.id) {
-
-      <option [ngValue]="teacher.id">
-        {{ teacher.name || teacher.username }}
-      </option>
-
-    }
-
-  </select>
-
-  @if (updateTeacherSelect.invalid && updateTeacherSelect.touched) {
-
-    <small class="error">
-      Teacher is required
-    </small>
-
+    </div>
   }
 
-</div>
-
-          <div class="form-actions">
-
-            <button type="submit" class="update-btn" [disabled]="updateForm.invalid">
-
-              Update Student
-
-            </button>
-
-
-            <button type="button" class="cancel-btn" (click)="resetUpdate()">
-
-              Cancel
-
-            </button>
-
-          </div>
-
-        </form>
-
-      </div>
-
-      }
-
-    </div>
-
-    }
-
-
-    <!-- ================================ -->
-    <!-- DELETE STUDENT -->
-    <!-- ================================ -->
-
-    @if (selectedStudentAction === 'delete') {
-
-    <div class="content-card delete-student-card">
-
-      <h2>Delete Student</h2>
-
-      <p class="update-description">
-        Enter the student ID to load the student's existing information.
-      </p>
-
-
-      <div class="student-search">
-
-        <div class="form-group">
-
-          <label>
-            Student ID <span>*</span>
-          </label>
-
-          <input type="number" name="deleteStudentId" [(ngModel)]="deleteStudentId" min="1"
-            placeholder="Enter student ID">
-
-        </div>
-
-
-        <button type="button" class="search-btn" (click)="findStudentForDelete()" [disabled]="searchingDeleteStudent">
-
-          {{ searchingDeleteStudent ? 'Searching...' : 'Search Student' }}
-
-        </button>
-
-      </div>
-
-
-      @if (deleteStudentFound) {
-
-      <div class="update-form-section">
-
-        <h3>Student Details</h3>
-
-        <div class="form-grid">
-
-
-          <div class="form-group">
-
-            <label>Name</label>
-
-            <input type="text" [value]="deleteStudent.name" readonly>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>Email</label>
-
-            <input type="text" [value]="deleteStudent.email" readonly>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>Course</label>
-
-            <input type="text" [value]="deleteStudent.course" readonly>
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label>Age</label>
-
-            <input type="number" [value]="deleteStudent.age" readonly>
-
-          </div>
-
-        </div>
-
-
-        <div class="form-actions">
-
-          <button type="button" class="delete-btn" (click)="deleteExistingStudent()">
-
-            Delete Student
-
-          </button>
-
-
-          <button type="button" class="cancel-btn" (click)="resetDelete()">
-
-            Cancel
-
-          </button>
-
-        </div>
-
-      </div>
-
-      }
-
-    </div>
-
-    }
-
-    }
-
-
-    <!-- ====================================================== -->
-    <!-- TEACHERS -->
-    <!-- ====================================================== -->
-
-    @if (selectedSection === 'teachers') {
-
-    <div class="page-header">
-
-      <h1>Teacher Management</h1>
-
-      <p>
-        Manage teacher accounts and records
-      </p>
-
-    </div>
-
-
-    <!-- TEACHER ACTION BAR -->
-
-    <div class="action-bar">
-
-      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'add'"
-        (click)="selectTeacherAction('add')">
-
-        Add Teacher
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'view'"
-        (click)="selectTeacherAction('view')">
-
-        View All
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'update'"
-        (click)="selectTeacherAction('update')">
-
-        Update
-
-      </button>
-
-
-      <button class="action-btn" [class.action-active]="selectedTeacherAction === 'delete'"
-        (click)="selectTeacherAction('delete')">
-
-        Delete
-
-      </button>
-
-    </div>
-
-
-    <!-- ================================ -->
-    <!-- ADD TEACHER -->
-    <!-- ================================ -->
-
-    @if (selectedTeacherAction === 'add') {
+}
+
+<!-- TEACHERS -->
+@if (selectedSection === 'teachers') {
+
+  <div class="page-header">
+    <h1>Teacher Management</h1>
+    <p>Manage teacher accounts and records</p>
+  </div>
+
+  <!-- TEACHER ACTIONS -->
+  <div class="action-bar">
+
+    <button
+      class="action-btn"
+      [class.action-active]="selectedTeacherAction === 'add'"
+      (click)="selectTeacherAction('add')">
+      Add Teacher
+    </button>
+
+    <button
+      class="action-btn"
+      [class.action-active]="selectedTeacherAction === 'view'"
+      (click)="selectTeacherAction('view')">
+      View All
+    </button>
+
+  </div>
+
+  <!-- ADD TEACHER -->
+  @if (selectedTeacherAction === 'add') {
 
     <div class="content-card teacher-card">
 
@@ -842,136 +513,103 @@
         Create a new teacher account.
       </p>
 
-
-      <form #teacherForm="ngForm" (ngSubmit)="addTeacher(teacherForm)">
-
+      <form
+        #teacherForm="ngForm"
+        (ngSubmit)="addTeacher(teacherForm)">
 
         <div class="form-grid">
 
-
-          <!-- USERNAME -->
-
           <div class="form-group">
+            <label>Username <span>*</span></label>
 
-            <label>
-              Username <span>*</span>
-            </label>
+            <input
+              type="text"
+              name="teacherUsername"
+              [(ngModel)]="newTeacher.username"
+              required
+              minlength="3"
+              #teacherUsername="ngModel"
+              placeholder="Enter username">
 
-            <input type="text" name="teacherUsername" [(ngModel)]="newTeacher.username" required minlength="3"
-              #teacherUsername="ngModel" placeholder="Enter username">
-
-
-            @if (
-            teacherUsername.invalid &&
-            teacherUsername.touched
-            ) {
-
-            <small class="error">
-
-              Username is required and must be at least 3 characters
-
-            </small>
-
+            @if (teacherUsername.invalid && teacherUsername.touched) {
+              <small class="error">
+                Username is required and must be at least 3 characters
+              </small>
             }
-
           </div>
 
-
-          <!-- NAME -->
-
           <div class="form-group">
+            <label>Name <span>*</span></label>
 
-            <label>
-              Name <span>*</span>
-            </label>
-
-            <input type="text" name="teacherName" [(ngModel)]="newTeacher.name" required #teacherName="ngModel"
+            <input
+              type="text"
+              name="teacherName"
+              [(ngModel)]="newTeacher.name"
+              required
+              #teacherName="ngModel"
               placeholder="Enter teacher name">
 
-
-            @if (
-            teacherName.invalid &&
-            teacherName.touched
-            ) {
-
-            <small class="error">
-              Name is required
-            </small>
-
+            @if (teacherName.invalid && teacherName.touched) {
+              <small class="error">
+                Name is required
+              </small>
             }
-
           </div>
 
-
-          <!-- EMAIL -->
-
           <div class="form-group">
+            <label>Email <span>*</span></label>
 
-            <label>
-              Email <span>*</span>
-            </label>
+            <input
+              type="email"
+              name="teacherEmail"
+              [(ngModel)]="newTeacher.email"
+              required
+              email
+              #teacherEmail="ngModel"
+              placeholder="Enter teacher email">
 
-            <input type="email" name="teacherEmail" [(ngModel)]="newTeacher.email" required email
-              #teacherEmail="ngModel" placeholder="Enter teacher email">
-
-
-            @if (
-            teacherEmail.invalid &&
-            teacherEmail.touched
-            ) {
-
-            <small class="error">
-              Enter a valid email
-            </small>
-
+            @if (teacherEmail.invalid && teacherEmail.touched) {
+              <small class="error">
+                Enter a valid email
+              </small>
             }
-
           </div>
 
-
-          <!-- PASSWORD -->
-
           <div class="form-group">
+            <label>Password <span>*</span></label>
 
-            <label>
-              Password <span>*</span>
-            </label>
+            <input
+              type="password"
+              name="teacherPassword"
+              [(ngModel)]="newTeacher.password"
+              required
+              minlength="6"
+              #teacherPassword="ngModel"
+              placeholder="Enter password">
 
-            <input type="password" name="teacherPassword" [(ngModel)]="newTeacher.password" required minlength="6"
-              #teacherPassword="ngModel" placeholder="Enter password">
-
-
-            @if (
-            teacherPassword.invalid &&
-            teacherPassword.touched
-            ) {
-
-            <small class="error">
-
-              Password is required and must be at least 6 characters
-
-            </small>
-
+            @if (teacherPassword.invalid && teacherPassword.touched) {
+              <small class="error">
+                Password is required and must be at least 6 characters
+              </small>
             }
-
           </div>
 
         </div>
 
-
         <div class="form-actions">
 
-          <button type="submit" class="add-btn" [disabled]="teacherForm.invalid">
-
+          <button
+            type="submit"
+            class="add-btn"
+            [disabled]="teacherForm.invalid">
             Add Teacher
-
           </button>
 
-
-          <button type="button" class="cancel-btn" (click)="teacherForm.resetForm(); clearTeacherForm()">
-
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="teacherForm.resetForm(); clearTeacherForm()">
             Cancel
-
           </button>
 
         </div>
@@ -979,410 +617,441 @@
       </form>
 
     </div>
+  }
 
-    }
+  <!-- VIEW ALL TEACHERS -->
+  <!-- VIEW ALL TEACHERS -->
+@if (selectedTeacherAction === 'view') {
 
+  <div class="content-card teacher-list-card">
 
-    <!-- ================================ -->
-    <!-- VIEW ALL TEACHERS -->
-    <!-- ================================ -->
-
-    @if (selectedTeacherAction === 'view') {
-
-    <div class="content-card teacher-list-card">
+    <div class="table-header">
 
       <h2>All Teachers</h2>
 
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search teacher by name..."
+          [value]="teacherSearchTerm"
+          (input)="onTeacherSearch($any($event.target).value)"
+        />
+      </div>
 
-      @if (loadingTeacherList) {
+    </div>
+
+    @if (loadingTeacherList) {
 
       <div class="loading-message">
         Loading teachers...
       </div>
 
-      }
+    }
 
-
-      @if (!loadingTeacherList && teacherList.length === 0) {
+    @if (!loadingTeacherList && teacherList.length === 0) {
 
       <div class="empty-message">
         No teachers found.
       </div>
 
+    }
+
+    @if (!loadingTeacherList && teacherList.length > 0) {
+
+      @let sortedTeachers = getFilteredSortedTeachers();
+      @let paginatedTeachers = getVisibleTeachers();
+      @let totalPages = getTeacherTotalPages();
+
+      <div class="student-summary">
+
+        <span>
+          Showing {{ paginatedTeachers.length }}
+          of {{ sortedTeachers.length }} teachers
+        </span>
+
+        @if (teacherSearchTerm) {
+
+          <span class="search-result">
+            Search results for "{{ teacherSearchTerm }}"
+          </span>
+
+        }
+
+      </div>
+
+      @if (sortedTeachers.length === 0) {
+
+        <div class="empty-message">
+          No teachers found matching "{{ teacherSearchTerm }}".
+        </div>
+
+      } @else {
+
+        <div class="table-wrapper">
+
+          <table class="student-table">
+
+            <thead>
+
+              <tr>
+
+                <th
+                  class="sortable-header"
+                  (click)="toggleTeacherIdSort()"
+                  title="Click to sort by ID"
+                >
+
+                  <span>ID</span>
+
+                  @if (teacherSortDirection === 'asc') {
+                    <span class="sort-arrow">↑</span>
+                  } @else {
+                    <span class="sort-arrow">↓</span>
+                  }
+
+                </th>
+
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              @for (teacher of paginatedTeachers; track teacher.id) {
+
+                <tr>
+
+                  <td>{{ teacher.id }}</td>
+
+                  <td>{{ teacher.username }}</td>
+
+                  <td>{{ teacher.name }}</td>
+
+                  <td>{{ teacher.email }}</td>
+
+                  <td>
+                    <span class="role-badge">
+                      {{ teacher.role }}
+                    </span>
+                  </td>
+
+                  <td class="actions">
+
+                    <button
+                      type="button"
+                      class="update-btn"
+                      (click)="openTeacherUpdateModal(teacher)"
+                    >
+                      Update
+                    </button>
+
+                    <button
+                      type="button"
+                      class="delete-btn"
+                      (click)="openTeacherDeleteModal(teacher)"
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="table-footer">
+
+          <div class="page-size-section">
+
+            <span>Teachers per page:</span>
+            &nbsp;
+
+            <select
+              [value]="teacherPageSize"
+              (change)="setTeacherPageSize($any($event.target).value)"
+              class="page-size-select"
+            >
+
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+
+            </select>
+
+          </div>
+
+          <div class="pagination">
+
+            <button
+              type="button"
+              class="pagination-btn"
+              [disabled]="teacherCurrentPage === 1"
+              (click)="previousTeacherPage()"
+            >
+              Previous
+            </button>
+
+            <span class="page-number">
+              Page {{ teacherCurrentPage }} of {{ totalPages || 1 }}
+            </span>
+
+            <button
+              type="button"
+              class="pagination-btn"
+              [disabled]="teacherCurrentPage >= totalPages"
+              (click)="nextTeacherPage()"
+            >
+              Next
+            </button>
+
+          </div>
+
+        </div>
+
       }
 
+    }
 
-      @if (!loadingTeacherList && teacherList.length > 0) {
+    <!-- UPDATE TEACHER MODAL -->
+    @if (showTeacherUpdateModal) {
 
-      <div class="teacher-table-wrapper">
+      <div class="modal-overlay">
 
-        <table class="teacher-table">
+        <div class="modal-box">
 
-          <thead>
+          <div class="modal-header">
 
-            <tr>
+            <h2>Update Teacher</h2>
 
-              <th>ID</th>
-              <th>Username</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
+            <button
+              type="button"
+              class="modal-close"
+              (click)="closeTeacherUpdateModal()">
+              ×
+            </button>
 
-            </tr>
+          </div>
 
-          </thead>
+          <form
+            #teacherModalForm="ngForm"
+            (ngSubmit)="saveTeacherFromModal(teacherModalForm)">
 
+            <div class="modal-body">
 
-          <tbody>
+              <div class="form-group">
 
-            @for (
-            teacher of teacherList;
-            track teacher.id
-            ) {
+                <label>Teacher ID</label>
 
-            <tr>
+                <input
+                  type="text"
+                  [value]="selectedTeacherForUpdate?.id"
+                  readonly>
 
-              <td>
-                {{ teacher.id }}
-              </td>
+              </div>
 
-              <td>
-                {{ teacher.username }}
-              </td>
+              <div class="form-group">
 
-              <td>
-                {{ teacher.name }}
-              </td>
+                <label>Username <span>*</span></label>
 
-              <td>
-                {{ teacher.email }}
-              </td>
+                <input
+                  type="text"
+                  name="modalTeacherUsername"
+                  [(ngModel)]="modalTeacher.username"
+                  required
+                  minlength="3"
+                  #modalTeacherUsername="ngModel"
+                  placeholder="Enter username">
 
-              <td>
-                <span class="role-badge">
-                  {{ teacher.role }}
-                </span>
-              </td>
+                @if (modalTeacherUsername.invalid && modalTeacherUsername.touched) {
 
-            </tr>
+                  <small class="error">
+                    Username is required and must be at least 3 characters
+                  </small>
+
+                }
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Name <span>*</span></label>
+
+                <input
+                  type="text"
+                  name="modalTeacherName"
+                  [(ngModel)]="modalTeacher.name"
+                  required
+                  #modalTeacherName="ngModel"
+                  placeholder="Enter teacher name">
+
+                @if (modalTeacherName.invalid && modalTeacherName.touched) {
+
+                  <small class="error">
+                    Name is required
+                  </small>
+
+                }
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Email <span>*</span></label>
+
+                <input
+                  type="email"
+                  name="modalTeacherEmail"
+                  [(ngModel)]="modalTeacher.email"
+                  required
+                  email
+                  #modalTeacherEmail="ngModel"
+                  placeholder="Enter teacher email">
+
+                @if (modalTeacherEmail.invalid && modalTeacherEmail.touched) {
+
+                  <small class="error">
+                    Enter a valid email
+                  </small>
+
+                }
+
+              </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+              <button
+                type="button"
+                class="cancel-btn"
+                (click)="closeTeacherUpdateModal()">
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                class="save-btn"
+                [disabled]="teacherModalForm.invalid">
+                Save Changes
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    }
+
+    <!-- DELETE TEACHER MODAL -->
+    @if (showTeacherDeleteModal) {
+
+      <div class="modal-overlay">
+
+        <div class="modal-box delete-modal">
+
+          <div class="modal-header">
+
+            <h2>Delete Teacher</h2>
+
+            <button
+              type="button"
+              class="modal-close"
+              (click)="closeTeacherDeleteModal()">
+              ×
+            </button>
+
+          </div>
+
+          <div class="modal-body">
+
+            <p class="delete-warning">
+              Are you sure you want to delete this teacher?
+            </p>
+
+            @if (selectedTeacherForDelete) {
+
+              <div class="student-details">
+
+                <div>
+                  <strong>ID:</strong>
+                  {{ selectedTeacherForDelete.id }}
+                </div>
+
+                <div>
+                  <strong>Username:</strong>
+                  {{ selectedTeacherForDelete.username }}
+                </div>
+
+                <div>
+                  <strong>Name:</strong>
+                  {{ selectedTeacherForDelete.name }}
+                </div>
+
+                <div>
+                  <strong>Email:</strong>
+                  {{ selectedTeacherForDelete.email }}
+                </div>
+
+                <div>
+                  <strong>Role:</strong>
+                  {{ selectedTeacherForDelete.role }}
+                </div>
+
+              </div>
 
             }
 
-          </tbody>
-
-        </table>
-
-      </div>
-
-      }
-
-    </div>
-
-    }
-
-
-    <!-- ================================ -->
-    <!-- UPDATE TEACHER -->
-    <!-- ================================ -->
-
-    @if (selectedTeacherAction === 'update') {
-
-    <div class="content-card teacher-card">
-
-      <h2>Update Teacher</h2>
-
-      <p class="update-description">
-        Enter the teacher ID to load the teacher's existing information.
-      </p>
-
-
-      <!-- SEARCH -->
-
-      <div class="student-search">
-
-        <div class="form-group">
-
-          <label>
-            Teacher ID <span>*</span>
-          </label>
-
-          <input type="number" name="updateTeacherId" [(ngModel)]="updateTeacherId" min="1"
-            placeholder="Enter teacher ID">
-
-        </div>
-
-
-        <button type="button" class="search-btn" (click)="findTeacherForUpdate()" [disabled]="searchingTeacher">
-
-          {{ searchingTeacher ? 'Searching...' : 'Search Teacher' }}
-
-        </button>
-
-      </div>
-
-
-      <!-- DETAILS -->
-
-      @if (teacherFound) {
-
-      <div class="update-form-section">
-
-        <h3>Teacher Details</h3>
-
-
-        <form #updateTeacherForm="ngForm" (ngSubmit)="updateExistingTeacher(updateTeacherForm)">
-
-
-          <div class="form-grid">
-
-
-            <!-- USERNAME -->
-
-            <div class="form-group">
-
-              <label>
-                Username <span>*</span>
-              </label>
-
-              <input type="text" name="updateTeacherUsername" [(ngModel)]="updateTeacher.username" required
-                minlength="3" #updateTeacherUsername="ngModel" placeholder="Enter username">
-
-
-              @if (
-              updateTeacherUsername.invalid &&
-              updateTeacherUsername.touched
-              ) {
-
-              <small class="error">
-
-                Username is required
-
-              </small>
-
-              }
-
-            </div>
-
-
-            <!-- NAME -->
-
-            <div class="form-group">
-
-              <label>
-                Name <span>*</span>
-              </label>
-
-              <input type="text" name="updateTeacherName" [(ngModel)]="updateTeacher.name" required
-                #updateTeacherName="ngModel" placeholder="Enter teacher name">
-
-
-              @if (
-              updateTeacherName.invalid &&
-              updateTeacherName.touched
-              ) {
-
-              <small class="error">
-                Name is required
-              </small>
-
-              }
-
-            </div>
-
-
-            <!-- EMAIL -->
-
-            <div class="form-group">
-
-              <label>
-                Email <span>*</span>
-              </label>
-
-              <input type="email" name="updateTeacherEmail" [(ngModel)]="updateTeacher.email" required email
-                #updateTeacherEmail="ngModel" placeholder="Enter teacher email">
-
-
-              @if (
-              updateTeacherEmail.invalid &&
-              updateTeacherEmail.touched
-              ) {
-
-              <small class="error">
-                Enter a valid email
-              </small>
-
-              }
-
-            </div>
-
           </div>
 
+          <div class="modal-footer">
 
-          <div class="form-actions">
-
-            <button type="submit" class="update-btn" [disabled]="updateTeacherForm.invalid">
-
-              Update Teacher
-
-            </button>
-
-
-            <button type="button" class="cancel-btn" (click)="resetTeacherUpdate()">
-
+            <button
+              type="button"
+              class="cancel-btn"
+              (click)="closeTeacherDeleteModal()">
               Cancel
+            </button>
 
+            <button
+              type="button"
+              class="delete-confirm-btn"
+              (click)="confirmTeacherDeleteFromModal()">
+              Delete
             </button>
 
           </div>
 
-        </form>
-
-      </div>
-
-      }
-
-    </div>
-
-    }
-
-
-    <!-- ================================ -->
-    <!-- DELETE TEACHER -->
-    <!-- ================================ -->
-
-    @if (selectedTeacherAction === 'delete') {
-
-    <div class="content-card teacher-card">
-
-      <h2>Delete Teacher</h2>
-
-      <p class="update-description">
-        Enter the teacher ID to load the teacher's existing information.
-      </p>
-
-
-      <!-- SEARCH -->
-
-      <div class="student-search">
-
-        <div class="form-group">
-
-          <label>
-            Teacher ID <span>*</span>
-          </label>
-
-          <input type="number" name="deleteTeacherId" [(ngModel)]="deleteTeacherId" min="1"
-            placeholder="Enter teacher ID">
-
-        </div>
-
-
-        <button type="button" class="search-btn" (click)="findTeacherForDelete()" [disabled]="searchingDeleteTeacher">
-
-          {{ searchingDeleteTeacher
-          ? 'Searching...'
-          : 'Search Teacher'
-          }}
-
-        </button>
-
-      </div>
-
-
-      <!-- DETAILS -->
-
-      @if (deleteTeacherFound) {
-
-      <div class="update-form-section">
-
-        <h3>Teacher Details</h3>
-
-
-        <div class="form-grid">
-
-
-          <!-- USERNAME -->
-
-          <div class="form-group">
-
-            <label>
-              Username
-            </label>
-
-            <input type="text" [value]="deleteTeacher.username" readonly>
-
-          </div>
-
-
-          <!-- NAME -->
-
-          <div class="form-group">
-
-            <label>
-              Name
-            </label>
-
-            <input type="text" [value]="deleteTeacher.name" readonly>
-
-          </div>
-
-
-          <!-- EMAIL -->
-
-          <div class="form-group">
-
-            <label>
-              Email
-            </label>
-
-            <input type="text" [value]="deleteTeacher.email" readonly>
-
-          </div>
-
-
-          <!-- ROLE -->
-
-          <div class="form-group">
-
-            <label>
-              Role
-            </label>
-
-            <input type="text" value="TEACHER" readonly>
-
-          </div>
-
-        </div>
-
-
-        <div class="form-actions">
-
-          <button type="button" class="delete-btn" (click)="deleteExistingTeacher()">
-
-            Delete Teacher
-
-          </button>
-
-
-          <button type="button" class="cancel-btn" (click)="resetTeacherDelete()">
-
-            Cancel
-
-          </button>
-
         </div>
 
       </div>
 
-      }
-
-    </div>
-
     }
 
-    }
-    
+  </div>
+
+}
+
+}
+
 
   </main>
-
 </div>

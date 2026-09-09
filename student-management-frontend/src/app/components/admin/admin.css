@@ -253,6 +253,159 @@
 
 
 /* ================================
+   MODAL
+================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 550px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 21px;
+  color: #1f2937;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.modal-close:hover {
+  color: #111827;
+}
+
+.modal-body {
+  padding: 22px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cancel-btn,
+.save-btn,
+.delete-confirm-btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.cancel-btn:hover {
+  background: #d1d5db;
+}
+
+.save-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+}
+
+.delete-confirm-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.delete-confirm-btn:hover {
+  background: #b91c1c;
+}
+
+.delete-warning {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.student-details {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.student-details div {
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.student-details div:last-child {
+  border-bottom: none;
+}
+
+
+/* ================================
    CONTENT CARD
 ================================ */
 
@@ -290,7 +443,6 @@
 
 /* ================================
    FORM GRID
-   2 OPERATIONS / FIELDS PER ROW
 ================================ */
 
 .form-grid {
@@ -525,13 +677,275 @@
 
 
 /* ================================
-   TEACHER TABLE
+   TEACHER LIST CARD
 ================================ */
 
 .teacher-list-card {
   width: 100%;
   max-width: 1100px;
 }
+
+
+/* ================================
+   TEACHER HEADER + SEARCH
+================================ */
+
+.teacher-list-card .table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 20px;
+}
+
+.teacher-list-card .table-header h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 20px;
+}
+
+.teacher-list-card .search-box {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.teacher-list-card .search-box input {
+  width: 320px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+.teacher-list-card .search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.teacher-list-card .search-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* ================================
+   TEACHER SUMMARY
+================================ */
+
+.teacher-list-card .student-summary {
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.teacher-list-card .search-result {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+
+/* ================================
+   TEACHER TABLE
+================================ */
+
+.teacher-list-card .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.teacher-list-card .student-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: auto;
+}
+
+.teacher-list-card .student-table th {
+  background: #1f2937;
+  color: white;
+  padding: 13px 12px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.teacher-list-card .student-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.teacher-list-card .student-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+
+/* ================================
+   ID SORT
+================================ */
+
+.teacher-list-card .sortable-header {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.teacher-list-card .sortable-header:hover {
+  background: #374151;
+}
+
+.teacher-list-card .sort-arrow {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
+
+.teacher-list-card .actions {
+  white-space: nowrap;
+}
+
+.teacher-list-card .actions .update-btn,
+.teacher-list-card .actions .delete-btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+
+/* ================================
+   ROLE BADGE
+================================ */
+
+.teacher-list-card .role-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #e8edff;
+  color: #3867f4;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   LOADING / EMPTY
+================================ */
+
+.loading-message,
+.empty-message {
+  padding: 35px;
+  text-align: center;
+  color: #6b7280;
+}
+
+
+/* ================================
+   TEACHER FOOTER
+================================ */
+
+.teacher-list-card .table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 10px 0;
+}
+
+.teacher-list-card .page-size-section {
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teacher-list-card .page-size-select {
+  min-width: 60px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teacher-list-card .page-size-select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+
+/* ================================
+   TEACHER PAGINATION
+================================ */
+
+.teacher-list-card .pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-list-card .pagination-btn {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.teacher-list-card .pagination-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.teacher-list-card .pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.teacher-list-card .page-number {
+  min-width: 90px;
+  text-align: center;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   OLD TEACHER TABLE SUPPORT
+================================ */
 
 .teacher-table-wrapper {
   width: 100%;
@@ -572,33 +986,6 @@
 
 .teacher-table tbody tr:hover td {
   background: #f9fafb;
-}
-
-
-/* ================================
-   ROLE BADGE
-================================ */
-
-.role-badge {
-  display: inline-block;
-  padding: 5px 12px;
-  border-radius: 20px;
-  background: #e8edff;
-  color: #3867f4;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-
-/* ================================
-   LOADING / EMPTY
-================================ */
-
-.loading-message,
-.empty-message {
-  padding: 35px;
-  text-align: center;
-  color: #6b7280;
 }
 
 
@@ -672,5 +1059,28 @@
 
   .admin-user {
     display: none;
+  }
+
+  .teacher-list-card .table-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .teacher-list-card .search-box {
+    width: 100%;
+  }
+
+  .teacher-list-card .search-box input {
+    width: 100%;
+  }
+
+  .teacher-list-card .table-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .teacher-list-card .pagination {
+    justify-content: flex-end;
   }
 }
