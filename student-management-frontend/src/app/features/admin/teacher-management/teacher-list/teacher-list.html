@@ -1,0 +1,294 @@
+
+<div class="student-container">
+
+  <div class="table-header">
+
+    <div class="search-box">
+
+      <select
+        [value]="searchField"
+        (change)="changeSearchField($any($event.target).value)"
+      >
+        <option value="id">ID</option>
+        <option value="username">Username</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="role">Role</option>
+      </select>
+
+      <input
+        type="text"
+        [placeholder]="'Search by ' + searchField + '...'"
+        [value]="searchTerm"
+        (input)="search($any($event.target).value)"
+      />
+
+    </div>
+
+  </div>
+
+  @if (loading) {
+
+    <div class="student-summary">
+      <span>Loading teachers...</span>
+    </div>
+
+  } @else if (!teachers.length) {
+
+    <div class="student-summary">
+      <span>No teachers found</span>
+    </div>
+
+  } @else {
+
+    @let filtered = filteredTeachers;
+    @let totalPagesValue = totalPages;
+
+    <div class="student-summary">
+
+      <span>
+        Showing {{ visibleTeachers.length }}
+        of {{ filtered.length }} teachers
+      </span>
+
+      @if (searchTerm) {
+
+        <span class="search-result">
+          Search results for "{{ searchTerm }}"
+        </span>
+
+      }
+
+    </div>
+
+    @if (filtered.length > 0) {
+
+      <div class="table-wrapper">
+
+        <table class="student-table">
+
+          <thead>
+
+            <tr>
+
+              <th
+                class="sortable-header"
+                (click)="toggleSort('id')"
+              >
+                <span>ID</span>
+
+                @if (sortField === 'id' && sortDirection === 'asc') {
+                  <span class="sort-arrow">↑</span>
+                } @else {
+                  <span class="sort-arrow">↓</span>
+                }
+
+              </th>
+
+              <th
+                class="sortable-header"
+                (click)="toggleSort('username')"
+              >
+                Username
+
+                @if (sortField === 'username') {
+                  <span class="sort-arrow">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+
+              </th>
+
+              <th
+                class="sortable-header"
+                (click)="toggleSort('name')"
+              >
+                Name
+
+                @if (sortField === 'name') {
+                  <span class="sort-arrow">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+
+              </th>
+
+              <th
+                class="sortable-header"
+                (click)="toggleSort('email')"
+              >
+                Email
+
+                @if (sortField === 'email') {
+                  <span class="sort-arrow">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+
+              </th>
+
+              <th
+                class="sortable-header"
+                (click)="toggleSort('role')"
+              >
+                Role
+
+                @if (sortField === 'role') {
+                  <span class="sort-arrow">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+
+              </th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            @for (teacher of visibleTeachers; track teacher.id) {
+
+              <tr>
+
+                <td
+                  [innerHTML]="teacher.id | highlightMatch:
+                  (searchField === 'id' ? searchTerm : '')"
+                ></td>
+
+                <td
+                  [innerHTML]="teacher.username | highlightMatch:
+                  (searchField === 'username' ? searchTerm : '')"
+                ></td>
+
+                <td
+                  [innerHTML]="teacher.name | highlightMatch:
+                  (searchField === 'name' ? searchTerm : '')"
+                ></td>
+
+                <td
+                  [innerHTML]="teacher.email | highlightMatch:
+                  (searchField === 'email' ? searchTerm : '')"
+                ></td>
+
+                <td
+                  [innerHTML]="teacher.role | highlightMatch:
+                  (searchField === 'role' ? searchTerm : '')"
+                ></td>
+
+                <td class="actions">
+
+                  <button
+                    type="button"
+                    class="update-btn"
+                    (click)="edit.emit(teacher)"
+                  >
+                    Update
+                  </button>
+
+                  <button
+                    type="button"
+                    class="delete-btn"
+                    (click)="remove.emit(teacher)"
+                  >
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    } @else {
+
+      <div class="table-wrapper">
+
+        <table class="student-table">
+
+          <tbody>
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="no-students"
+              >
+                No teachers found
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    }
+
+    <div class="table-footer">
+
+      <div class="page-size-section">
+
+        <span>Teachers per page:</span>
+        &nbsp;
+
+        <select
+          [value]="pageSize"
+          (change)="changePageSize($any($event.target).value)"
+          class="page-size-select"
+        >
+
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+
+        </select>
+
+      </div>
+
+      <div class="pagination">
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage === 1"
+          (click)="previous()"
+        >
+          Previous
+        </button>
+
+        <span class="page-number">
+          Page {{ currentPage }} of {{ totalPagesValue }}
+        </span>
+
+        <button
+          type="button"
+          class="pagination-btn"
+          [disabled]="currentPage >= totalPagesValue"
+          (click)="next()"
+        >
+          Next
+        </button>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+

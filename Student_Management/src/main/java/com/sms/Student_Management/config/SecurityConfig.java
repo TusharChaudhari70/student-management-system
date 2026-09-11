@@ -47,11 +47,26 @@ public class SecurityConfig {
                     "/v3/api-docs/**"
                 ).permitAll()
 
-                // USER APIs ADMIN ONLY
+                // USER PROFILE API (ADMIN, TEACHER, STUDENT)
+                .requestMatchers("/users/profile").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // USER STUDENT APIs (ADMIN, TEACHER)
+                .requestMatchers("/users/students/**").hasAnyRole("ADMIN", "TEACHER")
+
+                // USER APIs ADMIN ONLY (remaining /users/**)
                 .requestMatchers("/users/**")
                 .hasRole("ADMIN")
 
-                // STUDENT APIs
+                // STUDENT APIs - accessible by STUDENT role
+                .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // DOCUMENT APIs - accessible by ADMIN, TEACHER, STUDENT
+                .requestMatchers("/documents/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // TASK APIs - accessible by ADMIN, TEACHER, STUDENT
+                .requestMatchers("/tasks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // ALL OTHER ENDPOINTS
                 .anyRequest()
                 .authenticated()
             )

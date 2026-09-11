@@ -93,6 +93,10 @@ public class StudService {
                             + " already exists. Please use a different email.");
         }
 
+        if (student.getIsDeleted() == null) {
+            student.setIsDeleted(false);
+        }
+
         Student savedStudent = studRepo.save(student);
 
         log.info("Student created successfully with ID: {}",
@@ -249,7 +253,7 @@ public class StudService {
         return updatedStudent;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     public Long deleteStudent(Long id) {
 
         Authentication authentication =
@@ -257,12 +261,32 @@ public class StudService {
 
         String username = authentication.getName();
 
-        log.info("Soft-deleting student ID: {} by admin: {}", id, username);
+        boolean isAdmin = authentication.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        log.info("Soft-deleting student ID: {} by user: {}", id, username);
 
         Student existingStudent = studRepo.findById(id)
                 .orElseThrow(() ->
                         new StudentNotFoundException(
                                 "Student with ID " + id + " does not exist"));
+
+        // Teacher can delete only their own assigned student
+        if (!isAdmin) {
+            if (existingStudent.getTeacher() == null ||
+                    !existingStudent.getTeacher()
+                            .getUsername()
+                            .equals(username)) {
+
+                log.warn(
+                        "Unauthorized delete attempt for student ID: {} by user: {}",
+                        id, username);
+
+                throw new RuntimeException(
+                        "You are not authorized to delete this student");
+            }
+        }
 
         existingStudent.setIsDeleted(true);
         studRepo.save(existingStudent);
@@ -277,11 +301,53 @@ public class StudService {
 
         log.info("Creating {} students", students.size());
 
+        students.forEach(s -> {
+            if (s.getIsDeleted() == null) {
+                s.setIsDeleted(false);
+            }
+        });
+
         List<Student> savedStudents = studRepo.saveAll(students);
 
         log.info("{} students created successfully",
                 savedStudents.size());
 
         return savedStudents;
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
+    public Student getStudentProfileByUsername(String username) {
+
+        log.info("Fetching student profile for username: {}", username);
+
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found with username: " + username));
+
+        Student student = studRepo.findByUserId(user.getId())
+                .orElseThrow(() ->
+                        new RuntimeException("Student profile not found for user: " + username));
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = authentication.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        boolean isTeacher = authentication.getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
+
+        // STUDENT can only view their own profile
+        if (!isAdmin && !isTeacher) {
+            if (!student.getUser().getId().equals(user.getId())) {
+                throw new RuntimeException("You can only view your own profile");
+            }
+        }
+
+        log.info("Student profile fetched for username: {}", username);
+
+        return student;
     }
 }

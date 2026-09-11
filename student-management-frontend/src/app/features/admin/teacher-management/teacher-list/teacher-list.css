@@ -1,0 +1,344 @@
+
+/* ================================
+   MAIN CONTAINER
+================================ */
+
+.student-container {
+  width: 100%;
+}
+
+
+/* ================================
+   TABLE HEADER
+================================ */
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 20px;
+}
+
+
+/* ================================
+   SEARCH BOX
+   Same as Student List
+================================ */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 42px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Search dropdown */
+
+.search-box select {
+  height: 100%;
+  border: none;
+  border-right: 1px solid #e5e7eb;
+  padding: 0 12px;
+  background: #f9fafb;
+  color: #374151;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+
+/* Search input */
+
+.search-box input {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #374151;
+  outline: none;
+  background: white;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+
+/* Focus */
+
+.search-box:focus-within {
+  border-color: #7dd3fc;
+  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.2);
+}
+
+
+/* ================================
+   SUMMARY
+================================ */
+
+.student-summary {
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.search-result {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+
+/* ================================
+   TABLE
+   Same as Student List
+================================ */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+/* Header */
+
+.student-table th {
+  background: #1f2937;
+  color: white;
+  padding: 13px 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+
+/* Body */
+
+.student-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 14px;
+}
+
+
+/* Hover */
+
+.student-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+
+/* ================================
+   SORTING
+================================ */
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sortable-header:hover {
+  background: #374151;
+}
+
+.sort-arrow {
+  display: inline-block;
+  margin-left: 7px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
+
+.actions {
+  white-space: nowrap;
+}
+
+.update-btn,
+.delete-btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.update-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.update-btn:hover {
+  background: #1d4ed8;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+
+/* ================================
+   NO TEACHERS
+================================ */
+
+.no-students {
+  text-align: center;
+  padding: 35px !important;
+  color: #6b7280 !important;
+  font-weight: 600;
+}
+
+
+/* ================================
+   TABLE FOOTER
+================================ */
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 10px 0;
+}
+
+
+/* ================================
+   PAGE SIZE
+================================ */
+
+.page-size-section {
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+  font-size: 13px;
+}
+
+.page-size-select {
+  height: 34px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+
+/* ================================
+   PAGINATION
+================================ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-btn {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.page-number {
+  min-width: 90px;
+  text-align: center;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   SEARCH HIGHLIGHT
+================================ */
+
+:host ::ng-deep .search-highlight {
+  background: #bae6fd;
+  color: #0c4a6e;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .pagination {
+    justify-content: flex-end;
+  }
+
+}
+

@@ -51,6 +51,24 @@ public class UserService {
                 );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
+    public User getProfile(String username) {
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() ->
+                    new RuntimeException("User not found with username: " + username)
+                );
+
+        User profile = new User();
+        profile.setId(user.getId());
+        profile.setUsername(user.getUsername());
+        profile.setName(user.getName());
+        profile.setEmail(user.getEmail());
+        profile.setRole(user.getRole());
+        profile.setPassword(null);
+
+        return profile;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     public User updateUser(Long id, User userDetails) {
 
@@ -90,10 +108,50 @@ public class UserService {
 
     return id;
 }
-@PreAuthorize("hasRole('ADMIN')")
-public List<User> getAllTeachers() {
-    return userRepo.findByRole("TEACHER");
-}
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<User> getAllTeachers() {
+        return userRepo.findByRole("TEACHER");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public User createStudent(User user) {
+        user.setRole("STUDENT");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepo.save(user);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public User getStudentById(Long id) {
+        User student = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        if (!"STUDENT".equals(student.getRole())) {
+            throw new RuntimeException("User with id " + id + " is not a student");
+        }
+
+        return student;
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+    public List<User> getAllStudents() {
+        return userRepo.findByRole("STUDENT");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public User updateStudent(Long id, User studentDetails) {
+        User existingStudent = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        if (!"STUDENT".equals(existingStudent.getRole())) {
+            throw new RuntimeException("User with id " + id + " is not a student");
+        }
+
+        existingStudent.setUsername(studentDetails.getUsername());
+        existingStudent.setName(studentDetails.getName());
+        existingStudent.setEmail(studentDetails.getEmail());
+
+        return userRepo.save(existingStudent);
+    }
 public User findByUsernameForLogin(String username) {
     return userRepo.findByUsername(username)
             .orElseThrow(() ->

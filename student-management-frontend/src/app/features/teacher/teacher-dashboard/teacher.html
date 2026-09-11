@@ -1,0 +1,462 @@
+<app-navbar
+  [username]="profile?.name || username || ''"
+  [role]="role || ''"
+  (logoutRequested)="logout()">
+</app-navbar>
+
+<!-- HORIZONTAL TEACHER NAVIGATION -->
+<nav class="control-panel">
+  <div class="control-tabs">
+
+    <!-- Dashboard -->
+    <div class="tab-group">
+      <button
+        class="ctrl-tab"
+        [class.active]="selectedSection === 'dashboard'"
+        (click)="selectSection('dashboard')">
+        Dashboard
+      </button>
+    </div>
+
+    <!-- Students -->
+    <div class="tab-group">
+      <button
+        class="ctrl-tab"
+        [class.active]="selectedSection === 'students'"
+        (click)="selectSection('students')">
+        My Students
+        <span>▼</span>
+      </button>
+
+      @if (selectedSection === 'students') {
+        <div class="ctrl-submenu">
+
+          <button
+            [class.active]="selectedStudentAction === 'add'"
+            (click)="selectStudentAction('add')">
+            Add Student
+          </button>
+
+          <button
+            [class.active]="selectedStudentAction === 'list'"
+            (click)="selectStudentAction('list')">
+            View My Students
+          </button>
+
+        </div>
+      }
+    </div>
+
+    <!-- Profile -->
+    <div class="tab-group">
+      <button
+        class="ctrl-tab"
+        [class.active]="selectedSection === 'profile'"
+        (click)="selectSection('profile')">
+        My Profile
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+  <!-- DASHBOARD VIEW -->
+  @if (selectedSection === 'dashboard') {
+
+    <div class="page-header">
+      <h1>Teacher Dashboard</h1>
+      <p>Welcome back, {{ profile?.name || username }}</p>
+    </div>
+
+    <div class="dashboard-cards">
+
+      <div
+        class="dashboard-card"
+        (click)="selectSection('students'); selectStudentAction('list')">
+
+        <div class="card-icon">🎓</div>
+
+        <div class="card-details">
+          <h3>My Students</h3>
+          <p>View and manage students assigned to your classes</p>
+        </div>
+
+      </div>
+
+
+      <div
+        class="dashboard-card"
+        (click)="selectSection('profile')">
+
+        <div class="card-icon">👤</div>
+
+        <div class="card-details">
+          <h3>My Profile</h3>
+          <p>View your instructor credentials and details</p>
+        </div>
+
+      </div>
+
+    </div>
+  }
+
+
+  <!-- STUDENTS SECTION -->
+  @if (selectedSection === 'students') {
+
+    <div class="page-header">
+      <!-- <h1>My Students</h1>
+      <p>Manage your assigned student records</p> -->
+    </div>
+&nbsp;
+
+    <!-- ACTION BAR -->
+    <div class="action-bar">
+
+      <!-- <button
+        class="action-btn"
+        [class.action-active]="selectedStudentAction === 'add'"
+        (click)="selectStudentAction('add')">
+        Add Student
+      </button>
+
+      <button
+        class="action-btn"
+        [class.action-active]="selectedStudentAction === 'list'"
+        (click)="selectStudentAction('list')">
+        View All
+      </button> -->
+
+    </div>
+
+
+    <!-- ADD STUDENT FORM -->
+    @if (selectedStudentAction === 'add') {
+
+      <div class="content-card add-student-card">
+
+        <h2>Add New Student</h2>
+
+        <p class="form-description">
+          This student will automatically be assigned to your teacher account.
+        </p>
+
+        <app-student-form
+          [student]="newStudent"
+          submitLabel="Create Student"
+          formName="teacherCreateStudent"
+          (submitted)="addStudent($event)"
+          (cancelled)="cancelAddStudent($event)">
+        </app-student-form>
+
+      </div>
+    }
+
+
+    <!-- VIEW ALL ASSIGNED STUDENTS -->
+    @if (selectedStudentAction === 'list') {
+
+      <div class="content-card">
+
+        <h2>Assigned Students</h2>
+
+        <app-student-list
+          [refreshKey]="studentListRefreshKey"
+          [canDelete]="true"
+          (updateStudent)="openStudentUpdateModal($event)"
+          (deleteStudent)="openStudentDeleteModal($event)">
+        </app-student-list>
+
+      </div>
+    }
+
+  }
+
+
+  <!-- PROFILE VIEW -->
+  @if (selectedSection === 'profile') {
+
+    <div class="page-header">
+      <h1>Teacher Profile</h1>
+      <p>Your instructor account details</p>
+    </div>
+
+
+    <div class="content-card profile-card">
+
+      <div class="profile-header">
+
+        <div class="profile-avatar">
+          {{ (profile?.name || username || 'T').charAt(0).toUpperCase() }}
+        </div>
+
+        <div class="profile-title-block">
+
+          <h2>
+            {{ profile?.name || username }}
+          </h2>
+
+          <span class="profile-badge">
+            {{ profile?.role || role }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <hr class="divider" />
+
+
+      <div class="profile-details-grid">
+
+        <div class="detail-item">
+          <span class="detail-label">Username</span>
+          <span class="detail-value">
+            {{ profile?.username || username }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Full Name</span>
+          <span class="detail-value">
+            {{ profile?.name || 'Not provided' }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Email Address</span>
+          <span class="detail-value">
+            {{ profile?.email || 'Not provided' }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">System Role</span>
+          <span class="detail-value">
+            {{ profile?.role || role }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Account Status</span>
+          <span class="detail-value status-active">
+            ● Active
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  }
+
+</main>
+
+
+<!-- UPDATE MODAL -->
+@if (showStudentUpdateModal) {
+
+  <div class="modal-overlay">
+
+    <div class="modal-box">
+
+      <div class="modal-header">
+
+        <h2>Update Assigned Student</h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeStudentUpdateModal()">
+          ×
+        </button>
+
+      </div>
+
+
+      <form
+        #updateForm="ngForm"
+        (ngSubmit)="saveStudentFromModal(updateForm)">
+
+        <div class="modal-body">
+
+          <div class="form-group">
+
+            <label>Student ID</label>
+
+            <input
+              type="text"
+              [value]="selectedStudentForUpdate?.id"
+              readonly />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Name</label>
+
+            <input
+              type="text"
+              name="updateName"
+              [(ngModel)]="updateStudent.name"
+              required />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Email</label>
+
+            <input
+              type="email"
+              name="updateEmail"
+              [(ngModel)]="updateStudent.email"
+              required />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Course</label>
+
+            <input
+              type="text"
+              name="updateCourse"
+              [(ngModel)]="updateStudent.course"
+              required />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>Age</label>
+
+            <input
+              type="number"
+              name="updateAge"
+              [(ngModel)]="updateStudent.age"
+              required
+              min="1" />
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="closeStudentUpdateModal()">
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="save-btn"
+            [disabled]="updateForm.invalid">
+            Save Changes
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+}
+
+
+<!-- DELETE MODAL -->
+@if (showStudentDeleteModal) {
+
+  <div class="modal-overlay">
+
+    <div class="modal-box delete-modal">
+
+      <div class="modal-header">
+
+        <h2>Delete Assigned Student</h2>
+
+        <button
+          type="button"
+          class="modal-close"
+          (click)="closeStudentDeleteModal()">
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <p class="delete-warning">
+          Are you sure you want to delete this student?
+          (This will perform a soft delete)
+        </p>
+
+
+        <div class="student-details">
+
+          <div>
+            <strong>ID:</strong>
+            {{ selectedStudentForDelete?.id }}
+          </div>
+
+          <div>
+            <strong>Name:</strong>
+            {{ deleteStudent.name }}
+          </div>
+
+          <div>
+            <strong>Email:</strong>
+            {{ deleteStudent.email }}
+          </div>
+
+          <div>
+            <strong>Course:</strong>
+            {{ deleteStudent.course }}
+          </div>
+
+          <div>
+            <strong>Age:</strong>
+            {{ deleteStudent.age }}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closeStudentDeleteModal()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="delete-confirm-btn"
+          (click)="confirmStudentDeleteFromModal()">
+          Confirm Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+}

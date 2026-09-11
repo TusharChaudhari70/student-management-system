@@ -1,0 +1,8 @@
+<nav class="top-navbar">
+  <div class="brand">Student Management System</div>
+  <div class="nav-right">
+    <span class="user-name">{{ username }}</span>
+    <span class="user-role">{{ role }}</span>
+    <button type="button" class="logout-btn" (click)="logoutRequested.emit()">Logout</button>
+  </div>
+</nav>

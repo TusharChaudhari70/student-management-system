@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Teacher } from './student.service';
+import { Teacher } from '../shared/models/teacher.model';
+
+export type { Teacher } from '../shared/models/teacher.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +59,14 @@ export class TeacherService {
 
     return this.http.delete<number>(
       `${this.userApiUrl}/${id}`
+    );
+
+  }
+
+  getProfile(): Observable<Teacher> {
+
+    return this.http.get<Teacher>(
+      `${this.userApiUrl}/profile`
     );
 
   }

@@ -1,24 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Student } from '../shared/models/student.model';
 
-export interface Student {
-  id?: number;
-  name: string;
-  email: string;
-  course: string;
-  age: number;
-  teacher?: any;
-  isDeleted?: boolean;
-}
-export interface Teacher {
-  id: number;
-  username: string;
-  name: string;
-  email: string;
-  role: string;
-  password?: string;
-}
+export type { Student } from '../shared/models/student.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +11,6 @@ export interface Teacher {
 export class StudentService {
 
   private apiUrl = 'http://localhost:8080/students';
-
-  private userApiUrl = 'http://localhost:8080/users';
 
   
 
@@ -50,9 +33,14 @@ export class StudentService {
 
   addStudent(student: Student): Observable<Student> {
 
+    const payload: Student = {
+      ...student,
+      isDeleted: student.isDeleted ?? false
+    };
+
     return this.http.post<Student>(
       this.apiUrl,
-      student
+      payload
     );
 
   }
@@ -88,17 +76,13 @@ export class StudentService {
 
   }
 
-
   /* =========================
-     TEACHER METHODS
+     STUDENT SELF-SERVICE METHODS
   ========================= */
 
-  getAllTeachers(): Observable<Teacher[]> {
-
-    return this.http.get<Teacher[]>(
-      `${this.userApiUrl}/teachers`
+  getMyProfile(): Observable<Student> {
+    return this.http.get<Student>(
+      `${this.apiUrl}/my-profile`
     );
-
   }
-
 }

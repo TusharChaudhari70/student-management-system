@@ -14,5 +14,11 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/005-student-soft-delete.yaml
 
+  - include:
+      file: db/changelog/changes/006-document.yaml
+
+  - include:
+      file: db/changelog/changes/007-task.yaml
+
   - includeAll:
       path: db/changelog/master

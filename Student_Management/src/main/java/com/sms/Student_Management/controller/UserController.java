@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.security.core.Authentication;
 import com.sms.Student_Management.entity.User;
 import com.sms.Student_Management.service.UserService;
 
@@ -22,6 +23,15 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    // ================================
+    // USER PROFILE API
+    // ================================
+
+    @GetMapping("/profile")
+    public User getProfile(Authentication authentication) {
+        return userService.getProfile(authentication.getName());
     }
 
     // ================================
@@ -86,5 +96,36 @@ public class UserController {
             @RequestBody User teacherDetails) {
 
         return userService.updateTeacher(id, teacherDetails);
+    }
+
+    // ================================
+    // STUDENT APIs
+    // ================================
+
+    // Get all students
+    @GetMapping("/students")
+    public List<User> getAllStudents() {
+        return userService.getAllStudents();
+    }
+
+    // Create student
+    @PostMapping("/students")
+    public User createStudent(@RequestBody User user) {
+        return userService.createStudent(user);
+    }
+
+    // Get student by ID
+    @GetMapping("/students/{id}")
+    public User getStudentById(@PathVariable Long id) {
+        return userService.getStudentById(id);
+    }
+
+    // Update student
+    @PutMapping("/students/{id}")
+    public User updateStudent(
+            @PathVariable Long id,
+            @RequestBody User studentDetails) {
+
+        return userService.updateStudent(id, studentDetails);
     }
 }

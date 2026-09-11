@@ -1,0 +1,10 @@
+<form #form="ngForm" (ngSubmit)="submitted.emit(form)">
+  <div class="form-grid">
+    <div class="form-group"><label>Name <span>*</span></label><input type="text" [name]="formName + 'Name'" [(ngModel)]="student.name" required #name="ngModel" placeholder="Enter student name"><small class="error" *ngIf="name.invalid && name.touched">Name is required</small></div>
+    <div class="form-group"><label>Email <span>*</span></label><input type="email" [name]="formName + 'Email'" [(ngModel)]="student.email" required email #email="ngModel" placeholder="Enter student email"><small class="error" *ngIf="email.invalid && email.touched">Enter a valid email</small></div>
+    <div class="form-group"><label>Course <span>*</span></label><input type="text" [name]="formName + 'Course'" [(ngModel)]="student.course" required #course="ngModel" placeholder="Enter course"><small class="error" *ngIf="course.invalid && course.touched">Course is required</small></div>
+    <div class="form-group"><label>Age <span>*</span></label><input type="number" [name]="formName + 'Age'" [(ngModel)]="student.age" required min="1" #age="ngModel" placeholder="Enter age"><small class="error" *ngIf="age.invalid && age.touched">Enter a valid age</small></div>
+    @if (showTeacher) { <div class="form-group"><label>Teacher <span>*</span></label><select [name]="formName + 'Teacher'" [ngModel]="teacherId" (ngModelChange)="teacherIdChange.emit($event)" required #teacher="ngModel"><option [ngValue]="null" disabled>Select Teacher</option>@if (loadingTeachers) { <option disabled>Loading teachers...</option> } @for (teacher of teachers; track teacher.id) { <option [ngValue]="teacher.id">{{ teacher.name || teacher.username }}</option> }</select><small class="error" *ngIf="teacher.invalid && teacher.touched">Teacher is required</small></div> }
+  </div>
+  <div class="form-actions"><button type="submit" class="add-btn" [disabled]="form.invalid">{{ submitLabel }}</button><button type="button" class="cancel-btn" (click)="cancelled.emit(form)">Cancel</button></div>
+</form>
