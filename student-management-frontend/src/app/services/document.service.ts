@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { Document, DocumentResponse } from '../shared/models/document.model';
 
@@ -9,7 +10,7 @@ import { Document, DocumentResponse } from '../shared/models/document.model';
 })
 export class DocumentService {
 
-  private apiUrl = 'http://localhost:8080/documents';
+  private apiUrl = `${environment.apiBaseUrl}/documents`;
 
   constructor(private http: HttpClient) {}
 

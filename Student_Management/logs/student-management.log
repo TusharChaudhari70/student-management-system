@@ -115,3 +115,6 @@
 2026-09-17 12:46:56.416 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 22856 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
 2026-09-17 12:46:56.436 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
 2026-09-17 12:47:18.723 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 24.138 seconds (process running for 30.585)
+2026-09-17 13:30:16.463 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 19012 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 13:30:16.483 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 13:30:38.776 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 23.896 seconds (process running for 31.978)

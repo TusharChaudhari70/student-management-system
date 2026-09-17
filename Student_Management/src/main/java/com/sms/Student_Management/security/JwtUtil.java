@@ -3,6 +3,7 @@ package com.sms.Student_Management.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -11,14 +12,18 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY =
-            "StudentManagementSystemSecretKeyForJWT2026@123456789";
+    private final String secretKey;
+    private final long expirationTime;
 
-    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
+    public JwtUtil(@Value("${app.jwt.secret}") String secretKey,
+            @Value("${app.jwt.expiration-ms}") long expirationTime) {
+        this.secretKey = secretKey;
+        this.expirationTime = expirationTime;
+    }
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(
-                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
+                secretKey.getBytes(StandardCharsets.UTF_8)
         );
     }
 
@@ -28,7 +33,7 @@ public class JwtUtil {
                 .subject(username)
                 .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey())
                 .compact();
     }
