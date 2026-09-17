@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-task-attachment-1
+      author: Codex
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: attachment_name
+                  type: varchar(255)
+              - column:
+                  name: attachment_url
+                  type: varchar(1000)

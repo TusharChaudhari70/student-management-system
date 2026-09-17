@@ -3,6 +3,8 @@ package com.sms.Student_Management.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +30,7 @@ public class Subject {
 
     private String name;
 
+    @JsonIgnore // Prevents infinite JSON recursion through Student.subjects
     @ManyToMany(mappedBy = "subjects")
     private Set<Student> students = new HashSet<>();
 }

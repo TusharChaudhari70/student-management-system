@@ -1,7 +1,290 @@
-.card {
+.login-wrapper {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease;
+}
+
+.login-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 30px;
+  background-color: var(--nav-bg);
+  color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.brand-icon {
+  display: none;
+}
+
+.login-emblem { width: 34px; height: 34px; box-sizing: border-box; padding: 3px; object-fit: contain; border: 1px solid #65c3df; border-radius: 10px; background: #e7f3f8; box-shadow: inset 0 0 0 1px rgba(101,195,223,.25); }
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: #dff5ff; box-shadow: -4px 3px 0 #28566d; }
+:host-context(.theme-dark) .theme-toggle-btn::before { background: transparent; border: 2px solid #65c3df; box-shadow: none; }
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.05);
+}
+
+.login-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+/* ================================
+   ROLE SELECTION CARDS
+================================ */
+
+.role-selection-card {
+  width: 100%;
+  max-width: 580px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.role-selection-emblem { width: 92px; height: 92px; margin: -8px auto 4px; padding: 8px; box-sizing: border-box; object-fit: contain; border: 1px solid #65c3df; border-radius: 18px; background: #e7f3f8; box-shadow: 0 8px 18px rgba(50,108,140,.14); }
+:host-context(.theme-dark) .login-emblem, :host-context(.theme-dark) .role-selection-emblem { background: #284f63; border-color: #3e88ab; }
+
+.welcome-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: var(--text-primary);
+}
+
+.role-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: 0 0 28px 0;
+}
+
+.role-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 20px;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.role-card:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.role-icon {
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #d9edf5;
   border-radius: 10px;
 }
 
-body {
-  background-color: #f5f5f5;
+.role-icon::before { color: #326c8c; font-size: 18px; font-weight: 800; }
+.admin-role-card .role-icon::before { content: 'A'; }
+.teacher-role-card .role-icon::before { content: 'T'; }
+.student-role-card .role-icon::before { content: 'S'; }
+
+.role-info {
+  flex: 1;
 }
+
+.role-info h3 {
+  margin: 0 0 3px 0;
+  font-size: 17px;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.role-info p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.role-arrow {
+  display: none;
+}
+
+/* ================================
+   LOGIN FORM CARD
+================================ */
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.login-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.selected-role-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-admin { background: #fee2e2; color: #991b1b; }
+.badge-teacher { background: #e0e7ff; color: #3730a3; }
+.badge-student { background: #dcfce7; color: #166534; }
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: var(--text-primary);
+}
+
+.form-subtitle {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0 0 20px 0;
+}
+
+.alert-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+.form-control {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  font-size: 14px;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.submit-login-btn {
+  width: 100%;
+  height: 44px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s ease;
+}
+
+.submit-login-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.submit-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Blue project login theme and text-only role selection. */
+.role-card:hover { border-color: #3e88ab; box-shadow: 0 4px 12px rgba(62, 136, 171, .16); }
+.selected-role-badge { font-size: 0; background: #d9edf5; color: #326c8c; }
+.selected-role-badge::before { font-size: 12px; }
+.badge-admin::before { content: 'Admin'; }
+.badge-teacher::before { content: 'Teacher'; }
+.badge-student::before { content: 'Student'; }
+.back-btn { color: #326c8c; }
+.form-control:focus { border-color: #3e88ab; box-shadow: 0 0 0 3px rgba(62, 136, 171, .16); }
+.submit-login-btn { background: #326c8c; }
+.submit-login-btn:hover:not(:disabled) { background: #28566d; }

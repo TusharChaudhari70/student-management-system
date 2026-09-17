@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sms.Student_Management.entity.Task;
@@ -37,6 +38,13 @@ public class TaskController {
             @RequestBody Task task) {
         log.info("Assigning task to student ID: {}", studentId);
         return taskService.assignTaskToStudent(studentId, task);
+    }
+
+    @PostMapping("/assign")
+    public List<Task> assignTaskToStudents(
+            @RequestParam List<Long> studentIds,
+            @RequestBody Task task) {
+        return taskService.assignTaskToStudents(studentIds, task);
     }
 
     /**
@@ -84,9 +92,10 @@ public class TaskController {
     public Task submitTask(
             @PathVariable Long taskId,
             @RequestParam(required = false) String fileUrl,
-            @RequestParam(required = false) String fileName) {
+            @RequestParam(required = false) String fileName,
+            @RequestParam(required = false) String submissionText) {
         log.info("Submitting task ID: {}", taskId);
-        return taskService.submitTask(taskId, fileUrl, fileName);
+        return taskService.submitTask(taskId, fileUrl, fileName, submissionText);
     }
 
     /**

@@ -20,5 +20,14 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/007-task.yaml
 
+  - include:
+      file: db/changelog/changes/008-subject-seed.yaml
+
+  - include:
+      file: db/changelog/changes/009-task-attachment.yaml
+
+  - include:
+      file: db/changelog/changes/010-task-submission.yaml
+
   - includeAll:
       path: db/changelog/master

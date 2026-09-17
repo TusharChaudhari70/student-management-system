@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -8,6 +9,8 @@ import {
   StudentService
 } from '../../../services/student.service';
 import { Teacher, TeacherService } from '../../../services/teacher.service';
+import { SubjectService } from '../../../services/subject.service';
+import { Subject } from '../../../shared/models/subject.model';
 import { StudentList } from '../../../shared/components/student-list/student-list';
 import { Navbar } from '../../../shared/components/navbar/navbar';
 import { StudentForm } from '../../../shared/components/student-form/student-form';
@@ -17,6 +20,7 @@ import { TeacherList } from '../teacher-management/teacher-list/teacher-list';
 @Component({
   selector: 'app-admin',
   imports: [
+    CommonModule,
     FormsModule,
     StudentList,
     Navbar,
@@ -29,6 +33,8 @@ import { TeacherList } from '../teacher-management/teacher-list/teacher-list';
 })
 export class Admin {
 
+  readonly Math = Math;
+
   username = localStorage.getItem('username');
   role = localStorage.getItem('role');
 
@@ -40,6 +46,8 @@ export class Admin {
   newStudent = {
     name: '',
     email: '',
+    username: '',
+    password: '',
     course: '',
     age: 0,
     teacher: null as { id: number } | null
@@ -48,6 +56,11 @@ export class Admin {
   teachers: Teacher[] = [];
   selectedTeacherId: number | null = null;
   loadingTeachers = false;
+
+  // Subject dropdown for the student add/update forms
+  subjects: Subject[] = [];
+  selectedSubjectIds: number[] = [];
+  loadingSubjects = false;
 
   // Student update
   updateStudentId: number | null = null;
@@ -65,12 +78,16 @@ export class Admin {
   updateStudent = {
     name: '',
     email: '',
+    username: '',
+    password: '',
     course: '',
     age: 0,
     teacher: null as { id: number } | null
   };
 
   selectedUpdateTeacherId: number | null = null;
+  updateSubjectIds: number[] = [];
+  savingStudentUpdate = false;
   searchingStudent = false;
   studentFound = false;
 
@@ -151,10 +168,40 @@ export class Admin {
   searchingDeleteTeacher = false;
   deleteTeacherFound = false;
 
+  // =========================================================
+  // SUBJECT MANAGEMENT STATE
+  // =========================================================
+
+  selectedSubjectAction = '';
+
+  // Subject add
+  newSubject = {
+    name: ''
+  };
+
+  // Subject list
+  subjectList: Subject[] = [];
+  loadingSubjectsList = false;
+  subjectSearchTerm = '';
+  subjectColumnFilters = { id: '', name: '', students: '' };
+  subjectSortDirection: 'asc' | 'desc' = 'asc';
+  subjectPageSize = 5;
+  subjectCurrentPage = 1;
+  subjectStudentCounts = new Map<number, number>();
+
+  // Subject update
+  selectedSubjectForUpdate: Subject | null = null;
+  selectedSubjectForDelete: Subject | null = null;
+  showSubjectUpdateModal = false;
+  showSubjectDeleteModal = false;
+  updateSubject = { name: '' };
+  submittingSubject = false;
+
   constructor(
     private authService: Auth,
     private studentService: StudentService,
     private teacherService: TeacherService,
+    private subjectService: SubjectService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -165,6 +212,20 @@ export class Admin {
 
   // Controls the main dashboard sections.
   selectSection(section: string) {
+
+    if (section === 'subjects') {
+      if (this.selectedSection === 'subjects') {
+        this.selectedSection = '';
+        this.selectedSubjectAction = '';
+        return;
+      }
+
+      this.selectedSection = 'subjects';
+      this.selectedStudentAction = '';
+      this.selectedTeacherAction = '';
+      this.selectedSubjectAction = 'add';
+      return;
+    }
 
     if (section === 'students') {
 
@@ -179,13 +240,16 @@ export class Admin {
       }
 
       this.selectedSection = 'students';
-      this.selectedStudentAction = '';
+      this.selectedStudentAction = 'add';
       this.selectedTeacherAction = '';
 
       this.resetUpdate();
       this.resetDelete();
       this.resetTeacherUpdate();
       this.resetTeacherDelete();
+
+      this.loadTeachers();
+      this.loadSubjects();
 
       return;
     }
@@ -206,7 +270,7 @@ export class Admin {
       }
 
       this.selectedSection = 'teachers';
-      this.selectedTeacherAction = '';
+      this.selectedTeacherAction = 'add';
       this.selectedStudentAction = '';
 
       this.resetUpdate();
@@ -259,6 +323,7 @@ export class Admin {
 
     if (action === 'add' || action === 'update') {
       this.loadTeachers();
+      this.loadSubjects();
     }
   }
 
@@ -331,6 +396,35 @@ export class Admin {
       });
   }
 
+  // Loads the subjects shown in the student add/update dropdowns.
+  loadSubjects() {
+
+    this.loadingSubjects = true;
+
+    this.subjectService
+      .getAllSubjects()
+      .pipe(
+        finalize(() => {
+          this.loadingSubjects = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (subjects) => {
+          this.subjects = subjects;
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+          console.error('Error loading subjects:', error);
+          this.subjects = [];
+          this.cdr.detectChanges();
+        }
+
+      });
+  }
+
   // Adds a new student through StudentService.
   addStudent(form: NgForm) {
 
@@ -345,8 +439,16 @@ export class Admin {
       return;
     }
 
+    if (this.selectedSubjectIds.length === 0) {
+      alert('Please select at least one subject.');
+      return;
+    }
+
     const studentToAdd = {
       ...this.newStudent,
+      username: this.newStudent.username.trim(),
+      course: '',
+      subjects: this.selectedSubjectIds.map(id => ({ id })),
       isDeleted: false,
       teacher: {
         id: this.selectedTeacherId
@@ -365,6 +467,8 @@ export class Admin {
           form.resetForm({
             name: '',
             email: '',
+            username: '',
+            password: '',
             course: '',
             age: 0,
             teacher: null
@@ -372,6 +476,7 @@ export class Admin {
 
           this.clearStudentForm();
           this.selectedTeacherId = null;
+          this.selectedSubjectIds = [];
 
           // Refresh student table
           this.studentListRefreshKey++;
@@ -405,6 +510,8 @@ export class Admin {
     form.resetForm({
       name: '',
       email: '',
+      username: '',
+      password: '',
       course: '',
       age: 0,
       teacher: null
@@ -419,12 +526,15 @@ export class Admin {
     this.newStudent = {
       name: '',
       email: '',
+      username: '',
+      password: '',
       course: '',
       age: 0,
       teacher: null
     };
 
     this.selectedTeacherId = null;
+    this.selectedSubjectIds = [];
   }
 
   // Finds a student and loads its data into the update form.
@@ -481,6 +591,8 @@ export class Admin {
           this.updateStudent = {
             name: student.name,
             email: student.email,
+            username: student.user?.username ?? student.username ?? '',
+            password: '',
             course: student.course,
             age: student.age,
             teacher: student.teacher
@@ -492,6 +604,11 @@ export class Admin {
 
           this.selectedUpdateTeacherId =
             student.teacher?.id ?? null;
+
+          this.updateSubjectIds =
+            (student.subjects ?? [])
+              .map(subject => subject.id)
+              .filter((id): id is number => id !== undefined);
 
           this.studentFound = true;
 
@@ -620,12 +737,15 @@ export class Admin {
     this.updateStudent = {
       name: '',
       email: '',
+      username: '',
+      password: '',
       course: '',
       age: 0,
       teacher: null
     };
 
     this.selectedUpdateTeacherId = null;
+    this.updateSubjectIds = [];
   }
 
   resetUpdate() {
@@ -658,6 +778,8 @@ export class Admin {
     this.updateStudent = {
       name: student.name,
       email: student.email,
+      username: student.user?.username ?? student.username ?? '',
+      password: '',
       course: student.course,
       age: student.age,
       teacher: student.teacher
@@ -670,9 +792,14 @@ export class Admin {
     this.selectedUpdateTeacherId =
       student.teacher?.id ?? null;
 
+    this.updateSubjectIds = (student.subjects ?? [])
+      .map(subject => subject.id)
+      .filter((id): id is number => id !== undefined);
+
     this.showStudentUpdateModal = true;
 
     this.loadTeachers();
+    this.loadSubjects();
 
     this.cdr.detectChanges();
   }
@@ -686,6 +813,12 @@ export class Admin {
     this.resetUpdate();
 
     this.cdr.detectChanges();
+  }
+
+  toggleUpdateSubject(subjectId: number, checked: boolean): void {
+    this.updateSubjectIds = checked
+      ? [...new Set([...this.updateSubjectIds, subjectId])]
+      : this.updateSubjectIds.filter(id => id !== subjectId);
   }
 
   // Saves student changes from the popup.
@@ -717,18 +850,24 @@ export class Admin {
     const studentData = {
       name: this.updateStudent.name,
       email: this.updateStudent.email,
+      username: this.updateStudent.username.trim(),
+      password: this.updateStudent.password,
       course: this.updateStudent.course,
+      subjects: this.updateSubjectIds.map(id => ({ id })),
       age: this.updateStudent.age,
       teacher: {
         id: this.selectedUpdateTeacherId
       }
     };
 
+    this.savingStudentUpdate = true;
     this.studentService
       .updateStudent(studentId, studentData)
       .subscribe({
 
         next: (response) => {
+
+          this.savingStudentUpdate = false;
 
           console.log('Student updated:', response);
 
@@ -1093,6 +1232,17 @@ export class Admin {
       email: '',
       password: ''
     };
+  }
+
+  selectSubjectAction(action: string) {
+    this.selectedSection = 'subjects';
+    this.selectedStudentAction = '';
+    this.selectedTeacherAction = '';
+    this.selectedSubjectAction = action;
+
+    if (action === 'list') {
+      this.loadSubjectList();
+    }
   }
 
   cancelAddTeacher(form: NgForm) {
@@ -1883,6 +2033,211 @@ confirmTeacherDeleteFromModal() {
     this.searchingDeleteTeacher = false;
 
     this.clearDeleteTeacher();
+  }
+
+  loadSubjectList(): void {
+    this.loadingSubjectsList = true;
+    this.subjectService.getAllSubjects()
+      .pipe(finalize(() => {
+        this.loadingSubjectsList = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: (subjects) => {
+          this.subjectList = subjects;
+          this.subjectCurrentPage = 1;
+          this.loadSubjectStudentCounts();
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+
+          this.savingStudentUpdate = false;
+          this.subjectList = [];
+          alert(error.error?.message || 'Failed to load subjects.');
+        }
+      });
+  }
+
+  addSubject(form: NgForm): void {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    this.submittingSubject = true;
+    this.subjectService.createSubject({ name: this.newSubject.name.trim() })
+      .pipe(finalize(() => {
+        this.submittingSubject = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: () => {
+          form.resetForm();
+          this.newSubject = { name: '' };
+          this.loadSubjectList();
+          alert('Subject added successfully.');
+        },
+        error: (error) => alert(error.error?.message || 'Failed to add subject.')
+      });
+  }
+
+  cancelAddSubjectForm(form: NgForm): void {
+    form.resetForm();
+    this.newSubject = { name: '' };
+    this.selectedSubjectAction = '';
+  }
+
+  onSubjectSearch(event: Event): void {
+    this.subjectSearchTerm = (event.target as HTMLInputElement).value;
+    this.subjectCurrentPage = 1;
+  }
+
+  clearSubjectSearch(): void {
+    this.subjectSearchTerm = '';
+    this.subjectCurrentPage = 1;
+  }
+
+  applySubjectColumnFilters(id: string, name: string, students: string): void {
+    this.subjectColumnFilters = { id: id.trim(), name: name.trim(), students: students.trim() };
+    this.subjectCurrentPage = 1;
+  }
+
+  toggleSubjectSort(): void {
+    this.subjectSortDirection = this.subjectSortDirection === 'asc' ? 'desc' : 'asc';
+  }
+
+  getFilteredSortedSubjects(): Subject[] {
+    const term = this.subjectSearchTerm.trim().toLowerCase();
+    return this.subjectList
+      .filter(subject => !term || (subject.name ?? '').toLowerCase().includes(term))
+      .filter(subject => !this.subjectColumnFilters.id.trim() || String(subject.id ?? '') === this.subjectColumnFilters.id.trim())
+      .filter(subject => (subject.name ?? '').toLowerCase().includes(this.subjectColumnFilters.name.trim().toLowerCase()))
+      .filter(subject => String(this.getStudentCount(subject.id)).includes(this.subjectColumnFilters.students.trim()))
+      .sort((a, b) => this.subjectSortDirection === 'asc'
+        ? (a.id ?? 0) - (b.id ?? 0)
+        : (b.id ?? 0) - (a.id ?? 0));
+  }
+
+  getVisibleSubjects(): Subject[] {
+    if (this.subjectPageSize === 0) return this.getFilteredSortedSubjects();
+    const start = (this.subjectCurrentPage - 1) * this.subjectPageSize;
+    return this.getFilteredSortedSubjects().slice(start, start + this.subjectPageSize);
+  }
+
+  getSubjectTotalPages(): number {
+    if (this.subjectPageSize === 0) return 1;
+    return Math.max(1, Math.ceil(this.getFilteredSortedSubjects().length / this.subjectPageSize));
+  }
+
+  setSubjectPageSize(value: string): void {
+    const pageSize = Number(value);
+    if ([0, 5, 10, 15, 20, 25, 50, 100].includes(pageSize)) {
+      this.subjectPageSize = pageSize;
+      this.subjectCurrentPage = 1;
+    }
+  }
+
+  getSubjectPageNumbers(): number[] {
+    return Array.from({ length: this.getSubjectTotalPages() }, (_, index) => index + 1);
+  }
+
+  goToSubjectPage(page: number): void {
+    if (page >= 1 && page <= this.getSubjectTotalPages()) this.subjectCurrentPage = page;
+  }
+
+  previousSubjectPage(): void {
+    this.goToSubjectPage(this.subjectCurrentPage - 1);
+  }
+
+  nextSubjectPage(): void {
+    this.goToSubjectPage(this.subjectCurrentPage + 1);
+  }
+
+  getStudentCount(subjectId?: number): number {
+    return subjectId ? this.subjectStudentCounts.get(subjectId) ?? 0 : 0;
+  }
+
+  private loadSubjectStudentCounts(): void {
+    this.studentService.getAllStudents().subscribe({
+      next: students => {
+        this.subjectStudentCounts = new Map<number, number>();
+        students.forEach(student => student.subjects?.forEach(subject => {
+          if (subject.id) this.subjectStudentCounts.set(subject.id, (this.subjectStudentCounts.get(subject.id) ?? 0) + 1);
+        }));
+        this.cdr.detectChanges();
+      },
+      error: () => this.subjectStudentCounts = new Map<number, number>()
+    });
+  }
+
+  getSubjectColor(subjectId?: number): string {
+    const colors = ['#2563eb', '#7c3aed', '#0891b2', '#059669', '#d97706'];
+    return colors[(subjectId ?? 0) % colors.length];
+  }
+
+  openSubjectUpdateModal(subject: Subject): void {
+    this.selectedSubjectForUpdate = subject;
+    this.updateSubject = { name: subject.name ?? '' };
+    this.showSubjectUpdateModal = true;
+  }
+
+  closeSubjectUpdateModal(): void {
+    this.showSubjectUpdateModal = false;
+    this.selectedSubjectForUpdate = null;
+    this.updateSubject = { name: '' };
+  }
+
+  saveSubjectFromModal(form: NgForm): void {
+    const id = this.selectedSubjectForUpdate?.id;
+    if (!id || form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    this.submittingSubject = true;
+    this.subjectService.updateSubject(id, { name: this.updateSubject.name.trim() })
+      .pipe(finalize(() => {
+        this.submittingSubject = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: () => {
+          this.closeSubjectUpdateModal();
+          this.loadSubjectList();
+          alert('Subject updated successfully.');
+        },
+        error: (error) => alert(error.error?.message || 'Failed to update subject.')
+      });
+  }
+
+  openSubjectDeleteModal(subject: Subject): void {
+    this.selectedSubjectForDelete = subject;
+    this.showSubjectDeleteModal = true;
+  }
+
+  closeSubjectDeleteModal(): void {
+    this.showSubjectDeleteModal = false;
+    this.selectedSubjectForDelete = null;
+  }
+
+  confirmSubjectDeleteFromModal(): void {
+    const id = this.selectedSubjectForDelete?.id;
+    if (!id) return;
+
+    this.submittingSubject = true;
+    this.subjectService.deleteSubject(id)
+      .pipe(finalize(() => {
+        this.submittingSubject = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: () => {
+          this.closeSubjectDeleteModal();
+          this.loadSubjectList();
+          alert('Subject deleted successfully.');
+        },
+        error: (error) => alert(error.error?.message || 'Subject cannot be deleted.')
+      });
   }
 
 }

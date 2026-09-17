@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.column-filter-row th { padding: 7px 8px; background: var(--bg-card); }
+.column-filter-row input { width: 100%; min-width: 76px; height: 30px; box-sizing: border-box; padding: 0 8px; border: 1px solid var(--input-border); border-radius: 8px; background: var(--input-bg); color: var(--input-text); font-size: 12px; font-weight: 400; }
+.column-filter-row input:focus { outline: none; border-color: #3e88ab; }
+
 
 /* ================================
    TABLE HEADER
@@ -341,4 +345,3 @@
   }
 
 }
-

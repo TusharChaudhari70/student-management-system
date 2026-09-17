@@ -1,10 +1,12 @@
-
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Auth } from '../../../core/services/auth';
+import { ThemeService } from '../../../core/services/theme.service';
+
+export type UserRole = 'ADMIN' | 'TEACHER' | 'STUDENT';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,7 @@ import { Auth } from '../../../core/services/auth';
 })
 export class Login {
 
+  selectedRole: UserRole | null = null; // null = Role selection screen, value = Login form screen
   username = '';
   password = '';
 
@@ -26,26 +29,37 @@ export class Login {
   constructor(
     private authService: Auth,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public themeService: ThemeService
   ) { }
-  login(): void {
 
-    // Clear previous error
+  selectRole(role: UserRole): void {
+    this.selectedRole = role;
+    this.username = '';
+    this.password = '';
+    this.errorMessage = '';
+  }
+
+  resetRoleSelection(): void {
+    this.selectedRole = null;
+    this.username = '';
+    this.password = '';
+    this.errorMessage = '';
+  }
+
+  login(): void {
     this.errorMessage = '';
 
-    // Username validation
     if (!this.username.trim()) {
-      this.errorMessage = 'Username is required';
+      this.errorMessage = 'Username or Email is required';
       return;
     }
 
-    // Password validation
     if (!this.password) {
       this.errorMessage = 'Password is required';
       return;
     }
 
-    // Start loading
     this.loading = true;
 
     const loginData = {
@@ -54,13 +68,7 @@ export class Login {
     };
 
     this.authService.login(loginData).subscribe({
-
-      // SUCCESS
       next: (response) => {
-
-        console.log('Login successful:', response);
-
-        // Stop loading immediately
         this.loading = false;
         this.cdr.detectChanges();
 
@@ -69,68 +77,41 @@ export class Login {
           return;
         }
 
-        // Store login information
+        // Validate selected role against actual role if role was explicitly chosen
+        if (this.selectedRole && response.role !== this.selectedRole) {
+          this.errorMessage = `This account is a ${response.role}, not a ${this.selectedRole}. Please choose ${response.role} to proceed.`;
+          return;
+        }
+
         localStorage.setItem('token', response.token);
         localStorage.setItem('username', response.username);
         localStorage.setItem('role', response.role);
 
-        // Route based on role
         if (response.role === 'ADMIN') {
-
-          this.router.navigate(['/admin']);
-
+          this.router.navigate(['/admin'], { replaceUrl: true });
         } else if (response.role === 'TEACHER') {
-
-          this.router.navigate(['/teacher']);
-
+          this.router.navigate(['/teacher'], { replaceUrl: true });
         } else if (response.role === 'STUDENT') {
-
-          this.router.navigate(['/student']);
-
+          this.router.navigate(['/student'], { replaceUrl: true });
         } else {
-
-          // Remove unauthorized login information
-          localStorage.removeItem('token');
-          localStorage.removeItem('username');
-          localStorage.removeItem('role');
-
-          this.errorMessage =
-            'Access denied: You do not have permission to access this page.';
+          localStorage.clear();
+          this.errorMessage = 'Access denied: Unknown role.';
         }
       },
-
-      // ERROR
       error: (error) => {
-
-        console.error('Login error:', error);
-
         this.loading = false;
-
-        if (
-          error?.status === 400 ||
-          error?.status === 401 ||
-          error?.status === 403
-        ) {
-
+        if (error?.status === 400 || error?.status === 401 || error?.status === 403) {
           this.errorMessage = 'Invalid username or password';
-
         } else if (error?.status === 0) {
-
-          this.errorMessage =
-            'Unable to connect to server. Please make sure the backend is running.';
-
+          this.errorMessage = 'Unable to connect to server. Please ensure backend is running.';
         } else {
-
-          this.errorMessage =
-            'Something went wrong. Please try again.';
+          this.errorMessage = 'Login failed. Please verify credentials.';
         }
-
         this.cdr.detectChanges();
       }
     });
   }
 
-  // Remove old error when user starts typing again
   clearError(): void {
     this.errorMessage = '';
   }

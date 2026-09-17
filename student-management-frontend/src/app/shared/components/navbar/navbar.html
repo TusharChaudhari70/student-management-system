@@ -1,8 +1,29 @@
 <nav class="top-navbar">
-  <div class="brand">Student Management System</div>
+  <button type="button" class="brand" (click)="navigateToDashboard()" title="Go to dashboard">
+    <span>Student Management System</span>
+  </button>
+  <ng-content select="[navbar-nav]"></ng-content>
   <div class="nav-right">
-    <span class="user-name">{{ username }}</span>
-    <span class="user-role">{{ role }}</span>
-    <button type="button" class="logout-btn" (click)="logoutRequested.emit()">Logout</button>
+    <button
+      type="button"
+      class="theme-toggle-btn"
+      (click)="themeService.toggleTheme()"
+      [title]="'Switch to ' + (themeService.currentTheme() === 'light' ? 'Dark' : 'Light') + ' theme'"
+    >
+    </button>
+    <button type="button" class="profile-btn" (click)="profileRequested.emit()">
+      <span class="profile-avatar">{{ username.charAt(0).toUpperCase() }}</span>
+      <span class="profile-copy"><strong>{{ username }}</strong><small>{{ role }}</small></span>
+    </button>
+    <button type="button" class="logout-btn" (click)="confirmLogout()">Logout</button>
   </div>
 </nav>
+
+<div class="toast-stack" aria-live="polite" aria-atomic="true">
+  @for (toast of toastService.messages(); track toast.id) {
+    <div class="app-toast" [class.toast-error]="toast.type === 'error'" [class.toast-success]="toast.type === 'success'" [class.toast-closing]="toast.closing">
+      <span>{{ toast.text }}</span>
+      <button type="button" aria-label="Close notification" (click)="toastService.dismiss(toast.id)">×</button>
+    </div>
+  }
+</div>

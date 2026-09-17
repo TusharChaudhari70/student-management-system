@@ -1,353 +1,544 @@
 package com.sms.Student_Management.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sms.Student_Management.entity.Student;
+import com.sms.Student_Management.entity.Subject;
 import com.sms.Student_Management.entity.User;
 import com.sms.Student_Management.exception.StudentNotFoundException;
 import com.sms.Student_Management.repository.StudRepo;
+import com.sms.Student_Management.repository.SubjectRepo;
 import com.sms.Student_Management.repository.UserRepo;
 
 @Service
 public class StudService {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(StudService.class);
+private static final Logger log =
+        LoggerFactory.getLogger(StudService.class);
 
-    private final StudRepo studRepo;
-    private final UserRepo userRepo;
+private final StudRepo studRepo;
+private final UserRepo userRepo;
+private final SubjectRepo subjectRepo;
+private final PasswordEncoder passwordEncoder;
 
-    public StudService(StudRepo studRepo, UserRepo userRepo) {
-        this.studRepo = studRepo;
-        this.userRepo = userRepo;
+public StudService(
+        StudRepo studRepo,
+        UserRepo userRepo,
+        SubjectRepo subjectRepo,
+        PasswordEncoder passwordEncoder) {
+
+    this.studRepo = studRepo;
+    this.userRepo = userRepo;
+    this.subjectRepo = subjectRepo;
+    this.passwordEncoder = passwordEncoder;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+@Transactional
+public Student createStudent(Student student) {
+
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+    boolean isTeacher = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
+
+    log.info("Creating student by user: {}", username);
+
+    if (isAdmin) {
+
+        if (student.getTeacher() == null ||
+                student.getTeacher().getId() == null) {
+
+            throw new RuntimeException("Please select a teacher");
+        }
+
+        Long teacherId = student.getTeacher().getId();
+
+        User teacher = userRepo.findById(teacherId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Selected teacher not found"));
+
+        if (!"TEACHER".equals(teacher.getRole())) {
+            throw new RuntimeException(
+                    "Selected user is not a TEACHER");
+        }
+
+        student.setTeacher(teacher);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public Student createStudent(Student student) {
+    if (isTeacher) {
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+        User teacher = userRepo.findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException("Teacher not found"));
 
-        String username = authentication.getName();
+        student.setTeacher(teacher);
+    }
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    if (student.getEmail() == null ||
+            student.getEmail().trim().isEmpty()) {
 
-        boolean isTeacher = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
+        throw new RuntimeException("Student email is required");
+    }
 
-        log.info("Creating student by user: {}", username);
+    student.setEmail(student.getEmail().trim());
 
-        // ADMIN selects the teacher from the Add Student form
-        if (isAdmin) {
+    if (studRepo.existsByEmail(student.getEmail())) {
 
-            if (student.getTeacher() == null ||
-                    student.getTeacher().getId() == null) {
+        throw new RuntimeException(
+                "Student with email " + student.getEmail()
+                        + " already exists. Please use a different email.");
+    }
 
-                throw new RuntimeException("Please select a teacher");
-            }
+    if (student.getIsDeleted() == null) {
+        student.setIsDeleted(false);
+    }
 
-            Long teacherId = student.getTeacher().getId();
+    String loginUsername = student.getUsername() == null
+            ? null
+            : student.getUsername().trim();
 
-            User teacher = userRepo.findById(teacherId)
-                    .orElseThrow(() ->
-                            new RuntimeException("Selected teacher not found"));
+    String loginPassword = student.getPassword();
 
-            if (!"TEACHER".equals(teacher.getRole())) {
-                throw new RuntimeException("Selected user is not a TEACHER");
-            }
+    if (loginUsername == null || loginUsername.isEmpty()) {
+        throw new RuntimeException(
+                "Username is required for the student login account");
+    }
 
-            student.setTeacher(teacher);
+    if (loginPassword == null || loginPassword.trim().isEmpty()) {
+        throw new RuntimeException(
+                "Password is required for the student login account");
+    }
 
-            log.info("Admin assigned teacher ID: {}", teacherId);
-        }
+    if (userRepo.findByUsername(loginUsername).isPresent()) {
+        throw new RuntimeException(
+                "Username " + loginUsername
+                        + " is already taken. Please choose another username.");
+    }
 
-        // TEACHER is automatically assigned as the student's teacher
-        if (isTeacher) {
+    if (userRepo.findByEmail(student.getEmail()).isPresent()) {
+        throw new RuntimeException(
+                "A login account already exists for email: "
+                        + student.getEmail());
+    }
 
-            User teacher = userRepo.findByUsername(username)
-                    .orElseThrow(() ->
-                            new RuntimeException("Teacher not found"));
+    Set<Subject> selectedSubjects =
+            resolveSubjects(student.getSubjects());
 
-            student.setTeacher(teacher);
+    student.setSubjects(selectedSubjects);
 
-            log.info("Student assigned to teacher: {}", username);
-        }
+    student.setCourse(joinSubjectNames(selectedSubjects));
 
-        if (studRepo.existsByEmail(student.getEmail())) {
+    User studentUser = new User();
 
-            log.warn("Student creation failed. Email already exists: {}",
-                    student.getEmail());
+    studentUser.setUsername(loginUsername);
+    studentUser.setPassword(
+            passwordEncoder.encode(loginPassword));
+    studentUser.setRole("STUDENT");
+    studentUser.setName(student.getName());
+    studentUser.setEmail(student.getEmail());
+
+    User savedUser = userRepo.save(studentUser);
+
+    student.setUser(savedUser);
+
+    Student savedStudent = studRepo.save(student);
+
+    log.info(
+            "Student created successfully with ID: {}",
+            savedStudent.getId());
+
+    return savedStudent;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+public List<Student> getAllStudents() {
+
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+    if (isAdmin) {
+
+        List<Student> students = studRepo.findAll();
+
+        log.info(
+                "Admin fetched {} students",
+                students.size());
+
+        return students;
+    }
+
+    List<Student> students =
+            studRepo.findByTeacherUsername(username);
+
+    log.info(
+            "Teacher {} fetched {} students",
+            username,
+            students.size());
+
+    return students;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+public Student getStudentById(Long id) {
+
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+    Student student = studRepo.findById(id)
+            .orElseThrow(() ->
+                    new StudentNotFoundException(
+                            "Student with ID " + id
+                                    + " does not exist"));
+
+    if (isAdmin) {
+        return student;
+    }
+
+    if (student.getTeacher() == null ||
+            !student.getTeacher()
+                    .getUsername()
+                    .equals(username)) {
+
+        throw new RuntimeException(
+                "You are not authorized to access this student");
+    }
+
+    return student;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+@Transactional
+public Student updateStudent(
+        Long id,
+        Student studentDetails) {
+
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+    Student existingStudent = studRepo.findById(id)
+            .orElseThrow(() ->
+                    new StudentNotFoundException(
+                            "Student with ID " + id
+                                    + " does not exist"));
+
+    if (!isAdmin) {
+
+        if (existingStudent.getTeacher() == null ||
+                !existingStudent.getTeacher()
+                        .getUsername()
+                        .equals(username)) {
 
             throw new RuntimeException(
-                    "Student with email " + student.getEmail()
-                            + " already exists. Please use a different email.");
+                    "You are not authorized to update this student");
         }
+    }
+
+    existingStudent.setName(studentDetails.getName());
+    existingStudent.setEmail(studentDetails.getEmail());
+    existingStudent.setAge(studentDetails.getAge());
+
+    if (studentDetails.getSubjects() != null &&
+            !studentDetails.getSubjects().isEmpty()) {
+
+        Set<Subject> selectedSubjects =
+                resolveSubjects(studentDetails.getSubjects());
+
+        existingStudent.setSubjects(selectedSubjects);
+
+        existingStudent.setCourse(
+                joinSubjectNames(selectedSubjects));
+
+    } else if (studentDetails.getCourse() != null) {
+
+        existingStudent.setCourse(
+                studentDetails.getCourse());
+    }
+
+    User loginUser = existingStudent.getUser();
+
+    if (loginUser == null) {
+        String usernameForNewAccount = studentDetails.getUsername() == null ? "" : studentDetails.getUsername().trim();
+        String passwordForNewAccount = studentDetails.getPassword() == null ? "" : studentDetails.getPassword().trim();
+        if (!usernameForNewAccount.isEmpty() || !passwordForNewAccount.isEmpty()) {
+            if (usernameForNewAccount.isEmpty() || passwordForNewAccount.isEmpty()) {
+                throw new RuntimeException("Enter both username and password to create this student's login account");
+            }
+            if (userRepo.findByUsername(usernameForNewAccount).isPresent()) {
+                throw new RuntimeException("Username " + usernameForNewAccount + " is already taken. Please choose another username.");
+            }
+            loginUser = new User();
+            loginUser.setUsername(usernameForNewAccount);
+            loginUser.setPassword(passwordEncoder.encode(passwordForNewAccount));
+            loginUser.setRole("STUDENT");
+            loginUser.setName(existingStudent.getName());
+            loginUser.setEmail(existingStudent.getEmail());
+            existingStudent.setUser(userRepo.save(loginUser));
+        }
+    } else {
+
+        String newUsername = studentDetails.getUsername() == null
+                ? null
+                : studentDetails.getUsername().trim();
+
+        if (newUsername != null &&
+                !newUsername.isEmpty() &&
+                !newUsername.equals(loginUser.getUsername())) {
+
+            if (userRepo.findByUsername(newUsername).isPresent()) {
+
+                throw new RuntimeException(
+                        "Username " + newUsername
+                                + " is already taken. Please choose another username.");
+            }
+
+            loginUser.setUsername(newUsername);
+        }
+
+        if (studentDetails.getPassword() != null &&
+                !studentDetails.getPassword()
+                        .trim()
+                        .isEmpty()) {
+
+            loginUser.setPassword(
+                    passwordEncoder.encode(
+                            studentDetails.getPassword()));
+        }
+
+        loginUser.setName(existingStudent.getName());
+        loginUser.setEmail(existingStudent.getEmail());
+
+        userRepo.save(loginUser);
+    }
+
+    if (isAdmin) {
+
+        if (studentDetails.getTeacher() == null ||
+                studentDetails.getTeacher().getId() == null) {
+
+            throw new RuntimeException(
+                    "Please select a teacher");
+        }
+
+        Long teacherId =
+                studentDetails.getTeacher().getId();
+
+        User teacher = userRepo.findById(teacherId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Selected teacher not found"));
+
+        if (!"TEACHER".equals(teacher.getRole())) {
+
+            throw new RuntimeException(
+                    "Selected user is not a TEACHER");
+        }
+
+        existingStudent.setTeacher(teacher);
+    }
+
+    Student updatedStudent =
+            studRepo.save(existingStudent);
+
+    log.info(
+            "Student ID: {} updated successfully",
+            id);
+
+    return updatedStudent;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+public Long deleteStudent(Long id) {
+
+    Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+
+    String username = authentication.getName();
+
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+    Student existingStudent = studRepo.findById(id)
+            .orElseThrow(() ->
+                    new StudentNotFoundException(
+                            "Student with ID " + id
+                                    + " does not exist"));
+
+    if (!isAdmin) {
+
+        if (existingStudent.getTeacher() == null ||
+                !existingStudent.getTeacher()
+                        .getUsername()
+                        .equals(username)) {
+
+            throw new RuntimeException(
+                    "You are not authorized to delete this student");
+        }
+    }
+
+    existingStudent.setIsDeleted(true);
+
+    studRepo.save(existingStudent);
+
+    return id;
+}
+
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
+public List<Student> createStudents(List<Student> students) {
+
+    students.forEach(student -> {
 
         if (student.getIsDeleted() == null) {
             student.setIsDeleted(false);
         }
 
-        Student savedStudent = studRepo.save(student);
+        if (student.getSubjects() != null &&
+                !student.getSubjects().isEmpty()) {
 
-        log.info("Student created successfully with ID: {}",
-                savedStudent.getId());
+            Set<Subject> subjects =
+                    resolveSubjects(student.getSubjects());
 
-        return savedStudent;
-    }
+            student.setSubjects(subjects);
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public List<Student> getAllStudents() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        String username = authentication.getName();
-
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        log.info("Fetching students for user: {}", username);
-
-        // ADMIN sees all students
-        if (isAdmin) {
-
-            List<Student> students = studRepo.findAll();
-
-            log.info("Admin fetched {} students", students.size());
-
-            return students;
+            student.setCourse(
+                    joinSubjectNames(subjects));
         }
+    });
 
-        // TEACHER sees only assigned students
-        List<Student> students =
-                studRepo.findByTeacherUsername(username);
+    return studRepo.saveAll(students);
+}
 
-        log.info("Teacher {} fetched {} students",
-                username, students.size());
+@PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
+public Student getStudentProfileByUsername(String username) {
 
-        return students;
-    }
+    User user = userRepo.findByUsername(username)
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "User not found with username: "
+                                    + username));
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public Student getStudentById(Long id) {
+    Student student = studRepo.findByUserId(user.getId())
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "Student profile not found for user: "
+                                    + username));
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+    Authentication authentication =
+            SecurityContextHolder.getContext()
+                    .getAuthentication();
 
-        String username = authentication.getName();
+    boolean isAdmin = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority()
+                    .equals("ROLE_ADMIN"));
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    boolean isTeacher = authentication.getAuthorities()
+            .stream()
+            .anyMatch(a -> a.getAuthority()
+                    .equals("ROLE_TEACHER"));
 
-        log.info("Fetching student ID: {} by user: {}", id, username);
+    if (!isAdmin && !isTeacher) {
 
-        Student student = studRepo.findById(id)
-                .orElseThrow(() ->
-                        new StudentNotFoundException(
-                                "Student with ID " + id + " does not exist"));
-
-        // ADMIN can access any student
-        if (isAdmin) {
-            return student;
-        }
-
-        // TEACHER can access only their own student
-        if (student.getTeacher() == null ||
-                !student.getTeacher().getUsername().equals(username)) {
-
-            log.warn("Unauthorized access attempt for student ID: {} by user: {}",
-                    id, username);
+        if (!student.getUser().getId()
+                .equals(user.getId())) {
 
             throw new RuntimeException(
-                    "You are not authorized to access this student");
+                    "You can only view your own profile");
         }
-
-        return student;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public Student updateStudent(
-            Long id,
-            Student studentDetails) {
+    return student;
+}
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+private Set<Subject> resolveSubjects(
+        Set<Subject> requestedSubjects) {
 
-        String username = authentication.getName();
+    if (requestedSubjects == null ||
+            requestedSubjects.isEmpty()) {
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        log.info("Updating student ID: {} by user: {}", id, username);
-
-        Student existingStudent = studRepo.findById(id)
-                .orElseThrow(() ->
-                        new StudentNotFoundException(
-                                "Student with ID " + id + " does not exist"));
-
-        // Teacher can update only their own student
-        if (!isAdmin) {
-
-            if (existingStudent.getTeacher() == null ||
-                    !existingStudent.getTeacher()
-                            .getUsername()
-                            .equals(username)) {
-
-                log.warn(
-                        "Unauthorized update attempt for student ID: {} by user: {}",
-                        id, username);
-
-                throw new RuntimeException(
-                        "You are not authorized to update this student");
-            }
-        }
-
-        existingStudent.setName(studentDetails.getName());
-        existingStudent.setEmail(studentDetails.getEmail());
-        existingStudent.setCourse(studentDetails.getCourse());
-        existingStudent.setAge(studentDetails.getAge());
-
-        // ADMIN can change the assigned teacher
-        if (isAdmin) {
-
-            if (studentDetails.getTeacher() == null ||
-                    studentDetails.getTeacher().getId() == null) {
-
-                throw new RuntimeException("Please select a teacher");
-            }
-
-            Long teacherId = studentDetails.getTeacher().getId();
-
-            User teacher = userRepo.findById(teacherId)
-                    .orElseThrow(() ->
-                            new RuntimeException("Selected teacher not found"));
-
-            if (!"TEACHER".equals(teacher.getRole())) {
-                throw new RuntimeException(
-                        "Selected user is not a TEACHER");
-            }
-
-            existingStudent.setTeacher(teacher);
-
-            log.info("Student ID: {} reassigned to teacher ID: {}",
-                    id, teacherId);
-        }
-
-        Student updatedStudent = studRepo.save(existingStudent);
-
-        log.info("Student ID: {} updated successfully", id);
-
-        return updatedStudent;
+        throw new RuntimeException(
+                "Please select at least one subject");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public Long deleteStudent(Long id) {
+    Set<Subject> resolved =
+            new HashSet<>();
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+    for (Subject requestedSubject :
+            requestedSubjects) {
 
-        String username = authentication.getName();
+        if (requestedSubject == null ||
+                requestedSubject.getId() == null) {
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        log.info("Soft-deleting student ID: {} by user: {}", id, username);
-
-        Student existingStudent = studRepo.findById(id)
-                .orElseThrow(() ->
-                        new StudentNotFoundException(
-                                "Student with ID " + id + " does not exist"));
-
-        // Teacher can delete only their own assigned student
-        if (!isAdmin) {
-            if (existingStudent.getTeacher() == null ||
-                    !existingStudent.getTeacher()
-                            .getUsername()
-                            .equals(username)) {
-
-                log.warn(
-                        "Unauthorized delete attempt for student ID: {} by user: {}",
-                        id, username);
-
-                throw new RuntimeException(
-                        "You are not authorized to delete this student");
-            }
+            continue;
         }
 
-        existingStudent.setIsDeleted(true);
-        studRepo.save(existingStudent);
+        Subject subject =
+                subjectRepo.findById(
+                        requestedSubject.getId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Selected subject does not exist"));
 
-        log.info("Student ID: {} soft-deleted successfully", id);
-
-        return id;
+        resolved.add(subject);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
-    public List<Student> createStudents(List<Student> students) {
+    if (resolved.isEmpty()) {
 
-        log.info("Creating {} students", students.size());
-
-        students.forEach(s -> {
-            if (s.getIsDeleted() == null) {
-                s.setIsDeleted(false);
-            }
-        });
-
-        List<Student> savedStudents = studRepo.saveAll(students);
-
-        log.info("{} students created successfully",
-                savedStudents.size());
-
-        return savedStudents;
+        throw new RuntimeException(
+                "Please select at least one valid subject");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
-    public Student getStudentProfileByUsername(String username) {
+    return resolved;
+}
 
-        log.info("Fetching student profile for username: {}", username);
+private String joinSubjectNames(
+        Set<Subject> subjects) {
 
-        User user = userRepo.findByUsername(username)
-                .orElseThrow(() ->
-                        new RuntimeException("User not found with username: " + username));
+    return subjects.stream()
+            .map(Subject::getName)
+            .filter(name -> name != null)
+            .sorted()
+            .collect(Collectors.joining(", "));
+}
 
-        Student student = studRepo.findByUserId(user.getId())
-                .orElseThrow(() ->
-                        new RuntimeException("Student profile not found for user: " + username));
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        boolean isTeacher = authentication.getAuthorities()
-                .stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_TEACHER"));
-
-        // STUDENT can only view their own profile
-        if (!isAdmin && !isTeacher) {
-            if (!student.getUser().getId().equals(user.getId())) {
-                throw new RuntimeException("You can only view your own profile");
-            }
-        }
-
-        log.info("Student profile fetched for username: {}", username);
-
-        return student;
-    }
 }

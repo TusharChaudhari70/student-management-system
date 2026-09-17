@@ -1,47 +1,18 @@
-<!-- TOP NAVBAR -->
-<div class="top-navbar">
-
-  <div class="brand">
-    Student Management System
-  </div>
-
-  <div class="nav-right">
-
-    <div class="student-user">
-
-      <span class="student-name">
-        {{ username || 'Student' }}
-      </span>
-
-      <span class="student-role">
-        {{ role || 'STUDENT' }}
-      </span>
-
-    </div>
-
-    <button
-      type="button"
-      class="logout-btn"
-      (click)="logout()">
-      Logout
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- CONTROL PANEL -->
-<nav class="control-panel">
-
+<!-- TOP NAVBAR WITH THEME TOGGLE -->
+<app-navbar
+  [username]="studentProfile?.name || username || 'Student'"
+  [role]="role || 'STUDENT'"
+  (dashboardRequested)="selectSection('dashboard')"
+  (profileRequested)="selectSection('profile')"
+  (logoutRequested)="logout()">
+  <div navbar-nav class="navbar-links" aria-label="Student sections">
   <div class="control-tabs">
-
     <button
       type="button"
       class="ctrl-tab"
       [class.active]="selectedSection === 'dashboard'"
       (click)="selectSection('dashboard')">
-      Dashboard
+      📊 Dashboard
     </button>
 
     <button
@@ -49,7 +20,18 @@
       class="ctrl-tab"
       [class.active]="selectedSection === 'profile'"
       (click)="selectSection('profile')">
-      My Profile
+      👤 My Profile
+    </button>
+
+    <button
+      type="button"
+      class="ctrl-tab"
+      [class.active]="selectedSection === 'messages'"
+      (click)="selectSection('messages')">
+      💬 Messages
+      @if (unreadMessagesCount > 0) {
+        <span class="tab-badge">{{ unreadMessagesCount }}</span>
+      }
     </button>
 
     <button
@@ -57,7 +39,7 @@
       class="ctrl-tab"
       [class.active]="selectedSection === 'documents'"
       (click)="selectSection('documents')">
-      Documents
+      📄 Documents
     </button>
 
     <button
@@ -65,226 +47,201 @@
       class="ctrl-tab"
       [class.active]="selectedSection === 'tasks'"
       (click)="selectSection('tasks')">
-      Assigned Tasks
+      📝 Assigned Tasks
+      @if (pendingTasksCount > 0) {
+        <span class="tab-badge warning-badge">{{ pendingTasksCount }}</span>
+      }
     </button>
-
   </div>
-
-</nav>
-
+  </div>
+</app-navbar>
 
 <!-- MAIN CONTENT -->
 <main class="main-content">
 
   <!-- ================================
-       DASHBOARD
+       1. INTERACTIVE DASHBOARD
   ================================= -->
-
   @if (selectedSection === 'dashboard') {
-
     <div class="page-header">
-
       <h1>Student Dashboard</h1>
-
-      <p>
-        Welcome back, {{ username || 'Student' }}
-      </p>
-
+      <p>Welcome back, {{ studentProfile?.name || username }}! Here is your academic overview.</p>
     </div>
-
 
     <div class="dashboard-cards">
 
-      <!-- PROFILE CARD -->
-      <div
-        class="dashboard-card"
-        (click)="selectSection('profile')">
-
-        <div class="card-icon">
-          👤
-        </div>
-
+      <!-- PROFILE OVERVIEW CARD -->
+      <div class="dashboard-card" (click)="selectSection('profile')">
+        <div class="card-icon">👤</div>
         <div class="card-details">
-
           <h3>My Profile</h3>
-
-          <p>
-            View your personal and academic details
-          </p>
-
+          <p>{{ studentProfile?.course || 'Enrolled Student' }}</p>
+          <span class="card-stat-text">Teacher: {{ studentProfile?.teacher?.name || studentProfile?.teacher?.username || 'Assigned' }}</span>
         </div>
-
       </div>
 
-
-      <!-- DOCUMENTS CARD -->
-      <div
-        class="dashboard-card"
-        (click)="selectSection('documents')">
-
-        <div class="card-icon">
-          📄
-        </div>
-
+      <!-- MESSAGES STAT CARD -->
+      <div class="dashboard-card" (click)="selectSection('messages')">
+        <div class="card-icon">💬</div>
         <div class="card-details">
-
-          <h3>My Documents</h3>
-
-          <p>
-            View and manage your documents and submissions
-          </p>
-
+          <h3>Teacher Messages</h3>
+          <p>{{ messages.length }} Total Messages</p>
+          <span class="card-badge" [class.badge-alert]="unreadMessagesCount > 0">
+            {{ unreadMessagesCount }} Unread
+          </span>
         </div>
-
       </div>
 
-
-      <!-- TASKS CARD -->
-      <div
-        class="dashboard-card"
-        (click)="selectSection('tasks')">
-
-        <div class="card-icon">
-          📩
-        </div>
-
+      <!-- TASKS STAT CARD -->
+      <div class="dashboard-card" (click)="selectSection('tasks')">
+        <div class="card-icon">📝</div>
         <div class="card-details">
-
           <h3>Assigned Tasks</h3>
-
-          <p>
-            View tasks assigned by your teacher
-          </p>
-
+          <p>{{ tasks.length }} Total Tasks</p>
+          <span class="card-badge" [class.badge-pending]="pendingTasksCount > 0">
+            {{ pendingTasksCount }} Pending
+          </span>
         </div>
+      </div>
 
+      <!-- DOCUMENTS STAT CARD -->
+      <div class="dashboard-card" (click)="selectSection('documents')">
+        <div class="card-icon">📄</div>
+        <div class="card-details">
+          <h3>Shared Documents</h3>
+          <p>{{ documents.length }} Files</p>
+          <span class="card-stat-text">View study materials</span>
+        </div>
       </div>
 
     </div>
-
   }
 
-
   <!-- ================================
-       PROFILE
+       2. STUDENT PROFILE
   ================================= -->
-
   @if (selectedSection === 'profile') {
+    <div class="page-header">
+      <h1>My Profile</h1>
+      <p>Your official student and enrollment details</p>
+    </div>
 
     @if (loadingProfile) {
-
-      <div class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading profile...</p>
-      </div>
-
+      <div class="loading-state">Loading profile details...</div>
     } @else if (studentProfile) {
-
-      <div class="page-header">
-
-        <h1>My Profile</h1>
-
-        <p>
-          View your student account details
-        </p>
-
-      </div>
-
-
-      <div class="content-card">
-
-        <h2>Student Profile</h2>
-
-        <div class="profile-details">
-
-          <div class="detail-item">
-            <span class="detail-label">Name</span>
-            <span class="detail-value">{{ studentProfile.name || 'Not available' }}</span>
+      <div class="content-card profile-card">
+        <div class="profile-header-block">
+          <div class="profile-avatar">
+            {{ (studentProfile.name || username || 'S').charAt(0).toUpperCase() }}
           </div>
+          <div class="profile-info-block">
+            <h2>{{ studentProfile.name || username }}</h2>
+            <span class="role-badge">STUDENT</span>
+          </div>
+        </div>
 
+        <div class="profile-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Student ID</span>
+            <span class="detail-value">#{{ studentProfile.id }}</span>
+          </div>
           <div class="detail-item">
             <span class="detail-label">Email</span>
-            <span class="detail-value">{{ studentProfile.email || 'Not available' }}</span>
+            <span class="detail-value">{{ studentProfile.email }}</span>
           </div>
-
           <div class="detail-item">
-            <span class="detail-label">Course</span>
-            <span class="detail-value">{{ studentProfile.course || 'Not available' }}</span>
+            <span class="detail-label">Enrolled Subjects</span>
+            <span class="detail-value">
+              @if (studentProfile.subjects && studentProfile.subjects.length > 0) {
+                {{ subjectNames }}
+              } @else {
+                {{ studentProfile.course || 'Not specified' }}
+              }
+            </span>
           </div>
-
           <div class="detail-item">
             <span class="detail-label">Age</span>
-            <span class="detail-value">{{ studentProfile.age || 'Not available' }}</span>
+            <span class="detail-value">{{ studentProfile.age || 'Not specified' }}</span>
           </div>
-
-          <div class="detail-item">
-            <span class="detail-label">Username</span>
-            <span class="detail-value">{{ studentProfile.user?.username || username }}</span>
-          </div>
-
-          <div class="detail-item">
-            <span class="detail-label">System Role</span>
-            <span class="detail-value">{{ studentProfile.user?.role || role || 'STUDENT' }}</span>
-          </div>
-
           <div class="detail-item">
             <span class="detail-label">Assigned Teacher</span>
             <span class="detail-value">{{ studentProfile.teacher?.name || studentProfile.teacher?.username || 'Not assigned' }}</span>
           </div>
-
+          <div class="detail-item">
+            <span class="detail-label">Account Status</span>
+            <span class="detail-value status-active">● Active</span>
+          </div>
         </div>
-
       </div>
-
-    } @else {
-
-      <div class="content-card empty-task-card">
-        <div class="empty-icon">⚠️</div>
-        <h2>Profile Not Available</h2>
-        <p>Could not load your student profile. Please try again later.</p>
-      </div>
-
     }
-
   }
 
-
   <!-- ================================
-       DOCUMENTS
+       3. TEACHER MESSAGES (1-WAY)
   ================================= -->
-
-  @if (selectedSection === 'documents') {
-
+  @if (selectedSection === 'messages') {
     <div class="page-header">
-
-      <h1>My Documents</h1>
-
-      <p>
-        Documents and submissions shared with you
-      </p>
-
+      <h1>Teacher Messages</h1>
+      <p>Announcements and direct communications from your instructor</p>
     </div>
 
+    @if (loadingMessages) {
+      <div class="loading-state">Loading messages...</div>
+    } @else if (messages.length > 0) {
+      <div class="messages-list">
+        @for (msg of messages; track msg.id) {
+          <div class="message-card" [class.unread-card]="!msg.isRead">
+            <div class="message-header">
+              <div class="sender-info">
+                <span class="sender-avatar">👨‍🏫</span>
+                <div>
+                  <strong>{{ msg.teacher?.name || msg.teacher?.username || 'Teacher' }}</strong>
+                  <span class="message-date">{{ msg.sentAt | date:'medium' }}</span>
+                </div>
+              </div>
+              <div class="message-status">
+                @if (!msg.isRead) {
+                  <button type="button" class="mark-read-btn" (click)="markMessageAsRead(msg.id)">Mark Read</button>
+                } @else {
+                  <span class="read-tag">Read</span>
+                }
+              </div>
+            </div>
+            <div class="message-body">
+              <p>{{ msg.message }}</p>
+              @if (msg.fileName) {
+                <div class="attached-file">
+                  📎 Attachment: <span class="file-name">{{ msg.fileName }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="content-card empty-card">
+        <div class="empty-icon">💬</div>
+        <h3>No Messages Yet</h3>
+        <p>You haven't received any messages from your teacher yet.</p>
+      </div>
+    }
+  }
+
+  <!-- ================================
+       4. DOCUMENTS
+  ================================= -->
+  @if (selectedSection === 'documents') {
+    <div class="page-header">
+      <h1>My Documents</h1>
+      <p>Documents and course materials shared by your teacher</p>
+    </div>
 
     @if (loadingDocuments) {
-
-      <div class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading documents...</p>
-      </div>
-
+      <div class="loading-state">Loading documents...</div>
     } @else if (documents.length > 0) {
-
       <div class="content-card">
-
-        <div class="table-responsive">
-
-          <table class="data-table">
-
+        <div class="table-wrapper">
+          <table class="student-table">
             <thead>
               <tr>
                 <th>Title</th>
@@ -295,244 +252,138 @@
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
-              @for (doc of documents; track $index) {
+              @for (doc of documents; track doc.id) {
                 <tr>
-                  <td class="fw-medium">{{ doc.title }}</td>
+                  <td><strong>{{ doc.title }}</strong></td>
                   <td>{{ doc.description || 'No description' }}</td>
                   <td>{{ doc.teacher?.name || 'Teacher' }}</td>
                   <td>{{ doc.uploadedAt | date:'shortDate' }}</td>
                   <td>
-                    <span class="badge" [class.bg-success]="doc.isRead" [class.bg-warning]="!doc.isRead">
+                    <span class="badge" [class.badge-read]="doc.isRead" [class.badge-new]="!doc.isRead">
                       {{ doc.isRead ? 'Read' : 'New' }}
                     </span>
                   </td>
                   <td>
-                    @if (doc.fileUrl) {
-                      <a [href]="doc.fileUrl" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
-                    }
                     @if (!doc.isRead) {
-                      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="markDocumentAsRead(doc.id)">
-                        Mark Read
-                      </button>
+                      <button type="button" class="btn-read" (click)="markDocumentAsRead(doc.id)">Mark Read</button>
                     }
                   </td>
                 </tr>
               }
             </tbody>
-
           </table>
-
         </div>
-
       </div>
-
     } @else {
-
-      <div class="content-card empty-task-card">
-
+      <div class="content-card empty-card">
         <div class="empty-icon">📄</div>
-
-        <h2>No Documents</h2>
-
-        <p>
-          You don't have any documents yet. Your teacher will share documents and assignments here.
-        </p>
-
+        <h3>No Documents Available</h3>
+        <p>Your teacher will share study materials here.</p>
       </div>
-
     }
-
   }
 
-
   <!-- ================================
-       TASKS
+       5. ASSIGNED TASKS
   ================================= -->
-
   @if (selectedSection === 'tasks') {
-
     <div class="page-header">
-
       <h1>Assigned Tasks</h1>
-
-      <p>
-        Tasks and assignments from your teacher
-      </p>
-
+      <p>Case studies and assignments assigned by your teacher</p>
     </div>
 
-
     @if (loadingTasks) {
-
-      <div class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p>Loading tasks...</p>
-      </div>
-
+      <div class="loading-state">Loading tasks...</div>
     } @else if (tasks.length > 0) {
-
       <div class="content-card">
-
-        <div class="table-responsive">
-
-          <table class="data-table">
-
+        <div class="table-wrapper">
+          <table class="student-table">
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Type</th>
                 <th>Description</th>
+                <th>Teacher Attachment</th>
                 <th>Due Date</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
-              @for (task of tasks; track $index) {
+              @for (task of tasks; track task.id) {
                 <tr>
-                  <td class="fw-medium">{{ task.title }}</td>
+                  <td><strong>{{ task.title }}</strong></td>
                   <td>{{ task.type || 'CASE_STUDY' }}</td>
                   <td>{{ task.description || 'No description' }}</td>
+                  <td>
+                    @if (task.attachmentUrl) {
+                      <div class="attachment-actions">
+                        <a class="task-attachment-link" [href]="task.attachmentUrl + '?download=false'" target="_blank" rel="noopener">View</a>
+                        <a class="task-attachment-link" [href]="task.attachmentUrl + '?download=true'">Download {{ task.attachmentName || 'file' }}</a>
+                      </div>
+                    } @else { <span class="text-muted">No attachment</span> }
+                  </td>
                   <td>{{ task.dueDate ? (task.dueDate | date:'shortDate') : 'No deadline' }}</td>
                   <td>
-                    <span class="badge" [class.bg-success]="task.isSubmitted" [class.bg-warning]="!task.isSubmitted && task.isRead" [class.bg-info]="!task.isSubmitted && !task.isRead">
-                      @if (task.isSubmitted) {
-                        Submitted
-                      } @else if (task.isRead) {
-                        In Progress
-                      } @else {
-                        New
-                      }
+                    <span class="badge" [class.badge-submitted]="task.isSubmitted" [class.badge-pending]="!task.isSubmitted">
+                      {{ task.isSubmitted ? 'Submitted' : 'Pending' }}
                     </span>
                   </td>
                   <td>
                     @if (!task.isSubmitted) {
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-primary"
-                        (click)="openSubmissionForm(task)">
-                        Submit Case Study
+                      <button type="button" class="btn-submit" (click)="openSubmissionForm(task)">
+                        Submit
                       </button>
                     } @else {
-                      <span class="text-muted">Submitted</span>
+                      <span class="text-muted">Completed</span>
                     }
                   </td>
                 </tr>
               }
             </tbody>
-
           </table>
-
         </div>
-
       </div>
-
     } @else {
-
-      <div class="content-card empty-task-card">
-
-        <div class="empty-icon">📩</div>
-
-        <h2>No Tasks Yet</h2>
-
-        <p>
-          Your assigned tasks will appear here when your teacher sends them.
-        </p>
-
+      <div class="content-card empty-card">
+        <div class="empty-icon">📝</div>
+        <h3>No Tasks Assigned</h3>
+        <p>No assignments currently pending from your teacher.</p>
       </div>
-
     }
 
-
-    <!-- CASE STUDY SUBMISSION MODAL -->
+    <!-- SUBMISSION MODAL -->
     @if (selectedTaskToSubmit) {
-
       <div class="modal-overlay" (click)="clearSubmissionForm()">
-
-        <div class="modal-content" (click)="$event.stopPropagation()">
-
+        <div class="modal-box" (click)="$event.stopPropagation()">
           <div class="modal-header">
-            <h3>Submit Case Study: {{ selectedTaskToSubmit.title }}</h3>
-            <button type="button" class="modal-close" (click)="clearSubmissionForm()">&times;</button>
+            <h2>Submit Task: {{ selectedTaskToSubmit.title }}</h2>
+            <button type="button" class="modal-close" (click)="clearSubmissionForm()">×</button>
           </div>
-
           <div class="modal-body">
-
-            @if (submittingTask) {
-              <div class="loading-state">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Submitting...</span>
-                </div>
-                <p>Submitting your case study...</p>
-              </div>
-            }
-
-            <div class="mb-3">
-              <label class="form-label">Case Study Title</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="caseStudyTitle"
-                placeholder="Enter a title for your submission"
-                disabled>
+            <div class="form-group">
+              <label>Task</label>
+              <input type="text" [value]="caseStudyTitle" readonly />
             </div>
-
-            <div class="mb-3">
-              <label class="form-label">Case Study Content</label>
-              <textarea
-                class="form-control"
-                [(ngModel)]="caseStudyContent"
-                rows="4"
-                placeholder="Write your case study here (optional)"
-                ></textarea>
+            <div class="form-group">
+              <label>Reply / Submission Message</label>
+              <textarea class="submission-text" rows="4" [(ngModel)]="caseStudyContent" placeholder="Write your response for the teacher..."></textarea>
             </div>
-
-            <div class="mb-3">
-              <label class="form-label">Upload File</label>
-              <input
-                type="file"
-                class="form-control"
-                (change)="onFileSelected($event)"
-                [disabled]="submittingTask">
-              @if (caseStudyFile) {
-                <small class="text-muted">Selected: {{ caseStudyFile.name }}</small>
-              }
+            <div class="form-group">
+              <label>Attach File or PDF <small>(optional)</small></label>
+              <input type="file" (change)="onFileSelected($event)" />
             </div>
-
           </div>
-
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="clearSubmissionForm()"
-              [disabled]="submittingTask">
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="submitCaseStudy()"
-              [disabled]="submittingTask || !caseStudyFile">
-              @if (submittingTask) {
-                <span>Submitting...</span>
-              } @else {
-                <span>Submit</span>
-              }
+            <button type="button" class="cancel-btn" (click)="clearSubmissionForm()">Cancel</button>
+            <button type="button" class="save-btn" [disabled]="submittingTask || (!caseStudyFile && !caseStudyContent.trim())" (click)="submitCaseStudy()">
+              {{ submittingTask ? 'Submitting...' : 'Submit Reply' }}
             </button>
           </div>
-
         </div>
-
       </div>
-
     }
-
   }
 
 </main>

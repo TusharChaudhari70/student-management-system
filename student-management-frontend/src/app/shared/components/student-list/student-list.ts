@@ -15,6 +15,9 @@ import {
   StudentService
 } from '../../../services/student.service';
 
+export type StudentField = 'id' | 'name' | 'email' | 'course' | 'age' | 'teacher';
+export type StudentSearchField = 'all' | StudentField;
+
 @Component({
   selector: 'app-student-list',
   imports: [AsyncPipe, HighlightMatchPipe],
@@ -31,15 +34,13 @@ export class StudentList implements OnChanges {
   @Output() updateStudent = new EventEmitter<Student>();
   @Output() deleteStudent = new EventEmitter<Student>();
 
-  // Search
-  searchText = '';
-  searchField: StudentField = 'name';
+  searchField: StudentSearchField = 'all'; // Field selected for search
+  searchTerm = ''; // Current search query
+  columnFilters: Record<StudentField, string> = { id: '', name: '', email: '', course: '', age: '', teacher: '' };
 
-  // Sorting
-  sortField: StudentField = 'id';
-  sortAscending = true;
+  sortField: StudentField = 'id'; // Currently sorted column
+  sortAscending = true; // Sort direction
 
-  // Pagination
   currentPage = 1;
   pageSize = 5;
 
@@ -54,140 +55,103 @@ export class StudentList implements OnChanges {
   }
 
   refresh(): void {
-    console.log('Refreshing student table...');
     this.students$ = this.studentService.getAllStudents();
     this.currentPage = 1;
   }
 
-  // ================================
-  // SEARCH
-  // ================================
-
-  onSearch(value: string): void {
-    this.searchText = value.trim().toLowerCase();
-
-    // Start from first page whenever search changes
-    this.currentPage = 1;
-  }
-
-  onSearchFieldChange(field: StudentField): void {
+  changeSearchField(field: StudentSearchField): void {
     this.searchField = field;
     this.currentPage = 1;
   }
 
-  // ================================
-  // SORT BY ID
-  // ================================
-
-  sortBy(field: StudentField): void {
-    this.sortAscending = this.sortField === field ? !this.sortAscending : true;
-    this.sortField = field;
+  onSearch(value: string): void {
+    this.searchTerm = value.trim().toLowerCase();
     this.currentPage = 1;
   }
 
-  // ================================
-  // FILTER STUDENTS
-  // ================================
-
-  getFilteredStudents(students: Student[]): Student[] {
-
-    const activeStudents = students.filter(student => !student.isDeleted);
-
-    if (!this.searchText) {
-      return activeStudents;
-    }
-
-    return activeStudents.filter(student =>
-      this.getFieldValue(student, this.searchField).includes(this.searchText)
-    );
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
   }
 
-  // ================================
-  // SORT STUDENTS
-  // ================================
+  setColumnFilter(field: StudentField, value: string): void { this.columnFilters[field] = value.trim().toLowerCase(); this.currentPage = 1; }
+  applyColumnFilters(filters: Record<StudentField, string>): void {
+    this.columnFilters = Object.fromEntries(Object.entries(filters).map(([field, value]) => [field, value.trim().toLowerCase()])) as Record<StudentField, string>;
+    this.currentPage = 1;
+  }
+
+  sortBy(field: StudentField): void {
+    if (this.sortField === field) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.sortField = field;
+      this.sortAscending = true;
+    }
+    this.currentPage = 1;
+  }
+
+  getFilteredStudents(students: Student[]): Student[] {
+    const activeStudents = students.filter(s => !s.isDeleted);
+    const globalMatches = !this.searchTerm ? activeStudents : activeStudents.filter(student => {
+      if (this.searchField === 'all') {
+        const fullText = `${student.id ?? ''} ${student.name ?? ''} ${student.email ?? ''} ${student.course ?? ''} ${student.age ?? ''} ${student.teacher?.name ?? ''} ${student.teacher?.username ?? ''}`.toLowerCase();
+        return fullText.includes(this.searchTerm);
+      }
+      return this.getFieldValue(student, this.searchField).includes(this.searchTerm);
+    });
+
+    return globalMatches.filter(student => (Object.keys(this.columnFilters) as StudentField[])
+      .every(field => !this.columnFilters[field] || (field === 'id'
+        ? this.getFieldValue(student, field) === this.columnFilters[field]
+        : this.getFieldValue(student, field).includes(this.columnFilters[field]))));
+  }
 
   getSortedStudents(students: Student[]): Student[] {
+    const sorted = [...students];
 
-    const sortedStudents = [...students];
+    sorted.sort((a, b) => {
+      const valA = this.getFieldValue(a, this.sortField);
+      const valB = this.getFieldValue(b, this.sortField);
 
-    sortedStudents.sort((a, b) => {
+      const comparison = (this.sortField === 'id' || this.sortField === 'age')
+        ? Number(valA) - Number(valB)
+        : valA.localeCompare(valB);
 
-      const valueA = this.getFieldValue(a, this.sortField);
-      const valueB = this.getFieldValue(b, this.sortField);
-      const comparison = this.sortField === 'id' || this.sortField === 'age'
-        ? Number(valueA) - Number(valueB)
-        : valueA.localeCompare(valueB);
       return this.sortAscending ? comparison : -comparison;
     });
 
-    return sortedStudents;
+    return sorted;
   }
 
-  // ================================
-  // PAGINATION
-  // ================================
-
   getPaginatedStudents(students: Student[]): Student[] {
-
-    const startIndex =
-      (this.currentPage - 1) * this.pageSize;
-
-    const endIndex =
-      startIndex + this.pageSize;
-
-    return students.slice(startIndex, endIndex);
+    const start = (this.currentPage - 1) * this.pageSize;
+    return students.slice(start, start + this.pageSize);
   }
 
   getTotalPages(students: Student[]): number {
-
-    return Math.ceil(
-      students.length / this.pageSize
-    );
+    return Math.max(1, Math.ceil(students.length / this.pageSize));
   }
 
-  // ================================
-  // CHANGE PAGE SIZE
-  // ================================
-
   changePageSize(size: number): void {
-
     this.pageSize = size;
     this.currentPage = 1;
   }
 
-  // ================================
-  // NEXT PAGE
-  // ================================
-
   nextPage(totalPages: number): void {
-
     if (this.currentPage < totalPages) {
       this.currentPage++;
     }
   }
 
-  // ================================
-  // PREVIOUS PAGE
-  // ================================
-
   previousPage(): void {
-
     if (this.currentPage > 1) {
       this.currentPage--;
     }
   }
 
-  // ================================
-  // UPDATE
-  // ================================
-
   onUpdate(student: Student): void {
     this.updateStudent.emit(student);
   }
-
-  // ================================
-  // DELETE
-  // ================================
 
   onDelete(student: Student): void {
     if (!this.canDelete) {
@@ -197,11 +161,14 @@ export class StudentList implements OnChanges {
     this.deleteStudent.emit(student);
   }
 
+  getHighlightTerm(field: StudentField): string {
+    return (this.searchField === 'all' || this.searchField === field) ? this.searchTerm : '';
+  }
+
   private getFieldValue(student: Student, field: StudentField): string {
-    if (field === 'teacher') return `${student.teacher?.name || ''} ${student.teacher?.username || ''}`.toLowerCase();
+    if (field === 'teacher') {
+      return `${student.teacher?.name || ''} ${student.teacher?.username || ''}`.trim().toLowerCase();
+    }
     return String(student[field] ?? '').toLowerCase();
   }
-  
 }
-
-type StudentField = 'id' | 'name' | 'email' | 'course' | 'age' | 'teacher';

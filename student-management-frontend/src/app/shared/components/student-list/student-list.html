@@ -1,18 +1,29 @@
 <div class="student-container">
 
+  <!-- SEARCH CONTROLS -->
   <div class="table-header">
     <div class="search-box">
-      <select [value]="searchField" (change)="onSearchFieldChange($any($event.target).value)">
-        <option value="id">ID</option><option value="name">Name</option><option value="email">Email</option><option value="course">Course</option><option value="age">Age</option><option value="teacher">Teacher</option>
+      <select
+        class="search-select"
+        [value]="searchField"
+        (change)="changeSearchField($any($event.target).value)"
+      >
+        <option value="all">All Fields</option>
+        <option value="id">ID</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="course">Course</option>
+        <option value="age">Age</option>
+        <option value="teacher">Teacher</option>
       </select>
+
       <input
         type="text"
-        [placeholder]="'Search by ' + searchField + '...'"
-        [value]="searchText"
+        [placeholder]="'Search by ' + (searchField === 'all' ? 'any field' : searchField) + '...'"
+        [value]="searchTerm"
         (input)="onSearch($any($event.target).value)"
       />
     </div>
-
   </div>
 
   @if (students$ | async; as students) {
@@ -23,75 +34,145 @@
     @let totalPages = getTotalPages(sortedStudents);
 
     <div class="student-summary">
-
       <span>
-        Showing {{ paginatedStudents.length }}
-        of {{ sortedStudents.length }} students
+        Showing {{ paginatedStudents.length }} of {{ sortedStudents.length }} students
       </span>
 
-      @if (searchText) {
+      @if (searchTerm) {
         <span class="search-result">
-          Search results for "{{ searchText }}"
+          Search results for "{{ searchTerm }}"
         </span>
-      }
 
+        <button
+          type="button"
+          class="clear-filter-btn"
+          (click)="clearSearch()"
+        >
+          Clear
+        </button>
+      }
     </div>
 
     <div class="table-wrapper">
-
       <table class="student-table">
-
         <thead>
-          <tr>
-
+          <tr class="column-header-row">
             <th
               class="sortable-header"
               (click)="sortBy('id')"
+              title="Click to sort by ID"
             >
               <span>ID</span>
-
-              @if (sortField === 'id' && sortAscending) {
-                <span class="sort-arrow">↑</span>
-              } @else {
-                <span class="sort-arrow">↓</span>
-              }
-
+              <span class="sort-arrow">
+                @if (sortField === 'id') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
             </th>
 
-            <th class="sortable-header" (click)="sortBy('name')">Name @if (sortField === 'name') { <span class="sort-arrow">{{ sortAscending ? '↑' : '↓' }}</span> }</th>
-            <th class="sortable-header" (click)="sortBy('email')">Email @if (sortField === 'email') { <span class="sort-arrow">{{ sortAscending ? '↑' : '↓' }}</span> }</th>
-            <th class="sortable-header" (click)="sortBy('course')">Course @if (sortField === 'course') { <span class="sort-arrow">{{ sortAscending ? '↑' : '↓' }}</span> }</th>
-            <th class="sortable-header" (click)="sortBy('age')">Age @if (sortField === 'age') { <span class="sort-arrow">{{ sortAscending ? '↑' : '↓' }}</span> }</th>
-            <th class="sortable-header" (click)="sortBy('teacher')">Teacher @if (sortField === 'teacher') { <span class="sort-arrow">{{ sortAscending ? '↑' : '↓' }}</span> }</th>
-            <th>Actions</th>
+            <th
+              class="sortable-header"
+              (click)="sortBy('name')"
+              title="Click to sort by Name"
+            >
+              <span>Name</span>
+              <span class="sort-arrow">
+                @if (sortField === 'name') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
+            </th>
 
+            <th
+              class="sortable-header"
+              (click)="sortBy('email')"
+              title="Click to sort by Email"
+            >
+              <span>Email</span>
+              <span class="sort-arrow">
+                @if (sortField === 'email') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
+            </th>
+
+            <th
+              class="sortable-header"
+              (click)="sortBy('course')"
+              title="Click to sort by Course"
+            >
+              <span>Course</span>
+              <span class="sort-arrow">
+                @if (sortField === 'course') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
+            </th>
+
+            <th
+              class="sortable-header"
+              (click)="sortBy('age')"
+              title="Click to sort by Age"
+            >
+              <span>Age</span>
+              <span class="sort-arrow">
+                @if (sortField === 'age') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
+            </th>
+
+            <th
+              class="sortable-header"
+              (click)="sortBy('teacher')"
+              title="Click to sort by Teacher"
+            >
+              <span>Teacher</span>
+              <span class="sort-arrow">
+                @if (sortField === 'teacher') {
+                  {{ sortAscending ? '↑' : '↓' }}
+                } @else {
+                  ↕
+                }
+              </span>
+            </th>
+
+            <th>Actions</th>
+          </tr>
+          <tr class="column-filter-row">
+            <th><input #idFilter type="text" placeholder="Filter ID" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><input #nameFilter type="text" placeholder="Filter name" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><input #emailFilter type="text" placeholder="Filter email" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><input #courseFilter type="text" placeholder="Filter course" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><input #ageFilter type="text" placeholder="Filter age" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><input #teacherFilter type="text" placeholder="Filter teacher" (keyup.enter)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})"></th>
+            <th><button type="button" class="column-search-btn" (click)="applyColumnFilters({id:idFilter.value,name:nameFilter.value,email:emailFilter.value,course:courseFilter.value,age:ageFilter.value,teacher:teacherFilter.value})">Search</button></th>
           </tr>
         </thead>
 
         <tbody>
-
           @if (paginatedStudents.length > 0) {
-
             @for (student of paginatedStudents; track student.id) {
-
               <tr>
-
-                <td [innerHTML]="student.id | highlightMatch: (searchField === 'id' ? searchText : '')"></td>
-
-                <td [innerHTML]="student.name | highlightMatch: (searchField === 'name' ? searchText : '')"></td>
-
-                <td [innerHTML]="student.email | highlightMatch: (searchField === 'email' ? searchText : '')"></td>
-
-                <td [innerHTML]="student.course | highlightMatch: (searchField === 'course' ? searchText : '')"></td>
-
-                <td [innerHTML]="student.age | highlightMatch: (searchField === 'age' ? searchText : '')"></td>
-
+                <td [innerHTML]="student.id | highlightMatch: getHighlightTerm('id')"></td>
+                <td [innerHTML]="student.name | highlightMatch: getHighlightTerm('name')"></td>
+                <td [innerHTML]="student.email | highlightMatch: getHighlightTerm('email')"></td>
+                <td [innerHTML]="student.course | highlightMatch: getHighlightTerm('course')"></td>
+                <td [innerHTML]="student.age | highlightMatch: getHighlightTerm('age')"></td>
                 <td>
-                  <span [innerHTML]="(student.teacher?.name || student.teacher?.username || 'Not Assigned') | highlightMatch: (searchField === 'teacher' ? searchText : '')"></span>
+                  <span [innerHTML]="(student.teacher?.name || student.teacher?.username || 'Not Assigned') | highlightMatch: getHighlightTerm('teacher')"></span>
                 </td>
-
                 <td class="actions">
-
                   <button
                     type="button"
                     class="update-btn"
@@ -109,56 +190,39 @@
                       Delete
                     </button>
                   }
-
                 </td>
-
               </tr>
-
             }
-
           } @else {
-
             <tr>
-              <td
-                colspan="7"
-                class="no-students"
-              >
-                No students found
+              <td colspan="7" class="no-students">
+                No records found
               </td>
             </tr>
-
           }
-
         </tbody>
-
       </table>
-
     </div>
 
     <div class="table-footer">
-
-    <div class="page-size-section">
-
-  <span>Students per page:</span>
-  &nbsp;
-  <select
-    [value]="pageSize"
-    (change)="changePageSize(+$any($event.target).value)"
-    class="page-size-select"
-  >
-    <option value="5">5</option>
-    <option value="10">10</option>
-    <option value="15">15</option>
-    <option value="20">20</option>
-    <option value="25">25</option>
-    <option value="50">50</option>
-    <option value="100">100</option>
-  </select>
-
-</div>
+      <div class="page-size-section">
+        <span>Students per page:</span>
+        <select
+          [value]="pageSize"
+          (change)="changePageSize(+$any($event.target).value)"
+          class="page-size-select"
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
 
       <div class="pagination">
-
         <button
           type="button"
           class="pagination-btn"
@@ -180,9 +244,7 @@
         >
           Next
         </button>
-
       </div>
-
     </div>
 
   }

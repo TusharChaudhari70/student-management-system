@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.sms.Student_Management.security.JwtAuthFilter;
 
@@ -18,9 +19,12 @@ import com.sms.Student_Management.security.JwtAuthFilter;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+            CorsConfigurationSource corsConfigurationSource) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
@@ -35,7 +39,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
 
-            .cors(cors -> {})
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
             .authorizeHttpRequests(auth -> auth
 
@@ -44,7 +48,9 @@ public class SecurityConfig {
                     "/auth/login",
                     "/auth/**",
                     "/swagger-ui/**",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/files/download/**",
+                    "/uploads/**"
                 ).permitAll()
 
                 // USER PROFILE API (ADMIN, TEACHER, STUDENT)
@@ -65,6 +71,14 @@ public class SecurityConfig {
 
                 // TASK APIs - accessible by ADMIN, TEACHER, STUDENT
                 .requestMatchers("/tasks/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                .requestMatchers("/files/**", "/uploads/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // MESSAGE APIs - accessible by ADMIN, TEACHER, STUDENT
+                .requestMatchers("/messages/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+
+                // SUBJECT APIs - accessible by ADMIN, TEACHER, STUDENT
+                .requestMatchers("/subjects/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
 
                 // ALL OTHER ENDPOINTS
                 .anyRequest()

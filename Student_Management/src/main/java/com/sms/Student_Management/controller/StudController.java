@@ -17,80 +17,79 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sms.Student_Management.entity.Student;
 import com.sms.Student_Management.service.StudService;
 
-
 @RestController
 @RequestMapping("/students")
 public class StudController {
+private static final Logger log =
+        LoggerFactory.getLogger(StudController.class);
 
-    private static final Logger log =
-            LoggerFactory.getLogger(StudController.class);
+private final StudService studService;
 
-    private final StudService studService;
+public StudController(StudService studService) {
+    this.studService = studService;
+}
 
-    public StudController(StudService studService) {
-        this.studService = studService;
-    }
+@PostMapping
+public Student createStudent(@RequestBody Student student) {
 
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
+    log.info("Creating a new student");
 
-        log.info("Creating a new student");
+    return studService.createStudent(student);
+}
 
-        return studService.createStudent(student);
-    }
+@GetMapping
+public List<Student> getAllStudents() {
 
-    @GetMapping
-    public List<Student> getAllStudents() {
+    log.info("Fetching all students");
 
-        log.info("Fetching all students");
+    return studService.getAllStudents();
+}
 
-        return studService.getAllStudents();
-    }
+@GetMapping("/{id}")
+public Student getStudentById(@PathVariable Long id) {
 
-    @GetMapping("/{id}")
-    public Student getStudentById(@PathVariable Long id) {
+    log.info("Fetching student with ID: {}", id);
 
-        log.info("Fetching student with ID: {}", id);
+    return studService.getStudentById(id);
+}
 
-        return studService.getStudentById(id);
-    }
+@PutMapping("/{id}")
+public Student updateStudent(
+        @PathVariable Long id,
+        @RequestBody Student studentDetails) {
 
-    @PutMapping("/{id}")
-    public Student updateStudent(
-            @PathVariable Long id,
-            @RequestBody Student studentDetails) {
+    log.info("Updating student with ID: {}", id);
 
-        log.info("Updating student with ID: {}", id);
+    return studService.updateStudent(id, studentDetails);
+}
 
-        return studService.updateStudent(id, studentDetails);
-    }
+@DeleteMapping("/{id}")
+public Long deleteStudent(@PathVariable Long id) {
 
-    @DeleteMapping("/{id}")
-    public Long deleteStudent(@PathVariable Long id) {
+    log.info("Deleting student with ID: {}", id);
 
-        log.info("Deleting student with ID: {}", id);
+    return studService.deleteStudent(id);
+}
 
-        return studService.deleteStudent(id);
-    }
+@PostMapping("/addAll")
+public List<Student> createStudents(
+        @RequestBody List<Student> students) {
 
-    @PostMapping("/addAll")
-    public List<Student> createStudents(
-            @RequestBody List<Student> students) {
+    log.info("Creating {} students", students.size());
 
-        log.info("Creating {} students", students.size());
+    return studService.createStudents(students);
+}
 
-        return studService.createStudents(students);
-    }
+@GetMapping("/my-profile")
+public Student getMyStudentProfile(
+        Authentication authentication) {
 
-    /**
-     * Get the student record for the currently authenticated user.
-     * Works for STUDENT role (own record) and ADMIN/TEACHER roles.
-     */
-    @GetMapping("/my-profile")
-    public Student getMyStudentProfile(Authentication authentication) {
+    log.info(
+            "Fetching student profile for user: {}",
+            authentication.getName());
 
-        log.info("Fetching student profile for user: {}", authentication.getName());
+    return studService.getStudentProfileByUsername(
+            authentication.getName());
+}
 
-        return studService.getStudentProfileByUsername(authentication.getName());
-    }
 }

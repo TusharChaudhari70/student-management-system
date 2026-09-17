@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-task-submission-1
+      author: Codex
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+              - column:
+                  name: submission_text
+                  type: varchar(4000)
+              - column:
+                  name: submission_file_name
+                  type: varchar(255)
+              - column:
+                  name: submission_file_url
+                  type: varchar(1000)
+              - column:
+                  name: submitted_at
+                  type: datetime2

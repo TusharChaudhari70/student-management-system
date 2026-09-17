@@ -152,10 +152,12 @@ public class UserService {
 
         return userRepo.save(existingStudent);
     }
-public User findByUsernameForLogin(String username) {
-    return userRepo.findByUsername(username)
+public User findByUsernameForLogin(String usernameOrEmail) {
+    String identifier = usernameOrEmail == null ? "" : usernameOrEmail.trim();
+    return userRepo.findByUsername(identifier)
+            .or(() -> userRepo.findByEmail(identifier))
             .orElseThrow(() ->
-                new RuntimeException("User not found with username: " + username)
+                new RuntimeException("User not found with username or email: " + identifier)
             );
 }
     

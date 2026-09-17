@@ -96,6 +96,21 @@ public class DocumentService {
         return saved;
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
+    public List<Document> uploadDocumentToStudents(List<Long> studentIds, Document document) {
+        if (studentIds == null || studentIds.isEmpty()) {
+            throw new RuntimeException("Select at least one student");
+        }
+        return studentIds.stream().map(studentId -> {
+            Document copy = new Document();
+            copy.setTitle(document.getTitle());
+            copy.setDescription(document.getDescription());
+            copy.setFileName(document.getFileName());
+            copy.setFileUrl(document.getFileUrl());
+            return uploadDocumentToStudent(studentId, copy);
+        }).toList();
+    }
+
     /**
      * Get all documents for the current student (or specified student by admin).
      */

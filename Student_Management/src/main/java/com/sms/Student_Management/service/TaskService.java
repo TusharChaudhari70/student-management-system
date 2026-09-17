@@ -78,10 +78,30 @@ public class TaskService {
         if (task.getType() == null) {
             task.setType("CASE_STUDY");
         }
+        if (task.getDueDate() != null && !task.getDueDate().isAfter(LocalDateTime.now())) {
+            throw new RuntimeException("Due date must be later than today");
+        }
 
         Task saved = taskRepo.save(task);
         log.info("Task assigned with ID: {}", saved.getId());
         return saved;
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    public List<Task> assignTaskToStudents(List<Long> studentIds, Task task) {
+        if (studentIds == null || studentIds.isEmpty()) {
+            throw new RuntimeException("Select at least one student");
+        }
+        return studentIds.stream().map(studentId -> {
+            Task copy = new Task();
+            copy.setTitle(task.getTitle());
+            copy.setDescription(task.getDescription());
+            copy.setDueDate(task.getDueDate());
+            copy.setType(task.getType());
+            copy.setAttachmentName(task.getAttachmentName());
+            copy.setAttachmentUrl(task.getAttachmentUrl());
+            return assignTaskToStudent(studentId, copy);
+        }).toList();
     }
 
     /**
@@ -177,7 +197,7 @@ public class TaskService {
      * The submission is saved as a Document with the student's teacher as recipient.
      */
     @PreAuthorize("hasRole('STUDENT')")
-    public Task submitTask(Long taskId, String fileUrl, String fileName) {
+    public Task submitTask(Long taskId, String fileUrl, String fileName, String submissionText) {
         String username = getCurrentUsername();
         log.info("Student {} submitting task ID: {}", username, taskId);
 
@@ -194,14 +214,24 @@ public class TaskService {
             throw new RuntimeException("You can only submit your own tasks");
         }
 
-        task.setIsSubmitted(true);
+        boolean hasText = submissionText != null && !submissionText.isBlank();
+        boolean hasFile = fileUrl != null && !fileUrl.isBlank() && fileName != null && !fileName.isBlank();
+        if (!hasText && !hasFile) {
+            throw new RuntimeException("Enter a reply or attach a file before submitting");
+        }
 
-        if (fileUrl != null && fileName != null) {
+        task.setIsSubmitted(true);
+        task.setSubmissionText(hasText ? submissionText.trim() : null);
+        task.setSubmissionFileName(hasFile ? fileName : null);
+        task.setSubmissionFileUrl(hasFile ? fileUrl : null);
+        task.setSubmittedAt(LocalDateTime.now());
+
+        if (hasFile) {
             com.sms.Student_Management.entity.Document document = new com.sms.Student_Management.entity.Document();
             document.setStudent(student);
             document.setTeacher(student.getTeacher());
             document.setTitle("Case Study Submission: " + task.getTitle());
-            document.setDescription(task.getDescription());
+            document.setDescription(hasText ? submissionText.trim() : task.getDescription());
             document.setFileName(fileName);
             document.setFileUrl(fileUrl);
             document.setUploadedAt(LocalDateTime.now());

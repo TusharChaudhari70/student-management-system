@@ -1,66 +1,136 @@
-<div class="container">
+<div class="login-wrapper">
 
-  <div class="row justify-content-center align-items-center min-vh-100">
+  <!-- TOP BAR WITH BRAND & THEME TOGGLE -->
+  <div class="login-topbar">
+    <div class="brand">
+      <span class="brand-icon">🎓</span>
+      <img class="login-emblem" src="assets/sms-academic-emblem.png" alt="Student Management System">
+      <span class="brand-text">Student Management System</span>
+    </div>
+    <button
+      type="button"
+      class="theme-toggle-btn"
+      (click)="themeService.toggleTheme()"
+      [title]="'Switch to ' + (themeService.currentTheme() === 'light' ? 'Dark' : 'Light') + ' theme'"
+    >
+      {{ themeService.currentTheme() === 'light' ? '🌙' : '☀️' }}
+    </button>
+  </div>
 
-    <div class="col-md-5 col-lg-4">
+  <div class="login-container">
 
-      <div class="card shadow p-4">
+    <!-- STEP 1: ROLE SELECTION -->
+    @if (!selectedRole) {
+      <div class="role-selection-card">
+        <img class="role-selection-emblem" src="assets/sms-academic-emblem.png" alt="">
+        <h2 class="welcome-title">Welcome Back</h2>
+        <p class="role-subtitle">Select your account role to continue</p>
 
-        <h3 class="text-center mb-2">
-          Student Management System
-        </h3>
+        <div class="role-cards-grid">
 
-        <p class="text-center text-muted mb-4">
-          Login
-        </p>
+          <!-- ADMIN CARD -->
+          <div class="role-card admin-role-card" (click)="selectRole('ADMIN')">
+            <div class="role-icon">👑</div>
+            <div class="role-info">
+              <h3>Admin</h3>
+              <p>System control, manage teachers & students</p>
+            </div>
+            <div class="role-arrow">→</div>
+          </div>
 
-        <!-- Error message -->
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
+          <!-- TEACHER CARD -->
+          <div class="role-card teacher-role-card" (click)="selectRole('TEACHER')">
+            <div class="role-icon">👨‍🏫</div>
+            <div class="role-info">
+              <h3>Teacher</h3>
+              <p>Manage students, assign tasks & send notices</p>
+            </div>
+            <div class="role-arrow">→</div>
+          </div>
+
+          <!-- STUDENT CARD -->
+          <div class="role-card student-role-card" (click)="selectRole('STUDENT')">
+            <div class="role-icon">🎓</div>
+            <div class="role-info">
+              <h3>Student</h3>
+              <p>View profile, teacher messages & assignments</p>
+            </div>
+            <div class="role-arrow">→</div>
+          </div>
+
         </div>
+      </div>
+    }
+
+    <!-- STEP 2: LOGIN FORM -->
+    @if (selectedRole) {
+      <div class="login-card">
+
+        <div class="login-card-header">
+          <button type="button" class="back-btn" (click)="resetRoleSelection()" title="Change Role">
+            ← Change Role
+          </button>
+          <div class="selected-role-badge" [ngClass]="'badge-' + selectedRole.toLowerCase()">
+            {{ selectedRole === 'ADMIN' ? '👑 Admin' : (selectedRole === 'TEACHER' ? '👨‍🏫 Teacher' : '🎓 Student') }}
+          </div>
+        </div>
+
+        <h2 class="form-title">
+          {{ selectedRole === 'ADMIN' ? 'Admin Login' : (selectedRole === 'TEACHER' ? 'Teacher Login' : 'Student Login') }}
+        </h2>
+        <p class="form-subtitle">Enter your credentials to access your dashboard</p>
+
+        <!-- Error Alert -->
+        @if (errorMessage) {
+          <div class="alert-box">
+            ⚠️ {{ errorMessage }}
+          </div>
+        }
 
         <form (ngSubmit)="login()">
 
-          <!-- Username -->
-          <div class="mb-3">
-
+          <div class="form-group">
             <label class="form-label">
-              Username
+              Username or Email
             </label>
-
-            <input type="text" class="form-control" name="username" [(ngModel)]="username" (input)="errorMessage = ''"
-              placeholder="Enter username" autocomplete="username">
-
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              [(ngModel)]="username"
+              (input)="clearError()"
+              placeholder="Enter username or email"
+              autocomplete="username"
+              required
+            />
           </div>
 
-          <!-- Password -->
-          <div class="mb-3">
-
-            <label class="form-label">
-              Password
-            </label>
-
-            <input type="password" class="form-control" name="password" [(ngModel)]="password"
-              (input)="errorMessage = ''" placeholder="Enter password" autocomplete="current-password">
-
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              [(ngModel)]="password"
+              (input)="clearError()"
+              placeholder="Enter password"
+              autocomplete="current-password"
+              required
+            />
           </div>
 
-          <!-- Login button -->
-          <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
-            <span *ngIf="!loading">
-              Login
-            </span>
-
-            <span *ngIf="loading">
-              Logging in...
-            </span>
+          <button
+            type="submit"
+            class="submit-login-btn"
+            [disabled]="loading"
+          >
+            {{ loading ? 'Signing in...' : 'Sign In as ' + selectedRole }}
           </button>
 
         </form>
 
       </div>
-
-    </div>
+    }
 
   </div>
 

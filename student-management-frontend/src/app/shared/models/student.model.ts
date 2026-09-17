@@ -1,9 +1,14 @@
+import { Subject } from './subject.model';
+
 export interface Student {
   id?: number;
   name: string;
   email: string;
   course: string;
   age: number;
+  username?: string;
+  password?: string;
+  subjects?: Subject[];
   teacher?: {
     id: number;
     name?: string;

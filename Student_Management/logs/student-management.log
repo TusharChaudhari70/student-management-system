@@ -1,400 +1,117 @@
-2026-09-11 10:46:55.723 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 19764 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 10:46:55.780 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 10:58:13.977 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 21368 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 10:58:13.998 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 10:58:28.843 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 16.026 seconds (process running for 17.94)
-2026-09-11 11:04:57.137 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 21368 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 11:04:57.144 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 11:04:59.090 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 3676 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 11:04:59.110 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 11:05:03.111 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 6.055 seconds (process running for 412.207)
-2026-09-11 11:06:32.955 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 12444 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 11:06:33.042 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 11:07:09.170 INFO  [http-nio-8080-exec-3] AuthController - Login attempt for username: Tushar
-2026-09-11 11:07:09.937 INFO  [http-nio-8080-exec-3] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 11:07:16.775 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
-2026-09-11 11:07:16.786 INFO  [http-nio-8080-exec-7] StudService - Fetching students for user: Tushar
-2026-09-11 11:07:16.846 INFO  [http-nio-8080-exec-7] StudService - Admin fetched 13 students
-2026-09-11 11:11:42.368 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 11:11:42.371 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Tushar
-2026-09-11 11:11:42.400 INFO  [http-nio-8080-exec-5] StudService - Admin fetched 13 students
-2026-09-11 11:15:20.564 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 11:15:20.565 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 11:15:20.582 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 13 students
-2026-09-11 11:15:44.165 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 11:15:44.165 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
-2026-09-11 11:15:44.188 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 13 students
-2026-09-11 11:16:03.810 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 11:16:03.813 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 11:16:03.826 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 13 students
-2026-09-11 11:16:56.561 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 11:16:56.562 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 11:16:56.575 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 13 students
-2026-09-11 11:27:37.135 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 11:27:37.135 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 11:27:37.164 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 13 students
-2026-09-11 11:27:46.853 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 11:27:46.853 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Tushar
-2026-09-11 11:27:46.870 INFO  [http-nio-8080-exec-2] StudService - Admin fetched 13 students
-2026-09-11 11:27:49.217 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 11:27:49.218 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 11:27:49.229 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 13 students
-2026-09-11 11:36:30.068 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
-2026-09-11 11:36:30.070 INFO  [http-nio-8080-exec-7] StudService - Fetching students for user: Tushar
-2026-09-11 11:36:30.102 INFO  [http-nio-8080-exec-7] StudService - Admin fetched 13 students
-2026-09-11 11:36:59.187 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 11:36:59.188 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Tushar
-2026-09-11 11:36:59.295 INFO  [http-nio-8080-exec-2] StudService - Admin fetched 13 students
-2026-09-11 12:07:27.494 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 21368 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 12:07:27.496 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 12:07:37.156 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.805 seconds (process running for 4166.253)
-2026-09-11 12:07:37.503 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 12840 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 12:07:37.539 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 12:08:34.242 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: Tushar
-2026-09-11 12:08:34.356 INFO  [http-nio-8080-exec-2] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 12:08:37.748 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
-2026-09-11 12:08:37.750 INFO  [http-nio-8080-exec-7] StudService - Fetching students for user: Tushar
-2026-09-11 12:08:37.766 INFO  [http-nio-8080-exec-7] StudService - Admin fetched 13 students
-2026-09-11 12:15:47.979 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 12:15:47.981 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 12:15:48.010 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 13 students
-2026-09-11 12:28:22.920 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 12:28:22.924 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
-2026-09-11 12:28:22.959 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 13 students
-2026-09-11 12:28:23.885 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 12:28:23.888 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 12:28:23.928 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 13 students
-2026-09-11 12:28:24.662 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 12:28:24.663 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Tushar
-2026-09-11 12:28:24.678 INFO  [http-nio-8080-exec-10] StudService - Admin fetched 13 students
-2026-09-11 12:28:28.238 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 12:28:28.239 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Tushar
-2026-09-11 12:28:28.253 INFO  [http-nio-8080-exec-4] StudService - Admin fetched 13 students
-2026-09-11 12:28:43.820 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 12:28:43.820 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 12:28:43.840 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 13 students
-2026-09-11 12:29:17.192 INFO  [http-nio-8080-exec-5] StudController - Creating a new student
-2026-09-11 12:29:17.197 INFO  [http-nio-8080-exec-5] StudService - Creating student by user: Tushar
-2026-09-11 12:29:17.220 INFO  [http-nio-8080-exec-5] StudService - Admin assigned teacher ID: 8
-2026-09-11 12:29:17.312 INFO  [http-nio-8080-exec-5] StudService - Student created successfully with ID: 30015
-2026-09-11 12:29:25.529 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 12:29:25.530 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 12:29:25.538 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 14 students
-2026-09-11 12:29:31.201 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 12:29:31.202 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Tushar
-2026-09-11 12:29:31.218 INFO  [http-nio-8080-exec-1] StudService - Admin fetched 14 students
-2026-09-11 12:29:44.285 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 12:29:44.285 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Tushar
-2026-09-11 12:29:44.310 INFO  [http-nio-8080-exec-5] StudService - Admin fetched 14 students
-2026-09-11 12:30:25.035 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 12:30:25.036 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 12:30:25.065 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 14 students
-2026-09-11 12:30:31.962 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 12:30:31.964 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Tushar
-2026-09-11 12:30:31.971 INFO  [http-nio-8080-exec-1] StudService - Admin fetched 14 students
-2026-09-11 12:30:38.070 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 12:30:38.073 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 12:30:38.113 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 14 students
-2026-09-11 12:33:56.492 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 12:33:56.492 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Tushar
-2026-09-11 12:33:56.508 INFO  [http-nio-8080-exec-2] StudService - Admin fetched 14 students
-2026-09-11 12:37:57.228 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 12:37:57.231 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 12:37:57.243 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 14 students
-2026-09-11 12:38:42.784 INFO  [http-nio-8080-exec-8] AuthController - Login attempt for username: Tushar
-2026-09-11 12:38:42.870 WARN  [http-nio-8080-exec-8] AuthController - Invalid password for username: Tushar
-2026-09-11 12:38:42.870 ERROR [http-nio-8080-exec-8] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 12:38:48.407 INFO  [http-nio-8080-exec-1] AuthController - Login attempt for username: Tushar
-2026-09-11 12:38:48.503 INFO  [http-nio-8080-exec-1] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 12:42:08.228 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: Tushar
-2026-09-11 12:42:08.316 WARN  [http-nio-8080-exec-4] AuthController - Invalid password for username: Tushar
-2026-09-11 12:42:08.316 ERROR [http-nio-8080-exec-4] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 12:42:13.618 INFO  [http-nio-8080-exec-7] AuthController - Login attempt for username: Tushar
-2026-09-11 12:42:13.730 INFO  [http-nio-8080-exec-7] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 12:42:16.440 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 12:42:16.440 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
-2026-09-11 12:42:16.457 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 14 students
-2026-09-11 12:42:46.699 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 12:42:46.699 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Tushar
-2026-09-11 12:42:46.708 INFO  [http-nio-8080-exec-2] StudService - Admin fetched 14 students
-2026-09-11 12:52:44.880 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 12:52:44.885 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 12:52:44.911 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 14 students
-2026-09-11 12:54:36.411 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 12:54:36.413 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Tushar
-2026-09-11 12:54:36.436 INFO  [http-nio-8080-exec-4] StudService - Admin fetched 14 students
-2026-09-11 12:54:41.627 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 12:54:41.628 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Tushar
-2026-09-11 12:54:41.636 INFO  [http-nio-8080-exec-10] StudService - Admin fetched 14 students
-2026-09-11 13:08:22.039 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 13:08:22.044 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Tushar
-2026-09-11 13:08:22.067 INFO  [http-nio-8080-exec-1] StudService - Admin fetched 14 students
-2026-09-11 13:09:02.412 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 13:09:02.414 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 13:09:02.430 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 14 students
-2026-09-11 13:09:11.762 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 13:09:11.762 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
-2026-09-11 13:09:11.784 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 14 students
-2026-09-11 13:11:36.100 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 13:11:36.104 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Tushar
-2026-09-11 13:11:36.125 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 14 students
-2026-09-11 13:13:25.197 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 13:13:25.199 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 13:13:25.210 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 14 students
-2026-09-11 13:18:36.551 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 13:18:36.551 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 13:18:36.570 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 14 students
-2026-09-11 13:18:47.729 INFO  [http-nio-8080-exec-9] StudController - Updating student with ID: 5
-2026-09-11 13:18:47.731 INFO  [http-nio-8080-exec-9] StudService - Updating student ID: 5 by user: Tushar
-2026-09-11 13:18:47.748 INFO  [http-nio-8080-exec-9] StudService - Student ID: 5 reassigned to teacher ID: 7
-2026-09-11 13:18:47.790 INFO  [http-nio-8080-exec-9] StudService - Student ID: 5 updated successfully
-2026-09-11 13:18:48.871 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 13:18:48.877 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Tushar
-2026-09-11 13:18:48.894 INFO  [http-nio-8080-exec-8] StudService - Admin fetched 14 students
-2026-09-11 13:22:14.704 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 13:22:14.711 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Tushar
-2026-09-11 13:22:14.745 INFO  [http-nio-8080-exec-10] StudService - Admin fetched 14 students
-2026-09-11 13:30:41.300 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 13:30:41.302 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Tushar
-2026-09-11 13:30:41.319 INFO  [http-nio-8080-exec-4] StudService - Admin fetched 14 students
-2026-09-11 13:30:42.848 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 13:30:42.849 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 13:30:42.858 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 14 students
-2026-09-11 14:41:22.217 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 20288 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 14:41:22.254 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 14:41:48.632 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 28.763 seconds (process running for 31.723)
-2026-09-11 14:41:52.320 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: Tushar
-2026-09-11 14:41:53.436 INFO  [http-nio-8080-exec-2] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 14:41:55.764 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 14:41:55.780 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Tushar
-2026-09-11 14:41:55.874 INFO  [http-nio-8080-exec-5] StudService - Admin fetched 14 students
-2026-09-11 14:43:07.885 INFO  [http-nio-8080-exec-7] AuthController - Login attempt for username: Sanket
-2026-09-11 14:43:07.957 WARN  [http-nio-8080-exec-7] AuthController - Invalid password for username: Sanket
-2026-09-11 14:43:07.957 ERROR [http-nio-8080-exec-7] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 14:43:12.389 INFO  [http-nio-8080-exec-10] AuthController - Login attempt for username: Sanket
-2026-09-11 14:43:12.450 INFO  [http-nio-8080-exec-10] AuthController - Login successful for username: Sanket, role: TEACHER
-2026-09-11 14:43:16.412 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 14:43:16.412 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Sanket
-2026-09-11 14:43:16.456 INFO  [http-nio-8080-exec-5] StudService - Teacher Sanket fetched 4 students
-2026-09-11 14:43:18.291 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 14:43:18.291 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Sanket
-2026-09-11 14:43:18.302 INFO  [http-nio-8080-exec-8] StudService - Teacher Sanket fetched 4 students
-2026-09-11 14:48:56.534 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 14:48:56.539 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Sanket
-2026-09-11 14:48:56.562 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 4 students
-2026-09-11 14:58:00.667 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 14:58:00.669 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Sanket
-2026-09-11 14:58:00.690 INFO  [http-nio-8080-exec-1] StudService - Teacher Sanket fetched 4 students
-2026-09-11 14:58:42.280 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 14:58:42.280 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Sanket
-2026-09-11 14:58:42.311 INFO  [http-nio-8080-exec-4] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:01:02.379 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 15:01:02.379 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Sanket
-2026-09-11 15:01:02.379 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:01:08.527 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 15:01:08.527 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Sanket
-2026-09-11 15:01:08.536 INFO  [http-nio-8080-exec-10] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:02:31.987 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 15:02:31.987 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Sanket
-2026-09-11 15:02:32.013 INFO  [http-nio-8080-exec-4] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:02:46.203 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 15:02:46.203 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Sanket
-2026-09-11 15:02:46.218 INFO  [http-nio-8080-exec-8] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:02:50.968 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 15:02:50.968 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Sanket
-2026-09-11 15:02:50.968 INFO  [http-nio-8080-exec-9] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:03:03.057 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 15:03:03.059 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Sanket
-2026-09-11 15:03:03.059 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:03:41.346 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 15:03:41.347 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Sanket
-2026-09-11 15:03:41.372 INFO  [http-nio-8080-exec-10] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:03:54.346 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 15:03:54.348 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Sanket
-2026-09-11 15:03:54.362 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:03:56.949 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 15:03:56.949 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Sanket
-2026-09-11 15:03:56.949 INFO  [http-nio-8080-exec-4] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:04:06.126 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
-2026-09-11 15:04:06.126 INFO  [http-nio-8080-exec-8] StudService - Fetching students for user: Sanket
-2026-09-11 15:04:06.126 INFO  [http-nio-8080-exec-8] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:04:11.921 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 15:04:11.925 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Sanket
-2026-09-11 15:04:11.926 INFO  [http-nio-8080-exec-3] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:05:41.813 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
-2026-09-11 15:05:41.816 INFO  [http-nio-8080-exec-10] StudService - Fetching students for user: Sanket
-2026-09-11 15:05:41.846 INFO  [http-nio-8080-exec-10] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:05:59.553 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 15:05:59.556 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Sanket
-2026-09-11 15:05:59.585 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:06:00.802 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 15:06:00.802 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Sanket
-2026-09-11 15:06:00.821 INFO  [http-nio-8080-exec-4] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:08:09.551 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
-2026-09-11 15:08:09.551 INFO  [http-nio-8080-exec-6] StudService - Fetching students for user: Sanket
-2026-09-11 15:08:09.551 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:08:14.084 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
-2026-09-11 15:08:14.084 INFO  [http-nio-8080-exec-7] StudService - Fetching students for user: Sanket
-2026-09-11 15:08:14.101 INFO  [http-nio-8080-exec-7] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:08:44.489 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 15:08:44.490 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Sanket
-2026-09-11 15:08:44.498 INFO  [http-nio-8080-exec-1] StudService - Teacher Sanket fetched 4 students
-2026-09-11 15:26:42.877 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 15:26:42.877 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Sanket
-2026-09-11 15:26:42.910 INFO  [http-nio-8080-exec-5] StudService - Teacher Sanket fetched 4 students
-2026-09-11 16:16:05.570 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:16:05.618 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:16:37.535 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 34.413 seconds (process running for 35.998)
-2026-09-11 16:23:01.750 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:23:01.756 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:23:10.132 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 8.542 seconds (process running for 428.595)
-2026-09-11 16:23:19.578 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:23:19.589 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:23:28.608 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.259 seconds (process running for 447.071)
-2026-09-11 16:23:40.113 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:23:40.119 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:23:53.106 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:23:53.124 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:25:13.262 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:25:13.265 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:25:47.745 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:25:47.751 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:26:10.453 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:26:10.459 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:26:24.271 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:26:24.273 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:26:38.169 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:26:38.170 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:27:41.793 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:27:41.801 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:27:59.836 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:27:59.838 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:31:02.601 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:31:02.715 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:31:31.618 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:31:31.632 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:31:56.226 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:31:56.320 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:32:18.618 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:32:18.620 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:32:41.993 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:32:41.998 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:32:51.433 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.516 seconds (process running for 1009.895)
-2026-09-11 16:33:40.797 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:33:40.810 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:33:49.733 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 9.019 seconds (process running for 1068.197)
-2026-09-11 16:34:08.532 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:34:08.534 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:34:17.123 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 8.709 seconds (process running for 1095.586)
-2026-09-11 16:34:45.839 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:34:45.843 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:34:54.610 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 8.859 seconds (process running for 1133.073)
-2026-09-11 16:37:12.913 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:37:12.932 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:37:47.554 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:37:47.557 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:49:15.299 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:49:15.301 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:49:24.159 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 8.928 seconds (process running for 2002.621)
-2026-09-11 16:50:04.872 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:50:04.887 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:50:14.569 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:50:14.570 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:50:43.350 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:50:43.356 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:51:27.638 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:51:27.640 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:52:03.178 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:52:03.183 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:52:38.836 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:52:38.850 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:52:47.736 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 22340 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 16:52:47.736 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 16:52:54.402 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 6.712 seconds (process running for 2212.865)
-2026-09-11 17:01:38.476 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 2752 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 17:01:38.493 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 17:02:01.078 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 24.19 seconds (process running for 32.503)
-2026-09-11 17:02:36.407 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: Tushar
-2026-09-11 17:02:38.448 INFO  [http-nio-8080-exec-2] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 17:02:44.205 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
-2026-09-11 17:02:44.211 INFO  [http-nio-8080-exec-4] StudService - Fetching students for user: Tushar
-2026-09-11 17:02:44.409 INFO  [http-nio-8080-exec-4] StudService - Admin fetched 14 students
-2026-09-11 17:02:51.017 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 13344 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 17:02:51.035 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 17:03:11.255 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 21.835 seconds (process running for 29.07)
-2026-09-11 17:06:19.065 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: Tushar
-2026-09-11 17:06:19.170 WARN  [http-nio-8080-exec-2] AuthController - Invalid password for username: Tushar
-2026-09-11 17:06:19.172 ERROR [http-nio-8080-exec-2] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:06:33.202 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: Sanket
-2026-09-11 17:06:33.270 WARN  [http-nio-8080-exec-6] AuthController - Invalid password for username: Sanket
-2026-09-11 17:06:33.271 ERROR [http-nio-8080-exec-6] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:06:37.451 INFO  [http-nio-8080-exec-3] AuthController - Login attempt for username: Sanket
-2026-09-11 17:06:37.529 INFO  [http-nio-8080-exec-3] AuthController - Login successful for username: Sanket, role: TEACHER
-2026-09-11 17:06:41.470 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 17:06:41.471 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Sanket
-2026-09-11 17:06:41.506 INFO  [http-nio-8080-exec-9] StudService - Teacher Sanket fetched 4 students
-2026-09-11 17:07:10.528 INFO  [http-nio-8080-exec-1] StudController - Creating a new student
-2026-09-11 17:07:10.530 INFO  [http-nio-8080-exec-1] StudService - Creating student by user: Sanket
-2026-09-11 17:07:10.555 INFO  [http-nio-8080-exec-1] StudService - Student assigned to teacher: Sanket
-2026-09-11 17:07:10.658 INFO  [http-nio-8080-exec-1] StudService - Student created successfully with ID: 30016
-2026-09-11 17:07:12.659 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
-2026-09-11 17:07:12.660 INFO  [http-nio-8080-exec-2] StudService - Fetching students for user: Sanket
-2026-09-11 17:07:12.669 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 5 students
-2026-09-11 17:07:29.475 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: Atharv
-2026-09-11 17:07:29.566 WARN  [http-nio-8080-exec-6] AuthController - Invalid password for username: Atharv
-2026-09-11 17:07:29.567 ERROR [http-nio-8080-exec-6] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:07:36.056 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: Tushar
-2026-09-11 17:07:36.130 WARN  [http-nio-8080-exec-4] AuthController - Invalid password for username: Tushar
-2026-09-11 17:07:36.130 ERROR [http-nio-8080-exec-4] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:07:39.426 INFO  [http-nio-8080-exec-7] AuthController - Login attempt for username: Tushar
-2026-09-11 17:07:39.504 WARN  [http-nio-8080-exec-7] AuthController - Invalid password for username: Tushar
-2026-09-11 17:07:39.505 ERROR [http-nio-8080-exec-7] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:07:45.154 INFO  [http-nio-8080-exec-9] AuthController - Login attempt for username: Tushar
-2026-09-11 17:07:45.233 WARN  [http-nio-8080-exec-9] AuthController - Invalid password for username: Tushar
-2026-09-11 17:07:45.234 ERROR [http-nio-8080-exec-9] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:07:56.426 INFO  [http-nio-8080-exec-1] AuthController - Login attempt for username: Tushar
-2026-09-11 17:07:56.491 INFO  [http-nio-8080-exec-1] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 17:08:00.092 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
-2026-09-11 17:08:00.094 INFO  [http-nio-8080-exec-3] StudService - Fetching students for user: Tushar
-2026-09-11 17:08:00.136 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 15 students
-2026-09-11 17:19:41.278 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: vishal
-2026-09-11 17:19:41.376 WARN  [http-nio-8080-exec-4] AuthController - Invalid password for username: vishal
-2026-09-11 17:19:41.377 ERROR [http-nio-8080-exec-4] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:19:45.969 INFO  [http-nio-8080-exec-8] AuthController - Login attempt for username: vishal
-2026-09-11 17:19:46.038 INFO  [http-nio-8080-exec-8] AuthController - Login successful for username: Vishal, role: TEACHER
-2026-09-11 17:19:55.027 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
-2026-09-11 17:19:55.028 INFO  [http-nio-8080-exec-1] StudService - Fetching students for user: Vishal
-2026-09-11 17:19:55.044 INFO  [http-nio-8080-exec-1] StudService - Teacher Vishal fetched 1 students
-2026-09-11 17:37:40.800 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 24708 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
-2026-09-11 17:37:40.827 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
-2026-09-11 17:38:04.025 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 24.46 seconds (process running for 32.137)
-2026-09-11 17:49:27.396 INFO  [http-nio-8080-exec-3] AuthController - Login attempt for username: vishal
-2026-09-11 17:49:27.493 WARN  [http-nio-8080-exec-3] AuthController - Invalid password for username: vishal
-2026-09-11 17:49:27.493 ERROR [http-nio-8080-exec-3] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:50:03.792 INFO  [http-nio-8080-exec-7] AuthController - Login attempt for username: Tushar
-2026-09-11 17:50:03.911 WARN  [http-nio-8080-exec-7] AuthController - Invalid password for username: Tushar
-2026-09-11 17:50:03.912 ERROR [http-nio-8080-exec-7] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:50:04.921 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: Tushar
-2026-09-11 17:50:04.997 WARN  [http-nio-8080-exec-4] AuthController - Invalid password for username: Tushar
-2026-09-11 17:50:04.998 ERROR [http-nio-8080-exec-4] GlobalExceptionHandler - Runtime exception: Invalid password
-2026-09-11 17:50:12.118 INFO  [http-nio-8080-exec-8] AuthController - Login attempt for username: Tushar
-2026-09-11 17:50:12.202 INFO  [http-nio-8080-exec-8] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 17:53:17.180 ERROR [http-nio-8080-exec-10] GlobalExceptionHandler - Runtime exception: Row was already updated or deleted by another transaction for entity [com.sms.Student_Management.entity.User with id '0']
-2026-09-11 17:53:39.311 INFO  [http-nio-8080-exec-1] AuthController - Login attempt for username: rajesh
-2026-09-11 17:53:39.331 ERROR [http-nio-8080-exec-1] GlobalExceptionHandler - Runtime exception: User not found with username: rajesh
-2026-09-11 17:54:00.682 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: rajesh@gmail.com
-2026-09-11 17:54:00.685 ERROR [http-nio-8080-exec-6] GlobalExceptionHandler - Runtime exception: User not found with username: rajesh@gmail.com
-2026-09-11 17:54:16.432 INFO  [http-nio-8080-exec-7] AuthController - Login attempt for username: rajesh
-2026-09-11 17:54:16.514 ERROR [http-nio-8080-exec-7] GlobalExceptionHandler - Runtime exception: User not found with username: rajesh
-2026-09-11 17:56:10.566 ERROR [http-nio-8080-exec-4] GlobalExceptionHandler - Runtime exception: Row was already updated or deleted by another transaction for entity [com.sms.Student_Management.entity.User with id '0']
-2026-09-11 17:58:08.742 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
-2026-09-11 17:58:08.743 INFO  [http-nio-8080-exec-5] StudService - Fetching students for user: Tushar
-2026-09-11 17:58:08.799 INFO  [http-nio-8080-exec-5] StudService - Admin fetched 15 students
-2026-09-11 17:59:40.729 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: Tushar
-2026-09-11 17:59:40.833 INFO  [http-nio-8080-exec-6] AuthController - Login successful for username: Tushar, role: ADMIN
-2026-09-11 17:59:48.364 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
-2026-09-11 17:59:48.366 INFO  [http-nio-8080-exec-9] StudService - Fetching students for user: Tushar
-2026-09-11 17:59:48.384 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 15 students
-2026-09-11 18:00:15.811 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
-2026-09-11 18:00:15.812 INFO  [http-nio-8080-exec-7] StudService - Fetching students for user: Tushar
-2026-09-11 18:00:15.822 INFO  [http-nio-8080-exec-7] StudService - Admin fetched 15 students
+2026-09-17 10:19:47.387 INFO  [restartedMain] StudentManagementApplication - Starting StudentManagementApplication using Java 21.0.12.1 with PID 3316 (C:\Users\Tushar\Desktop\SbootPr\Student_Management\target\classes started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 10:19:47.469 INFO  [restartedMain] StudentManagementApplication - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 10:20:30.439 INFO  [restartedMain] StudentManagementApplication - Started StudentManagementApplication in 45.869 seconds (process running for 49.422)
+2026-09-17 10:21:12.452 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: Tushar
+2026-09-17 10:21:14.336 INFO  [http-nio-8080-exec-4] AuthController - Login successful for username: Tushar, role: ADMIN
+2026-09-17 10:21:18.231 INFO  [http-nio-8080-exec-8] SubjectController - Request to get all subjects
+2026-09-17 10:21:18.373 INFO  [http-nio-8080-exec-8] SubjectService - Fetched 13 subjects
+2026-09-17 10:21:23.721 INFO  [http-nio-8080-exec-7] SubjectController - Request to get all subjects
+2026-09-17 10:21:23.735 INFO  [http-nio-8080-exec-7] SubjectService - Fetched 13 subjects
+2026-09-17 10:21:23.755 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
+2026-09-17 10:21:23.828 INFO  [http-nio-8080-exec-1] StudService - Admin fetched 19 students
+2026-09-17 10:24:11.546 INFO  [http-nio-8080-exec-2] AuthController - Login attempt for username: student2
+2026-09-17 10:24:11.657 WARN  [http-nio-8080-exec-2] AuthController - Invalid password for username: student2
+2026-09-17 10:24:11.659 ERROR [http-nio-8080-exec-2] GlobalExceptionHandler - Runtime exception: Invalid password
+2026-09-17 10:24:17.844 INFO  [http-nio-8080-exec-3] AuthController - Login attempt for username: student2
+2026-09-17 10:24:17.941 INFO  [http-nio-8080-exec-3] AuthController - Login successful for username: student2, role: STUDENT
+2026-09-17 10:24:18.006 INFO  [http-nio-8080-exec-7] MessageController - Request to get messages for current student
+2026-09-17 10:24:18.007 INFO  [http-nio-8080-exec-5] TaskController - Fetching tasks for current student
+2026-09-17 10:24:18.008 INFO  [http-nio-8080-exec-1] StudController - Fetching student profile for user: student2
+2026-09-17 10:24:18.009 INFO  [http-nio-8080-exec-5] TaskService - Fetching tasks for student: student2
+2026-09-17 10:24:18.010 INFO  [http-nio-8080-exec-9] DocumentController - Fetching documents for current student
+2026-09-17 10:24:18.012 INFO  [http-nio-8080-exec-9] DocumentService - Fetching documents for student: student2
+2026-09-17 10:24:18.033 INFO  [http-nio-8080-exec-7] MessageService - Fetching messages for student: student2
+2026-09-17 10:24:18.062 INFO  [http-nio-8080-exec-9] DocumentService - Student student2 has 1 documents
+2026-09-17 10:24:18.062 INFO  [http-nio-8080-exec-5] TaskService - Student student2 has 1 tasks
+2026-09-17 10:24:21.266 INFO  [http-nio-8080-exec-4] StudController - Fetching student profile for user: student2
+2026-09-17 10:24:22.246 INFO  [http-nio-8080-exec-2] MessageController - Request to get messages for current student
+2026-09-17 10:24:22.251 INFO  [http-nio-8080-exec-2] MessageService - Fetching messages for student: student2
+2026-09-17 10:24:31.074 INFO  [http-nio-8080-exec-9] SubjectController - Request to get all subjects
+2026-09-17 10:24:31.089 INFO  [http-nio-8080-exec-9] SubjectService - Fetched 13 subjects
+2026-09-17 10:24:32.562 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
+2026-09-17 10:24:32.593 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 19 students
+2026-09-17 10:24:42.942 INFO  [http-nio-8080-exec-2] SubjectController - Request to get all subjects
+2026-09-17 10:24:42.951 INFO  [http-nio-8080-exec-2] SubjectService - Fetched 13 subjects
+2026-09-17 10:24:49.219 INFO  [http-nio-8080-exec-5] StudController - Updating student with ID: 30018
+2026-09-17 10:24:49.252 INFO  [http-nio-8080-exec-5] StudService - Student ID: 30018 updated successfully
+2026-09-17 10:24:51.092 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
+2026-09-17 10:24:51.131 INFO  [http-nio-8080-exec-9] StudService - Admin fetched 19 students
+2026-09-17 10:24:54.009 INFO  [http-nio-8080-exec-1] TaskController - Fetching tasks for current student
+2026-09-17 10:24:54.010 INFO  [http-nio-8080-exec-3] MessageController - Request to get messages for current student
+2026-09-17 10:24:54.009 INFO  [http-nio-8080-exec-2] DocumentController - Fetching documents for current student
+2026-09-17 10:24:54.011 INFO  [http-nio-8080-exec-1] TaskService - Fetching tasks for student: student2
+2026-09-17 10:24:54.012 INFO  [http-nio-8080-exec-5] StudController - Fetching student profile for user: student2
+2026-09-17 10:24:54.013 INFO  [http-nio-8080-exec-2] DocumentService - Fetching documents for student: student2
+2026-09-17 10:24:54.022 INFO  [http-nio-8080-exec-3] MessageService - Fetching messages for student: student2
+2026-09-17 10:24:54.024 INFO  [http-nio-8080-exec-1] TaskService - Student student2 has 1 tasks
+2026-09-17 10:24:54.033 INFO  [http-nio-8080-exec-2] DocumentService - Student student2 has 1 documents
+2026-09-17 10:24:57.350 INFO  [http-nio-8080-exec-7] StudController - Fetching student profile for user: student2
+2026-09-17 10:25:20.609 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: sanket
+2026-09-17 10:25:20.713 WARN  [http-nio-8080-exec-6] AuthController - Invalid password for username: sanket
+2026-09-17 10:25:20.713 ERROR [http-nio-8080-exec-6] GlobalExceptionHandler - Runtime exception: Invalid password
+2026-09-17 10:25:26.600 INFO  [http-nio-8080-exec-4] AuthController - Login attempt for username: sanket
+2026-09-17 10:25:26.720 INFO  [http-nio-8080-exec-4] AuthController - Login successful for username: Sanket, role: TEACHER
+2026-09-17 10:25:26.758 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
+2026-09-17 10:25:26.762 INFO  [http-nio-8080-exec-6] SubjectController - Request to get all subjects
+2026-09-17 10:25:26.762 INFO  [http-nio-8080-exec-9] MessageController - Request to get messages sent by current teacher
+2026-09-17 10:25:26.763 INFO  [http-nio-8080-exec-9] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-17 10:25:26.772 INFO  [http-nio-8080-exec-6] SubjectService - Fetched 13 subjects
+2026-09-17 10:25:26.796 INFO  [http-nio-8080-exec-7] StudService - Teacher Sanket fetched 8 students
+2026-09-17 10:25:35.377 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
+2026-09-17 10:25:35.377 INFO  [http-nio-8080-exec-1] MessageController - Request to get messages sent by current teacher
+2026-09-17 10:25:35.378 INFO  [http-nio-8080-exec-1] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-17 10:25:35.388 INFO  [http-nio-8080-exec-3] StudService - Teacher Sanket fetched 8 students
+2026-09-17 10:27:45.543 INFO  [http-nio-8080-exec-3] MessageController - Request to get messages for current student
+2026-09-17 10:27:45.571 INFO  [http-nio-8080-exec-3] MessageService - Fetching messages for student: student2
+2026-09-17 10:27:51.258 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks for current student
+2026-09-17 10:27:51.258 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks for student: student2
+2026-09-17 10:27:51.270 INFO  [http-nio-8080-exec-2] TaskService - Student student2 has 1 tasks
+2026-09-17 10:27:57.307 INFO  [http-nio-8080-exec-9] StudController - Fetching student profile for user: student2
+2026-09-17 10:33:05.342 INFO  [http-nio-8080-exec-10] TaskController - Fetching tasks for current student
+2026-09-17 10:33:05.343 INFO  [http-nio-8080-exec-10] TaskService - Fetching tasks for student: student2
+2026-09-17 10:33:05.363 INFO  [http-nio-8080-exec-10] TaskService - Student student2 has 1 tasks
+2026-09-17 10:33:10.577 INFO  [http-nio-8080-exec-5] StudController - Fetching student profile for user: student2
+2026-09-17 10:33:10.583 INFO  [http-nio-8080-exec-6] TaskController - Fetching tasks for current student
+2026-09-17 10:33:10.582 INFO  [http-nio-8080-exec-9] DocumentController - Fetching documents for current student
+2026-09-17 10:33:10.588 INFO  [http-nio-8080-exec-6] TaskService - Fetching tasks for student: student2
+2026-09-17 10:33:10.588 INFO  [http-nio-8080-exec-8] MessageController - Request to get messages for current student
+2026-09-17 10:33:10.590 INFO  [http-nio-8080-exec-9] DocumentService - Fetching documents for student: student2
+2026-09-17 10:33:10.611 INFO  [http-nio-8080-exec-8] MessageService - Fetching messages for student: student2
+2026-09-17 10:33:10.613 INFO  [http-nio-8080-exec-6] TaskService - Student student2 has 1 tasks
+2026-09-17 10:33:10.619 INFO  [http-nio-8080-exec-9] DocumentService - Student student2 has 1 documents
+2026-09-17 10:33:12.592 INFO  [http-nio-8080-exec-7] DocumentController - Fetching documents for current student
+2026-09-17 10:33:12.593 INFO  [http-nio-8080-exec-7] DocumentService - Fetching documents for student: student2
+2026-09-17 10:33:12.601 INFO  [http-nio-8080-exec-7] DocumentService - Student student2 has 1 documents
+2026-09-17 10:33:14.016 INFO  [http-nio-8080-exec-10] MessageController - Request to get messages for current student
+2026-09-17 10:33:14.018 INFO  [http-nio-8080-exec-10] MessageService - Fetching messages for student: student2
+2026-09-17 10:33:16.136 INFO  [http-nio-8080-exec-3] TaskController - Fetching tasks for current student
+2026-09-17 10:33:16.138 INFO  [http-nio-8080-exec-3] TaskService - Fetching tasks for student: student2
+2026-09-17 10:33:16.148 INFO  [http-nio-8080-exec-3] TaskService - Student student2 has 1 tasks
+2026-09-17 10:33:18.162 INFO  [http-nio-8080-exec-1] DocumentController - Fetching documents for current student
+2026-09-17 10:33:18.163 INFO  [http-nio-8080-exec-1] DocumentService - Fetching documents for student: student2
+2026-09-17 10:33:18.172 INFO  [http-nio-8080-exec-1] DocumentService - Student student2 has 1 documents
+2026-09-17 10:34:21.090 INFO  [http-nio-8080-exec-1] MessageController - Request to get messages sent by current teacher
+2026-09-17 10:34:21.109 INFO  [http-nio-8080-exec-6] SubjectController - Request to get all subjects
+2026-09-17 10:34:21.095 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
+2026-09-17 10:34:21.116 INFO  [http-nio-8080-exec-1] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-17 10:34:21.177 INFO  [http-nio-8080-exec-6] SubjectService - Fetched 13 subjects
+2026-09-17 10:34:21.190 INFO  [http-nio-8080-exec-5] StudService - Teacher Sanket fetched 8 students
+2026-09-17 10:34:24.465 INFO  [http-nio-8080-exec-9] MessageController - Request to get messages sent by current teacher
+2026-09-17 10:34:24.465 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
+2026-09-17 10:34:24.466 INFO  [http-nio-8080-exec-9] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-17 10:34:24.473 INFO  [http-nio-8080-exec-8] StudService - Teacher Sanket fetched 8 students
+2026-09-17 10:40:33.046 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 17648 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 10:40:33.068 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 10:40:54.178 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 22.753 seconds (process running for 29.907)
+2026-09-17 11:02:19.387 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 7220 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 11:02:19.401 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 11:02:42.143 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 24.3 seconds (process running for 30.453)
+2026-09-17 11:10:02.315 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 17120 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 11:10:02.338 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 11:10:21.476 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 20.263 seconds (process running for 26.328)
+2026-09-17 11:17:37.642 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 17120 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 11:17:37.652 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 11:17:58.243 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 21.725 seconds (process running for 26.902)
+2026-09-17 12:46:56.416 INFO  [main] StudentManagementApplicationTests - Starting StudentManagementApplicationTests using Java 21.0.12.1 with PID 22856 (started by Tushar in C:\Users\Tushar\Desktop\SbootPr\Student_Management)
+2026-09-17 12:46:56.436 INFO  [main] StudentManagementApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-09-17 12:47:18.723 INFO  [main] StudentManagementApplicationTests - Started StudentManagementApplicationTests in 24.138 seconds (process running for 30.585)

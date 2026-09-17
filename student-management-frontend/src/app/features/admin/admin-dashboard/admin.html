@@ -1,79 +1,118 @@
-<app-navbar [username]="username || ''" [role]="role || ''" (logoutRequested)="logout()">
-</app-navbar>
-
-<nav class="control-panel" aria-label="Admin sections">
-  <div class="control-tabs">
-    <button class="ctrl-tab" [class.active]="selectedSection === 'dashboard'"
-      (click)="selectSection('dashboard')">Dashboard</button>
-    <div class="tab-group">
-      <button class="ctrl-tab" [class.active]="selectedSection === 'students'"
-        (click)="selectSection('students')">Students <span>{{ selectedSection === 'students' ? '−' : '+'
-          }}</span></button>
-      @if (selectedSection === 'students') { <div class="ctrl-submenu"><button
-          [class.active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">Add
-          Student</button><button [class.active]="selectedStudentAction === 'list'"
-          (click)="selectStudentAction('list')">All Students</button></div> }
-    </div>
-    <div class="tab-group">
-      <button class="ctrl-tab" [class.active]="selectedSection === 'teachers'"
-        (click)="selectSection('teachers')">Teachers <span>{{ selectedSection === 'teachers' ? '−' : '+'
-          }}</span></button>
-      @if (selectedSection === 'teachers') { <div class="ctrl-submenu"><button
-          [class.active]="selectedTeacherAction === 'add'" (click)="selectTeacherAction('add')">Add
-          Teacher</button><button [class.active]="selectedTeacherAction === 'view'"
-          (click)="selectTeacherAction('view')">All Teachers</button></div> }
+<app-navbar [username]="username || ''" [role]="role || ''" (dashboardRequested)="selectSection('dashboard')" (profileRequested)="selectSection('profile')"
+  (logoutRequested)="logout()">
+  <div navbar-nav class="navbar-links" aria-label="Admin sections">
+    <div class="control-tabs">
+      <button class="ctrl-tab" [class.active]="selectedSection === 'dashboard'"
+        (click)="selectSection('dashboard')">Dashboard</button>
+      <div class="tab-group">
+        <button class="ctrl-tab" [class.active]="selectedSection === 'students'"
+          (click)="selectSection('students')">Students <span>{{ selectedSection === 'students' ? '−' : '+'
+            }}</span></button>
+      </div>
+      <div class="tab-group">
+        <button class="ctrl-tab" [class.active]="selectedSection === 'teachers'"
+          (click)="selectSection('teachers')">Teachers <span>{{ selectedSection === 'teachers' ? '−' : '+'
+            }}</span></button>
+      </div>
+      <div class="tab-group">
+        <button class="ctrl-tab" [class.active]="selectedSection === 'subjects'"
+          (click)="selectSection('subjects')">Subjects <span>{{ selectedSection === 'subjects' ? '−' : '+'
+            }}</span></button>
+      </div>
     </div>
   </div>
-</nav>
+</app-navbar>
+
+@if (selectedSection === 'students') {
+<div class="section-actions" aria-label="Student actions">
+  <button [class.active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">Add Student</button>
+  <button [class.active]="selectedStudentAction === 'list'" (click)="selectStudentAction('list')">All Students</button>
+</div>
+}
+@if (selectedSection === 'teachers') {
+<div class="section-actions" aria-label="Teacher actions">
+  <button [class.active]="selectedTeacherAction === 'add'" (click)="selectTeacherAction('add')">Add Teacher</button>
+  <button [class.active]="selectedTeacherAction === 'view'" (click)="selectTeacherAction('view')">All Teachers</button>
+</div>
+}
+@if (selectedSection === 'subjects') {
+<div class="section-actions" aria-label="Subject actions">
+  <button [class.active]="selectedSubjectAction === 'add'" (click)="selectSubjectAction('add')">Add Subject</button>
+  <button [class.active]="selectedSubjectAction === 'list'" (click)="selectSubjectAction('list')">All Subjects</button>
+</div>
+}
 
 <div class="admin-layout">
-  <aside class="sidebar">
-    <div class="sidebar-title">ADMIN PANEL</div>
-    <button class="sidebar-item" [class.active]="selectedSection === 'dashboard'"
-      (click)="selectSection('dashboard')">Dashboard</button>
-
-    <button class="sidebar-item" [class.active]="selectedSection === 'students'" (click)="selectSection('students')">
-      Students <span class="expand-icon">{{ selectedSection === 'students' ? '−' : '+' }}</span>
-    </button>
-    @if (selectedSection === 'students') {
-    <div class="submenu">
-      <button [class.sub-active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">Add
-        Student</button>
-      <button [class.sub-active]="selectedStudentAction === 'list'" (click)="selectStudentAction('list')">All
-        Students</button>
-    </div>
-    }
-
-    <button class="sidebar-item" [class.active]="selectedSection === 'teachers'" (click)="selectSection('teachers')">
-      Teachers <span class="expand-icon">{{ selectedSection === 'teachers' ? '−' : '+' }}</span>
-    </button>
-    @if (selectedSection === 'teachers') {
-    <div class="submenu">
-      <button [class.sub-active]="selectedTeacherAction === 'add'" (click)="selectTeacherAction('add')">Add
-        Teacher</button>
-      <button [class.sub-active]="selectedTeacherAction === 'view'" (click)="selectTeacherAction('view')">All
-        Teachers</button>
-    </div>
-    }
-  </aside>
   <main class="main-content">
 
+    @if (selectedSection === 'profile') {
+    <section class="admin-profile-card">
+      <div class="profile-avatar-large">{{ (username || 'A').charAt(0).toUpperCase() }}</div>
+      <div><span class="welcome-kicker">ACCOUNT PROFILE</span>
+        <h2>{{ username || 'Administrator' }}</h2>
+        <p>{{ role || 'ADMIN' }} · Full system access</p>
+      </div>
+    </section>
+    }
 
     @if (selectedSection === 'dashboard') {
-    <div class="page-header">
-      <h1>Admin Dashboard</h1>
-      <p>Welcome back, {{ username }}</p>
-    </div>
+    <section class="dashboard-welcome">
+      <div class="welcome-copy">
+        <span class="welcome-kicker">STUDENT MANAGEMENT SYSTEM</span>
+        <h1>Everything for your academic workspace.</h1>
+        <p>Manage students, teachers, and subjects from one focused dashboard.</p>
+        <div class="welcome-actions">
+          <button type="button" (click)="selectSection('students')">Manage students</button>
+          <button type="button" class="secondary" (click)="selectSection('subjects')">Browse subjects</button>
+        </div>
+      </div>
+      <img src="assets/dashboard-learning-illustration.png" alt="Teacher and students learning together">
+    </section>
 
     <div class="dashboard-cards">
-      <div class="dashboard-card">
-        <h3>Students</h3>
-        <p>Manage student records</p>
+      <div class="dashboard-card" (click)="selectSection('students'); selectStudentAction('list')">
+        <div class="card-icon">🎓</div>
+        <div class="card-details">
+          <h3>Student Management</h3>
+          <p>View, search, update & soft-delete student records</p>
+          <span class="card-stat-text">Open Student List →</span>
+        </div>
       </div>
 
-      <div class="dashboard-card">
-        <h3>Teachers</h3>
-        <p>Manage teacher records</p>
+      <div class="dashboard-card" (click)="selectSection('teachers'); selectTeacherAction('view')">
+        <div class="card-icon">👨‍🏫</div>
+        <div class="card-details">
+          <h3>Teacher Management</h3>
+          <p>View, update and manage teacher instructor accounts</p>
+          <span class="card-stat-text">Open Teacher List →</span>
+        </div>
+      </div>
+
+      <div class="dashboard-card" (click)="selectSection('students'); selectStudentAction('add')">
+        <div class="card-icon">➕</div>
+        <div class="card-details">
+          <h3>Quick Add Student</h3>
+          <p>Enroll a new student and assign to an instructor</p>
+          <span class="card-stat-text">Create Student Record →</span>
+        </div>
+      </div>
+
+      <div class="dashboard-card" (click)="selectSection('teachers'); selectTeacherAction('add')">
+        <div class="card-icon">👤</div>
+        <div class="card-details">
+          <h3>Quick Add Teacher</h3>
+          <p>Register a new teacher or faculty member</p>
+          <span class="card-stat-text">Create Teacher Account →</span>
+        </div>
+      </div>
+
+      <div class="dashboard-card" (click)="selectSection('subjects'); selectSubjectAction('list')">
+        <div class="card-icon">📚</div>
+        <div class="card-details">
+          <h3>Subject Management</h3>
+          <p>Add, view and manage course subjects</p>
+          <span class="card-stat-text">Open Subject List →</span>
+        </div>
       </div>
     </div>
     }
@@ -88,9 +127,10 @@
       <h2>Add Student</h2>
 
       <app-student-form [student]="newStudent" [teachers]="teachers" [teacherId]="selectedTeacherId"
-        [showTeacher]="true" [loadingTeachers]="loadingTeachers" submitLabel="Add Student" formName="adminCreateStudent"
-        (teacherIdChange)="selectedTeacherId = $event" (submitted)="addStudent($event)"
-        (cancelled)="cancelAddStudent($event)">
+        [showTeacher]="true" [loadingTeachers]="loadingTeachers" [subjects]="subjects" [subjectIds]="selectedSubjectIds"
+        [loadingSubjects]="loadingSubjects" submitLabel="Add Student" formName="adminCreateStudent"
+        (teacherIdChange)="selectedTeacherId = $event" (subjectIdsChange)="selectedSubjectIds = $event"
+        (submitted)="addStudent($event)" (cancelled)="cancelAddStudent($event)">
       </app-student-form>
     </div>
     }
@@ -120,73 +160,15 @@
             </button>
           </div>
 
-          <form #studentUpdateForm="ngForm" (ngSubmit)="saveStudentFromModal(studentUpdateForm)">
-
-            <div class="modal-body">
-
-              <div class="form-group">
-                <label>Student ID</label>
-
-                <input type="text" [value]="searchedStudentId" readonly>
-              </div>
-
-              <div class="form-group">
-                <label>Name</label>
-
-                <input type="text" name="updateName" [(ngModel)]="updateStudent.name" required>
-              </div>
-
-              <div class="form-group">
-                <label>Email</label>
-
-                <input type="email" name="updateEmail" [(ngModel)]="updateStudent.email" required>
-              </div>
-
-              <div class="form-group">
-                <label>Course</label>
-
-                <input type="text" name="updateCourse" [(ngModel)]="updateStudent.course" required>
-              </div>
-
-              <div class="form-group">
-                <label>Age</label>
-
-                <input type="number" name="updateAge" [(ngModel)]="updateStudent.age" required min="1">
-              </div>
-
-              <div class="form-group">
-                <label>Teacher</label>
-
-                <select name="updateTeacher" [(ngModel)]="selectedUpdateTeacherId" required>
-
-                  <option [ngValue]="null">
-                    Select Teacher
-                  </option>
-
-                  @for (teacher of teachers; track teacher.id) {
-                  <option [ngValue]="teacher.id">
-                    {{ teacher.name || teacher.username }}
-                  </option>
-                  }
-
-                </select>
-              </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-              <button type="button" class="cancel-btn" (click)="closeStudentUpdateModal()">
-                Cancel
-              </button>
-
-              <button type="submit" class="save-btn">
-                Save Changes
-              </button>
-
-            </div>
-
-          </form>
+          <div class="modal-body student-update-form">
+            <app-student-form [student]="updateStudent" [teachers]="teachers" [teacherId]="selectedUpdateTeacherId"
+              [showTeacher]="true" [loadingTeachers]="loadingTeachers" [subjects]="subjects"
+              [subjectIds]="updateSubjectIds" [loadingSubjects]="loadingSubjects" submitLabel="Update Student"
+              [passwordRequired]="false" formName="adminUpdateStudent" [submitting]="savingStudentUpdate"
+              (teacherIdChange)="selectedUpdateTeacherId = $event" (subjectIdsChange)="updateSubjectIds = $event"
+              (submitted)="saveStudentFromModal($event)" (cancelled)="closeStudentUpdateModal()">
+            </app-student-form>
+          </div>
 
         </div>
 
@@ -295,190 +277,12 @@
     }
 
     <!-- VIEW ALL TEACHERS -->
-    <!-- VIEW ALL TEACHERS -->
     @if (selectedTeacherAction === 'view') {
     <div class="content-card">
-      <h2>All Teachers</h2> <app-teacher-list [teachers]="teacherList" [loading]="loadingTeacherList"
-        (edit)="openTeacherUpdateModal($event)" (remove)="openTeacherDeleteModal($event)"> </app-teacher-list>
-    </div>
-
-    <div class="legacy-teacher-table">
-
-      <div class="table-header">
-
-        <h2>All Teachers</h2>
-
-        <div class="search-box">
-          <input type="text" placeholder="Search teacher by name..." [value]="teacherSearchTerm"
-            (input)="onTeacherSearch($any($event.target).value)" />
-        </div>
-
-      </div>
-
-      @if (loadingTeacherList) {
-
-      <div class="loading-message">
-        Loading teachers...
-      </div>
-
-      }
-
-      @if (!loadingTeacherList && teacherList.length === 0) {
-
-      <div class="empty-message">
-        No teachers found.
-      </div>
-
-      }
-
-      @if (!loadingTeacherList && teacherList.length > 0) {
-
-      @let sortedTeachers = getFilteredSortedTeachers();
-      @let paginatedTeachers = getVisibleTeachers();
-      @let totalPages = getTeacherTotalPages();
-
-      <div class="student-summary">
-
-        <span>
-          Showing {{ paginatedTeachers.length }}
-          of {{ sortedTeachers.length }} teachers
-        </span>
-
-        @if (teacherSearchTerm) {
-
-        <span class="search-result">
-          Search results for "{{ teacherSearchTerm }}"
-        </span>
-
-        }
-
-      </div>
-
-      @if (sortedTeachers.length === 0) {
-
-      <div class="empty-message">
-        No teachers found matching "{{ teacherSearchTerm }}".
-      </div>
-
-      } @else {
-
-      <div class="table-wrapper">
-
-        <table class="student-table">
-
-          <thead>
-
-            <tr>
-
-              <th class="sortable-header" (click)="toggleTeacherIdSort()" title="Click to sort by ID">
-
-                <span>ID</span>
-
-                @if (teacherSortDirection === 'asc') {
-                <span class="sort-arrow">↑</span>
-                } @else {
-                <span class="sort-arrow">↓</span>
-                }
-
-              </th>
-
-              <th>Username</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            @for (teacher of paginatedTeachers; track teacher.id) {
-
-            <tr>
-
-              <td>{{ teacher.id }}</td>
-
-              <td>{{ teacher.username }}</td>
-
-              <td>{{ teacher.name }}</td>
-
-              <td>{{ teacher.email }}</td>
-
-              <td>
-                <span class="role-badge">
-                  {{ teacher.role }}
-                </span>
-              </td>
-
-              <td class="actions">
-
-                <button type="button" class="update-btn" (click)="openTeacherUpdateModal(teacher)">
-                  Update
-                </button>
-
-                <button type="button" class="delete-btn" (click)="openTeacherDeleteModal(teacher)">
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-            }
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-      <div class="table-footer">
-
-        <div class="page-size-section">
-
-          <span>Teachers per page:</span>
-          &nbsp;
-
-          <select [value]="teacherPageSize" (change)="setTeacherPageSize($any($event.target).value)"
-            class="page-size-select">
-
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-
-          </select>
-
-        </div>
-
-        <div class="pagination">
-
-          <button type="button" class="pagination-btn" [disabled]="teacherCurrentPage === 1"
-            (click)="previousTeacherPage()">
-            Previous
-          </button>
-
-          <span class="page-number">
-            Page {{ teacherCurrentPage }} of {{ totalPages || 1 }}
-          </span>
-
-          <button type="button" class="pagination-btn" [disabled]="teacherCurrentPage >= totalPages"
-            (click)="nextTeacherPage()">
-            Next
-          </button>
-
-        </div>
-
-      </div>
-
-      }
-
-      }
+      <h2>All Teachers</h2>
+      <app-teacher-list [teachers]="teacherList" [loading]="loadingTeacherList" (edit)="openTeacherUpdateModal($event)"
+        (remove)="openTeacherDeleteModal($event)">
+      </app-teacher-list>
 
       <!-- UPDATE TEACHER MODAL -->
       @if (showTeacherUpdateModal) {
@@ -664,6 +468,202 @@
 
     }
 
+    <!-- SUBJECTS -->
+    @if (selectedSection === 'subjects') {
+
+    <div class="page-header">
+      <h2>Subject Management</h2>
+      <p>Add, view and manage course subjects for students</p>
+    </div>
+
+    <!-- ADD SUBJECT -->
+    @if (selectedSubjectAction === 'add') {
+    <div class="content-card subject-card">
+      <h2>Add Subject</h2>
+      <p class="update-description">Create a new subject in the system.</p>
+
+      <form #addSubjectForm="ngForm" (ngSubmit)="addSubject(addSubjectForm)">
+        <div class="form-group">
+          <label for="newSubjectName">Subject Name</label>
+          <input type="text" id="newSubjectName" name="newSubjectName" [(ngModel)]="newSubject.name"
+            placeholder="Enter subject name" required minlength="2" #newSubjectName="ngModel">
+          @if (newSubjectName.invalid && newSubjectName.touched) {
+          <small class="error">Subject name is required (min 2 characters)</small>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" (click)="cancelAddSubjectForm(addSubjectForm)">Cancel</button>
+          <button type="submit" class="save-btn" [disabled]="addSubjectForm.invalid || submittingSubject">
+            {{ submittingSubject ? 'Saving...' : 'Save Subject' }}
+          </button>
+        </div>
+      </form>
+    </div>
+    }
+
+    <!-- ALL SUBJECTS -->
+    @if (selectedSubjectAction === 'list') {
+    <div class="content-card subject-list-card">
+      <h2>All Subjects</h2>
+
+      <div class="search-filter">
+        <input type="text" placeholder="Search subjects..." [(ngModel)]="subjectSearchTerm"
+          (input)="onSubjectSearch($event)" class="search-input">
+        <button class="clear-search" (click)="clearSubjectSearch()" *ngIf="subjectSearchTerm">✕</button>
+      </div>
+
+      @if (loadingSubjectsList) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading subjects...</p>
+      </div>
+      } @else {
+      <div class="subject-table-wrapper">
+        <table class="data-table subject-table">
+          <thead>
+            <tr>
+              <th (click)="toggleSubjectSort()" style="cursor: pointer;">
+                ID
+                @if (subjectSortDirection === 'asc') { ▲ } @else { ▼ }
+              </th>
+              <th>Subject Name</th>
+              <th>Assigned Students</th>
+              <th>Actions</th>
+            </tr>
+            <tr class="column-filter-row">
+              <th><input #subjectIdFilter type="text" placeholder="Filter ID"
+                  (keyup.enter)="applySubjectColumnFilters(subjectIdFilter.value, subjectNameFilter.value, subjectCountFilter.value)">
+              </th>
+              <th><input #subjectNameFilter type="text" placeholder="Filter name"
+                  (keyup.enter)="applySubjectColumnFilters(subjectIdFilter.value, subjectNameFilter.value, subjectCountFilter.value)">
+              </th>
+              <th><input #subjectCountFilter type="text" placeholder="Filter count"
+                  (keyup.enter)="applySubjectColumnFilters(subjectIdFilter.value, subjectNameFilter.value, subjectCountFilter.value)">
+              </th>
+              <th><button type="button" class="column-search-btn"
+                  (click)="applySubjectColumnFilters(subjectIdFilter.value, subjectNameFilter.value, subjectCountFilter.value)">Search</button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (subject of getVisibleSubjects(); track subject.id) {
+            <tr>
+              <td>{{ subject.id }}</td>
+              <td class="subject-name-cell">{{ subject.name }}</td>
+              <td>{{ getStudentCount(subject.id) }}</td>
+              <td class="action-buttons">
+                <button class="table-action edit-btn" (click)="openSubjectUpdateModal(subject)">Edit</button>
+                <button class="table-action delete-btn" (click)="openSubjectDeleteModal(subject)"
+                  [disabled]="getStudentCount(subject.id) > 0">Delete</button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+
+        @if (getFilteredSortedSubjects().length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <h3>No records found</h3>
+          <p>Try a different search or column filter.</p>
+        </div>
+        } @else {
+        <div class="table-footer">
+          <div class="page-size-section">
+            <span>Subjects per page:</span>
+            <select [value]="subjectPageSize" (change)="setSubjectPageSize($any($event.target).value)" class="page-size-select">
+              <option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="0">All</option>
+            </select>
+          </div>
+          <div class="pagination-info">
+            Showing {{ getFilteredSortedSubjects().length === 0 ? 0 : (subjectPageSize === 0 ? 1 : (subjectCurrentPage - 1) * subjectPageSize + 1) }} -
+            {{ subjectPageSize === 0 ? getFilteredSortedSubjects().length : Math.min(subjectCurrentPage * subjectPageSize, getFilteredSortedSubjects().length) }}
+            of {{ getFilteredSortedSubjects().length }} subjects
+          </div>
+          <div class="pagination-controls">
+            <button (click)="previousSubjectPage()" [disabled]="subjectCurrentPage === 1">‹</button>
+            @for (page of getSubjectPageNumbers(); track page) {
+            <button [class.active]="page === subjectCurrentPage" (click)="goToSubjectPage(page)">{{ page }}</button>
+            }
+            <button (click)="nextSubjectPage()" [disabled]="subjectCurrentPage >= getSubjectTotalPages()">›</button>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+
+    <!-- UPDATE SUBJECT MODAL -->
+    @if (showSubjectUpdateModal) {
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h2>Update Subject</h2>
+          <button type="button" class="modal-close" (click)="closeSubjectUpdateModal()">×</button>
+        </div>
+
+        <form #subjectUpdateForm="ngForm" (ngSubmit)="saveSubjectFromModal(subjectUpdateForm)">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Subject ID</label>
+              <input type="text" [value]="selectedSubjectForUpdate?.id" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="updateSubjectName">Subject Name</label>
+              <input type="text" id="updateSubjectName" name="updateSubjectName" [(ngModel)]="updateSubject.name"
+                placeholder="Enter subject name" required minlength="2" #updateSubjectName="ngModel">
+              @if (updateSubjectName.invalid && updateSubjectName.touched) {
+              <small class="error">Subject name is required (min 2 characters)</small>
+              }
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="cancel-btn" (click)="closeSubjectUpdateModal()">Cancel</button>
+            <button type="submit" class="save-btn" [disabled]="subjectUpdateForm.invalid || submittingSubject">
+              {{ submittingSubject ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    }
+
+    <!-- DELETE SUBJECT MODAL -->
+    @if (showSubjectDeleteModal) {
+    <div class="modal-overlay">
+      <div class="modal-box delete-modal">
+        <div class="modal-header">
+          <h2>Delete Subject</h2>
+          <button type="button" class="modal-close" (click)="closeSubjectDeleteModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="delete-warning">Are you sure you want to delete this subject?</p>
+          @if (selectedSubjectForDelete) {
+          <div class="student-details">
+            <div><strong>ID:</strong> {{ selectedSubjectForDelete.id }}</div>
+            <div><strong>Name:</strong> {{ selectedSubjectForDelete.name }}</div>
+            <div><strong>Assigned Students:</strong> {{ getStudentCount(selectedSubjectForDelete.id) }}</div>
+          </div>
+          }
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" (click)="closeSubjectDeleteModal()">Cancel</button>
+          <button type="button" class="delete-confirm-btn" (click)="confirmSubjectDeleteFromModal()"
+            [disabled]="getStudentCount(selectedSubjectForDelete?.id ?? 0) > 0">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+
+    }
 
   </main>
 </div>

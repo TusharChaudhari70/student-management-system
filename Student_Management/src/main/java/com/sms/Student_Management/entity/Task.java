@@ -44,7 +44,19 @@ public class Task {
 
     private LocalDateTime dueDate;
 
+    private String attachmentName;
+
+    private String attachmentUrl;
+
     private Boolean isRead = false;
 
     private Boolean isSubmitted = false;
+
+    private String submissionText;
+
+    private String submissionFileName;
+
+    private String submissionFileUrl;
+
+    private LocalDateTime submittedAt;
 }

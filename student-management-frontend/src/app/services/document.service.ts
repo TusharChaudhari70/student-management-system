@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Document, DocumentResponse } from '../shared/models/document.model';
@@ -19,6 +19,11 @@ export class DocumentService {
 
   uploadDocumentToStudent(studentId: number, document: Document): Observable<Document> {
     return this.http.post<Document>(`${this.apiUrl}/${studentId}/upload`, document);
+  }
+
+  uploadDocumentToStudents(studentIds: number[], document: Document): Observable<Document[]> {
+    const params = studentIds.reduce((value, id) => value.append('studentIds', id), new HttpParams());
+    return this.http.post<Document[]>(`${this.apiUrl}/upload-to-students`, document, { params });
   }
 
   getMyDocuments(): Observable<DocumentResponse[]> {

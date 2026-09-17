@@ -7,8 +7,14 @@ export interface Task {
   type?: string;
   createdAt?: string;
   dueDate?: string;
+  attachmentName?: string;
+  attachmentUrl?: string;
   isRead?: boolean;
   isSubmitted?: boolean;
+  submissionText?: string | null;
+  submissionFileName?: string | null;
+  submissionFileUrl?: string | null;
+  submittedAt?: string | null;
 }
 
 export interface TaskResponse {
@@ -18,8 +24,14 @@ export interface TaskResponse {
   type: string;
   createdAt: string;
   dueDate: string | null;
+  attachmentName?: string | null;
+  attachmentUrl?: string | null;
   isRead: boolean;
   isSubmitted: boolean;
+  submissionText?: string | null;
+  submissionFileName?: string | null;
+  submissionFileUrl?: string | null;
+  submittedAt?: string | null;
   teacher: {
     id: number;
     name: string;

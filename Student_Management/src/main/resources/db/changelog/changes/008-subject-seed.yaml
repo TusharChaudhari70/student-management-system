@@ -1,0 +1,67 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 008-subject-seed-1
+      author: Tushar
+      comment: Seeds the subject dropdown used by the student add/update forms
+      changes:
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Java
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Python
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Data Structures
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: DBMS
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Operating Systems
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Computer Networks
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Web Development
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Machine Learning
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Mathematics
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: name
+                  value: Physics

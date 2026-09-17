@@ -17,6 +17,11 @@ export class TaskService {
     return this.http.post<Task>(`${this.apiUrl}/assign/${studentId}`, task);
   }
 
+  assignTaskToStudents(studentIds: number[], task: Task): Observable<Task[]> {
+    const params = studentIds.reduce((value, id) => value.append('studentIds', id), new HttpParams());
+    return this.http.post<Task[]>(`${this.apiUrl}/assign`, task, { params });
+  }
+
   assignTaskByAdmin(studentId: number, task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.apiUrl}/admin/assign/${studentId}`, task);
   }
@@ -33,10 +38,11 @@ export class TaskService {
     return this.http.get<TaskResponse[]>(`${this.apiUrl}/student/${studentId}`);
   }
 
-  submitTask(taskId: number, fileUrl: string, fileName: string): Observable<Task> {
-    const params = new HttpParams()
-      .set('fileUrl', fileUrl)
-      .set('fileName', fileName);
+  submitTask(taskId: number, fileUrl?: string, fileName?: string, submissionText?: string): Observable<Task> {
+    let params = new HttpParams();
+    if (fileUrl) params = params.set('fileUrl', fileUrl);
+    if (fileName) params = params.set('fileName', fileName);
+    if (submissionText?.trim()) params = params.set('submissionText', submissionText.trim());
 
     return this.http.post<Task>(`${this.apiUrl}/${taskId}/submit`, null, { params });
   }
