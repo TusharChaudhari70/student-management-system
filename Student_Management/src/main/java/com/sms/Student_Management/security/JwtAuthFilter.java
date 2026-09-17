@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.Claims;
@@ -21,8 +22,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final String SECRET_KEY =
-            "StudentManagementSystemSecretKeyForJWT2026@123456789";
+    private final String secretKey;
+
+    public JwtAuthFilter(@Value("${app.jwt.secret}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -55,7 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Claims claims = Jwts.parser()
                     .verifyWith(
                             Keys.hmacShaKeyFor(
-                                    SECRET_KEY.getBytes(StandardCharsets.UTF_8)
+                                    secretKey.getBytes(StandardCharsets.UTF_8)
                             )
                     )
                     .build()

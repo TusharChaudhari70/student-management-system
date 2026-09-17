@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timeout } from 'rxjs'; import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 export interface LoginRequest {
   username: string;
@@ -18,7 +19,7 @@ export interface LoginResponse {
 })
 export class Auth {
 
-  private apiUrl = 'http://localhost:8080/auth';
+  private apiUrl = `${environment.apiBaseUrl}/auth`;
 
   constructor(
     private http: HttpClient,

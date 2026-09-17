@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { Task, TaskResponse } from '../shared/models/task.model';
 
@@ -9,7 +10,7 @@ import { Task, TaskResponse } from '../shared/models/task.model';
 })
 export class TaskService {
 
-  private apiUrl = 'http://localhost:8080/tasks';
+  private apiUrl = `${environment.apiBaseUrl}/tasks`;
 
   constructor(private http: HttpClient) {}
 

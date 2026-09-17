@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class FileUploadController {
 
     private static final Path UPLOAD_DIRECTORY = Path.of("uploads").toAbsolutePath().normalize();
+    private final String publicBaseUrl;
+
+    public FileUploadController(@Value("${app.public-base-url}") String publicBaseUrl) {
+        this.publicBaseUrl = publicBaseUrl.replaceAll("/+$", "");
+    }
 
     @PostMapping("/upload")
     public Map<String, String> upload(@RequestParam("file") MultipartFile file) {
@@ -43,7 +49,7 @@ public class FileUploadController {
         } catch (IOException exception) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not save the attachment", exception);
         }
-        return Map.of("fileName", originalName, "fileUrl", "http://localhost:8080/files/download/" + storedName);
+        return Map.of("fileName", originalName, "fileUrl", publicBaseUrl + "/files/download/" + storedName);
     }
 
     @GetMapping("/download/{storedName:.+}")

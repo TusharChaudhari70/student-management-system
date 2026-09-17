@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Message } from '../../shared/models/message.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-  private readonly baseUrl = 'http://localhost:8080/messages';
+  private readonly baseUrl = `${environment.apiBaseUrl}/messages`;
 
   constructor(private http: HttpClient) {}
 
@@ -23,7 +24,7 @@ export class MessageService {
   uploadAttachment(file: File): Observable<{ fileName: string; fileUrl: string }> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<{ fileName: string; fileUrl: string }>('http://localhost:8080/files/upload', formData);
+    return this.http.post<{ fileName: string; fileUrl: string }>(`${environment.apiBaseUrl}/files/upload`, formData);
   }
 
   getMyMessages(): Observable<Message[]> {

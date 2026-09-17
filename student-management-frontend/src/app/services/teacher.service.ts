@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 import { Teacher } from '../shared/models/teacher.model';
 
@@ -12,9 +13,9 @@ export type { Teacher } from '../shared/models/teacher.model';
 })
 export class TeacherService {
 
-  private apiUrl = 'http://localhost:8080/users/teachers';
+  private apiUrl = `${environment.apiBaseUrl}/users/teachers`;
 
-  private userApiUrl = 'http://localhost:8080/users';
+  private userApiUrl = `${environment.apiBaseUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
