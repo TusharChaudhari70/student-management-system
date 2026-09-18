@@ -1284,3 +1284,223 @@
 2026-09-18 16:45:18.770 INFO  [http-nio-8080-exec-5] TaskController - Fetching tasks assigned by current teacher
 2026-09-18 16:45:18.771 INFO  [http-nio-8080-exec-5] TaskService - Fetching tasks assigned by teacher: Sanket
 2026-09-18 16:45:18.784 INFO  [http-nio-8080-exec-5] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:48:39.681 INFO  [http-nio-8080-exec-10] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:48:39.681 INFO  [http-nio-8080-exec-10] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:48:42.054 INFO  [http-nio-8080-exec-1] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:48:42.055 INFO  [http-nio-8080-exec-1] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:48:42.076 INFO  [http-nio-8080-exec-1] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:48:44.102 INFO  [http-nio-8080-exec-5] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:48:44.102 INFO  [http-nio-8080-exec-5] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:48:46.536 INFO  [http-nio-8080-exec-8] StudController - Fetching all students
+2026-09-18 16:48:46.546 INFO  [http-nio-8080-exec-8] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:48:48.850 INFO  [http-nio-8080-exec-7] SubjectController - Request to get all subjects
+2026-09-18 16:48:48.867 INFO  [http-nio-8080-exec-7] SubjectService - Fetched 16 subjects
+2026-09-18 16:48:55.400 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
+2026-09-18 16:48:55.402 INFO  [http-nio-8080-exec-1] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:48:55.402 INFO  [http-nio-8080-exec-5] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:48:55.402 INFO  [http-nio-8080-exec-1] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:48:55.402 INFO  [http-nio-8080-exec-5] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:48:55.406 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:48:55.407 INFO  [http-nio-8080-exec-1] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:49:08.899 INFO  [http-nio-8080-exec-8] AuthController - Login attempt for username: Tushar
+2026-09-18 16:49:08.975 INFO  [http-nio-8080-exec-8] AuthController - Login successful for username: Tushar, role: ADMIN
+2026-09-18 16:49:10.598 INFO  [http-nio-8080-exec-7] SubjectController - Request to get all subjects
+2026-09-18 16:49:10.613 INFO  [http-nio-8080-exec-7] SubjectService - Fetched 16 subjects
+2026-09-18 16:49:10.621 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
+2026-09-18 16:49:10.635 INFO  [http-nio-8080-exec-10] StudService - Admin fetched 18 students
+2026-09-18 16:49:25.560 INFO  [http-nio-8080-exec-1] SubjectController - Creating subject
+2026-09-18 16:49:25.596 ERROR [http-nio-8080-exec-1] GlobalExceptionHandler - Runtime exception: Subject with name 'dbms' already exists
+2026-09-18 16:49:34.462 INFO  [http-nio-8080-exec-5] SubjectController - Creating subject
+2026-09-18 16:49:34.480 ERROR [http-nio-8080-exec-5] GlobalExceptionHandler - Runtime exception: Subject with name 'DBMS' already exists
+2026-09-18 16:49:45.572 INFO  [http-nio-8080-exec-8] SubjectController - Creating subject
+2026-09-18 16:49:45.583 INFO  [http-nio-8080-exec-8] SubjectService - Created subject with ID: 19
+2026-09-18 16:49:45.594 INFO  [http-nio-8080-exec-4] SubjectController - Request to get all subjects
+2026-09-18 16:49:45.607 INFO  [http-nio-8080-exec-4] SubjectService - Fetched 17 subjects
+2026-09-18 16:49:45.616 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
+2026-09-18 16:49:45.637 INFO  [http-nio-8080-exec-3] StudService - Admin fetched 18 students
+2026-09-18 16:50:23.517 INFO  [http-nio-8080-exec-9] SubjectController - Request to get all subjects
+2026-09-18 16:50:23.522 INFO  [http-nio-8080-exec-4] StudController - Fetching all students
+2026-09-18 16:50:23.533 INFO  [http-nio-8080-exec-9] SubjectService - Fetched 17 subjects
+2026-09-18 16:50:23.540 INFO  [http-nio-8080-exec-4] StudService - Admin fetched 18 students
+2026-09-18 16:50:44.101 INFO  [http-nio-8080-exec-3] SubjectController - Request to get all subjects
+2026-09-18 16:50:44.122 INFO  [http-nio-8080-exec-3] SubjectService - Fetched 17 subjects
+2026-09-18 16:50:44.128 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
+2026-09-18 16:50:44.150 INFO  [http-nio-8080-exec-6] StudService - Admin fetched 18 students
+2026-09-18 16:50:47.550 INFO  [http-nio-8080-exec-8] StudController - Fetching student profile for user: student2
+2026-09-18 16:50:47.552 INFO  [http-nio-8080-exec-5] MessageController - Request to get messages for current student
+2026-09-18 16:50:47.554 INFO  [http-nio-8080-exec-3] DocumentController - Fetching documents for current student
+2026-09-18 16:50:47.554 INFO  [http-nio-8080-exec-7] TaskController - Fetching tasks for current student
+2026-09-18 16:50:47.556 INFO  [http-nio-8080-exec-7] TaskService - Fetching tasks for student: student2
+2026-09-18 16:50:47.556 INFO  [http-nio-8080-exec-3] DocumentService - Fetching documents for student: student2
+2026-09-18 16:50:47.598 INFO  [http-nio-8080-exec-5] MessageService - Fetching messages for student: student2
+2026-09-18 16:50:47.607 INFO  [http-nio-8080-exec-7] TaskService - Student student2 has 6 tasks
+2026-09-18 16:50:47.648 INFO  [http-nio-8080-exec-3] DocumentService - Student student2 has 4 documents
+2026-09-18 16:50:49.493 INFO  [http-nio-8080-exec-6] MessageController - Request to get messages for current student
+2026-09-18 16:50:49.493 INFO  [http-nio-8080-exec-10] StudController - Fetching student profile for user: student2
+2026-09-18 16:50:49.493 INFO  [http-nio-8080-exec-1] TaskController - Fetching tasks for current student
+2026-09-18 16:50:49.493 INFO  [http-nio-8080-exec-2] DocumentController - Fetching documents for current student
+2026-09-18 16:50:49.494 INFO  [http-nio-8080-exec-2] DocumentService - Fetching documents for student: student2
+2026-09-18 16:50:49.494 INFO  [http-nio-8080-exec-1] TaskService - Fetching tasks for student: student2
+2026-09-18 16:50:49.513 INFO  [http-nio-8080-exec-6] MessageService - Fetching messages for student: student2
+2026-09-18 16:50:49.517 INFO  [http-nio-8080-exec-1] TaskService - Student student2 has 6 tasks
+2026-09-18 16:50:49.524 INFO  [http-nio-8080-exec-2] DocumentService - Student student2 has 4 documents
+2026-09-18 16:50:50.501 INFO  [http-nio-8080-exec-9] MessageController - Request to get messages for current student
+2026-09-18 16:50:50.576 INFO  [http-nio-8080-exec-9] MessageService - Fetching messages for student: student2
+2026-09-18 16:50:55.427 INFO  [http-nio-8080-exec-8] TaskController - Fetching tasks for current student
+2026-09-18 16:50:55.428 INFO  [http-nio-8080-exec-8] TaskService - Fetching tasks for student: student2
+2026-09-18 16:50:55.439 INFO  [http-nio-8080-exec-8] TaskService - Student student2 has 6 tasks
+2026-09-18 16:56:01.053 INFO  [http-nio-8080-exec-5] AuthController - Login attempt for username: sanket
+2026-09-18 16:56:01.119 INFO  [http-nio-8080-exec-5] AuthController - Login successful for username: Sanket, role: TEACHER
+2026-09-18 16:56:01.154 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
+2026-09-18 16:56:01.156 INFO  [http-nio-8080-exec-8] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:56:01.156 INFO  [http-nio-8080-exec-5] SubjectController - Request to get all subjects
+2026-09-18 16:56:01.156 INFO  [http-nio-8080-exec-4] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:56:01.158 INFO  [http-nio-8080-exec-8] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:56:01.158 INFO  [http-nio-8080-exec-4] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:56:01.164 INFO  [http-nio-8080-exec-5] SubjectService - Fetched 17 subjects
+2026-09-18 16:56:01.178 INFO  [http-nio-8080-exec-9] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:56:01.197 INFO  [http-nio-8080-exec-8] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:56:06.085 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
+2026-09-18 16:56:06.085 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:56:06.085 INFO  [http-nio-8080-exec-3] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:56:06.086 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:56:06.086 INFO  [http-nio-8080-exec-3] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:56:06.090 INFO  [http-nio-8080-exec-7] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:56:06.092 INFO  [http-nio-8080-exec-2] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:56:07.920 INFO  [http-nio-8080-exec-6] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:56:07.920 INFO  [http-nio-8080-exec-6] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:56:07.920 INFO  [http-nio-8080-exec-6] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:58:02.418 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
+2026-09-18 16:58:02.421 INFO  [http-nio-8080-exec-8] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:58:02.421 INFO  [http-nio-8080-exec-9] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:58:02.422 INFO  [http-nio-8080-exec-8] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:58:02.423 INFO  [http-nio-8080-exec-9] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:58:02.423 INFO  [http-nio-8080-exec-4] SubjectController - Request to get all subjects
+2026-09-18 16:58:02.451 INFO  [http-nio-8080-exec-4] SubjectService - Fetched 17 subjects
+2026-09-18 16:58:02.461 INFO  [http-nio-8080-exec-10] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:58:02.463 INFO  [http-nio-8080-exec-9] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:58:04.742 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
+2026-09-18 16:58:04.742 INFO  [http-nio-8080-exec-7] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:58:04.743 INFO  [http-nio-8080-exec-7] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:58:04.743 INFO  [http-nio-8080-exec-3] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:58:04.744 INFO  [http-nio-8080-exec-3] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:58:04.748 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:58:04.750 INFO  [http-nio-8080-exec-3] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:58:07.259 INFO  [http-nio-8080-exec-1] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:58:07.259 INFO  [http-nio-8080-exec-1] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:58:31.111 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
+2026-09-18 16:58:31.112 INFO  [http-nio-8080-exec-7] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:58:31.112 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:58:31.114 INFO  [http-nio-8080-exec-7] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:58:31.115 INFO  [http-nio-8080-exec-1] SubjectController - Request to get all subjects
+2026-09-18 16:58:31.115 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:58:31.135 INFO  [http-nio-8080-exec-1] SubjectService - Fetched 17 subjects
+2026-09-18 16:58:31.142 INFO  [http-nio-8080-exec-3] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:58:31.158 INFO  [http-nio-8080-exec-2] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:58:35.692 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
+2026-09-18 16:58:35.692 INFO  [http-nio-8080-exec-4] MessageController - Request to get messages sent by current teacher
+2026-09-18 16:58:35.692 INFO  [http-nio-8080-exec-9] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:58:35.692 INFO  [http-nio-8080-exec-4] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 16:58:35.693 INFO  [http-nio-8080-exec-9] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:58:35.696 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 9 students
+2026-09-18 16:58:35.697 INFO  [http-nio-8080-exec-9] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 16:58:38.524 INFO  [http-nio-8080-exec-10] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 16:58:38.526 INFO  [http-nio-8080-exec-10] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 16:58:38.535 INFO  [http-nio-8080-exec-10] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:01:06.870 INFO  [http-nio-8080-exec-10] MessageController - Request to get messages for current student
+2026-09-18 17:01:06.870 INFO  [http-nio-8080-exec-1] StudController - Fetching student profile for user: student2
+2026-09-18 17:01:06.870 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks for current student
+2026-09-18 17:01:06.870 INFO  [http-nio-8080-exec-7] DocumentController - Fetching documents for current student
+2026-09-18 17:01:06.873 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks for student: student2
+2026-09-18 17:01:06.874 INFO  [http-nio-8080-exec-7] DocumentService - Fetching documents for student: student2
+2026-09-18 17:01:06.911 INFO  [http-nio-8080-exec-10] MessageService - Fetching messages for student: student2
+2026-09-18 17:01:06.917 INFO  [http-nio-8080-exec-2] TaskService - Student student2 has 6 tasks
+2026-09-18 17:01:06.919 INFO  [http-nio-8080-exec-7] DocumentService - Student student2 has 4 documents
+2026-09-18 17:01:09.874 INFO  [http-nio-8080-exec-3] TaskController - Fetching tasks for current student
+2026-09-18 17:01:09.875 INFO  [http-nio-8080-exec-3] TaskService - Fetching tasks for student: student2
+2026-09-18 17:01:09.876 INFO  [http-nio-8080-exec-3] TaskService - Student student2 has 6 tasks
+2026-09-18 17:01:20.551 INFO  [http-nio-8080-exec-7] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:01:20.551 INFO  [http-nio-8080-exec-10] StudController - Fetching all students
+2026-09-18 17:01:20.551 INFO  [http-nio-8080-exec-2] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:01:20.552 INFO  [http-nio-8080-exec-7] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:01:20.552 INFO  [http-nio-8080-exec-2] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:01:20.556 INFO  [http-nio-8080-exec-3] SubjectController - Request to get all subjects
+2026-09-18 17:01:20.572 INFO  [http-nio-8080-exec-10] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:01:20.576 INFO  [http-nio-8080-exec-3] SubjectService - Fetched 17 subjects
+2026-09-18 17:01:20.576 INFO  [http-nio-8080-exec-7] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:01:22.020 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
+2026-09-18 17:01:22.020 INFO  [http-nio-8080-exec-4] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:01:22.020 INFO  [http-nio-8080-exec-6] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:01:22.020 INFO  [http-nio-8080-exec-4] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:01:22.020 INFO  [http-nio-8080-exec-6] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:01:22.024 INFO  [http-nio-8080-exec-5] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:01:22.024 INFO  [http-nio-8080-exec-6] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:01:24.115 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
+2026-09-18 17:01:24.120 INFO  [http-nio-8080-exec-9] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:02:17.640 INFO  [http-nio-8080-exec-2] StudController - Fetching all students
+2026-09-18 17:02:17.655 INFO  [http-nio-8080-exec-2] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:02:54.752 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
+2026-09-18 17:02:54.755 INFO  [http-nio-8080-exec-10] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:02:54.755 INFO  [http-nio-8080-exec-2] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:02:54.757 INFO  [http-nio-8080-exec-10] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:02:54.758 INFO  [http-nio-8080-exec-2] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:02:54.775 INFO  [http-nio-8080-exec-7] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:02:54.783 INFO  [http-nio-8080-exec-10] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:02:56.916 INFO  [http-nio-8080-exec-5] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:02:56.916 INFO  [http-nio-8080-exec-5] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:02:56.921 INFO  [http-nio-8080-exec-5] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:03:15.896 INFO  [http-nio-8080-exec-1] StudController - Fetching all students
+2026-09-18 17:03:15.900 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:03:15.900 INFO  [http-nio-8080-exec-5] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:03:15.902 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:03:15.902 INFO  [http-nio-8080-exec-5] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:03:15.905 INFO  [http-nio-8080-exec-9] SubjectController - Request to get all subjects
+2026-09-18 17:03:15.918 INFO  [http-nio-8080-exec-1] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:03:15.920 INFO  [http-nio-8080-exec-9] SubjectService - Fetched 17 subjects
+2026-09-18 17:03:15.921 INFO  [http-nio-8080-exec-2] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:04:06.685 INFO  [http-nio-8080-exec-9] StudController - Fetching all students
+2026-09-18 17:04:06.692 INFO  [http-nio-8080-exec-4] SubjectController - Request to get all subjects
+2026-09-18 17:04:06.692 INFO  [http-nio-8080-exec-1] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:04:06.692 INFO  [http-nio-8080-exec-5] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:04:06.693 INFO  [http-nio-8080-exec-5] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:04:06.693 INFO  [http-nio-8080-exec-1] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:04:06.720 INFO  [http-nio-8080-exec-4] SubjectService - Fetched 17 subjects
+2026-09-18 17:04:06.741 INFO  [http-nio-8080-exec-5] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:04:06.741 INFO  [http-nio-8080-exec-9] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:04:07.984 INFO  [http-nio-8080-exec-6] StudController - Fetching all students
+2026-09-18 17:04:07.985 INFO  [http-nio-8080-exec-10] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:04:07.985 INFO  [http-nio-8080-exec-2] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:04:07.986 INFO  [http-nio-8080-exec-7] SubjectController - Request to get all subjects
+2026-09-18 17:04:07.986 INFO  [http-nio-8080-exec-10] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:04:07.986 INFO  [http-nio-8080-exec-2] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:04:07.993 INFO  [http-nio-8080-exec-7] SubjectService - Fetched 17 subjects
+2026-09-18 17:04:07.999 INFO  [http-nio-8080-exec-6] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:04:08.001 INFO  [http-nio-8080-exec-2] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:04:09.904 INFO  [http-nio-8080-exec-5] StudController - Fetching all students
+2026-09-18 17:04:09.904 INFO  [http-nio-8080-exec-1] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:04:09.905 INFO  [http-nio-8080-exec-1] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:04:09.905 INFO  [http-nio-8080-exec-3] SubjectController - Request to get all subjects
+2026-09-18 17:04:09.905 INFO  [http-nio-8080-exec-9] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:04:09.906 INFO  [http-nio-8080-exec-9] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:04:09.911 INFO  [http-nio-8080-exec-5] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:04:09.912 INFO  [http-nio-8080-exec-3] SubjectService - Fetched 17 subjects
+2026-09-18 17:04:09.914 INFO  [http-nio-8080-exec-9] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:06:13.993 INFO  [http-nio-8080-exec-3] StudController - Fetching all students
+2026-09-18 17:06:14.017 INFO  [http-nio-8080-exec-3] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:07:22.321 INFO  [http-nio-8080-exec-7] StudController - Fetching all students
+2026-09-18 17:07:22.323 INFO  [http-nio-8080-exec-10] TaskController - Fetching tasks assigned by current teacher
+2026-09-18 17:07:22.323 INFO  [http-nio-8080-exec-8] MessageController - Request to get messages sent by current teacher
+2026-09-18 17:07:22.323 INFO  [http-nio-8080-exec-10] TaskService - Fetching tasks assigned by teacher: Sanket
+2026-09-18 17:07:22.323 INFO  [http-nio-8080-exec-8] MessageService - Fetching messages sent by teacher: Sanket
+2026-09-18 17:07:22.349 INFO  [http-nio-8080-exec-10] TaskService - Teacher Sanket has assigned 9 tasks
+2026-09-18 17:07:22.351 INFO  [http-nio-8080-exec-7] StudService - Teacher Sanket fetched 9 students
+2026-09-18 17:07:35.668 INFO  [http-nio-8080-exec-4] StudController - Fetching student profile for user: student2
+2026-09-18 17:07:47.485 INFO  [http-nio-8080-exec-9] MessageController - Request to get messages for current student
+2026-09-18 17:07:47.518 INFO  [http-nio-8080-exec-9] MessageService - Fetching messages for student: student2
+2026-09-18 17:08:32.063 INFO  [http-nio-8080-exec-8] MessageController - Request to get messages for current student
+2026-09-18 17:08:32.090 INFO  [http-nio-8080-exec-8] MessageService - Fetching messages for student: student2
+2026-09-18 17:08:33.065 INFO  [http-nio-8080-exec-6] TaskController - Fetching tasks for current student
+2026-09-18 17:08:33.065 INFO  [http-nio-8080-exec-6] TaskService - Fetching tasks for student: student2
+2026-09-18 17:08:33.079 INFO  [http-nio-8080-exec-6] TaskService - Student student2 has 6 tasks
+2026-09-18 17:24:19.736 INFO  [http-nio-8080-exec-6] AuthController - Login attempt for username: sanket
+2026-09-18 17:24:19.838 INFO  [http-nio-8080-exec-6] AuthController - Login successful for username: Sanket, role: TEACHER

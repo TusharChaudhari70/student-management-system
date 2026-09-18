@@ -250,21 +250,30 @@
   }
 
   @if (selectedTaskReply) {
-  <div class="modal-overlay" (click)="closeTaskReply()">
-    <div class="modal-box" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Student Reply: {{ selectedTaskReply.title }}</h2><button type="button" class="modal-close"
-          (click)="closeTaskReply()">×</button>
+  <div class="modal-overlay reply-overlay" (click)="closeTaskReply()" (keydown.escape)="closeTaskReply()">
+    <section class="modal-box reply-modal" role="dialog" aria-modal="true" aria-labelledby="reply-title" tabindex="-1" (click)="$event.stopPropagation()">
+      <header class="reply-modal-header">
+        <div><span class="reply-eyebrow">Student submission</span><h2 id="reply-title">{{ selectedTaskReply.title }}</h2></div>
+        <button type="button" class="modal-close reply-close" aria-label="Close student reply" (click)="closeTaskReply()">×</button>
+      </header>
+      <div class="reply-student-card">
+        <span class="reply-avatar">{{ studentName(selectedTaskReply.student.id).charAt(0).toUpperCase() }}</span>
+        <div><strong>{{ studentName(selectedTaskReply.student.id) }}</strong><span>@if (selectedTaskReply.submittedAt) { Submitted {{ selectedTaskReply.submittedAt | date:'medium' }} } @else { Submission received }</span></div>
+        <span class="reply-status">Submitted</span>
       </div>
-      <div class="modal-body">
-        <p><strong>{{ studentName(selectedTaskReply.student.id) }}</strong></p>
-        <p>{{ selectedTaskReply.submissionText || 'No text reply was provided.' }}</p>@if
-        (selectedTaskReply.submissionFileUrl) { <div class="attachment-actions"><a class="task-attachment-link"
-            [href]="selectedTaskReply.submissionFileUrl + '?download=false'" target="_blank" rel="noopener">View</a><a
-            class="task-attachment-link" [href]="selectedTaskReply.submissionFileUrl + '?download=true'">Download {{
-            selectedTaskReply.submissionFileName || 'attachment' }}</a></div> }
+      <div class="reply-content">
+        <span class="reply-section-label">Response</span>
+        <p>{{ selectedTaskReply.submissionText || 'No written response was provided with this submission.' }}</p>
       </div>
-    </div>
+      @if (selectedTaskReply.submissionFileUrl) {
+        <div class="reply-file-card">
+          <span class="reply-file-icon">↗</span>
+          <div><span class="reply-section-label">Attached file</span><strong>{{ selectedTaskReply.submissionFileName || 'Submission attachment' }}</strong></div>
+          <div class="reply-file-actions"><a [href]="selectedTaskReply.submissionFileUrl + '?download=false'" target="_blank" rel="noopener">Preview</a><a class="reply-download" [href]="selectedTaskReply.submissionFileUrl + '?download=true'">Download</a></div>
+        </div>
+      }
+      <footer class="reply-modal-footer"><button type="button" class="reply-done-btn" (click)="closeTaskReply()">Done</button></footer>
+    </section>
   </div>
   }
 
