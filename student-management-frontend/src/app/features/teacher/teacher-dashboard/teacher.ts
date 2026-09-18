@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormsModule, NgForm } from '@angular/forms';
 import { finalize, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -18,6 +18,9 @@ import { Navbar } from '../../../shared/components/navbar/navbar';
 import { StudentForm } from '../../../shared/components/student-form/student-form';
 import { Message } from '../../../shared/models/message.model';
 import { TaskResponse } from '../../../shared/models/task.model';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-teacher',
@@ -26,18 +29,24 @@ import { TaskResponse } from '../../../shared/models/task.model';
     CommonModule,
     StudentList,
     Navbar,
-    StudentForm
+    StudentForm,
+    ButtonModule,
+    InputTextModule,
+    TextareaModule
   ],
   templateUrl: './teacher.html',
-  styleUrl: './teacher.css'
+  styleUrl: './teacher.scss'
 })
 export class Teacher implements OnInit {
+  @ViewChild('announcementSelector') private announcementSelector?: ElementRef<HTMLElement>;
+  @ViewChild('taskSelector') private taskSelector?: ElementRef<HTMLElement>;
 
   username = localStorage.getItem('username');
   role = localStorage.getItem('role');
 
   selectedSection = 'dashboard';
   selectedStudentAction = '';
+  showAddStudentModal = false;
 
   // Profile data
   profile: TeacherModel | null = null;
@@ -89,12 +98,15 @@ export class Teacher implements OnInit {
   sentMessages: Message[] = [];
   selectedAnnouncementStudentIds: number[] = [];
   openStudentSelector: 'announcement' | 'task' | null = null;
+  studentSelectorSearch: Record<'announcement' | 'task', string> = { announcement: '', task: '' };
   newMessageText = '';
   sendingMessage = false;
 
   selectedTaskStudentIds: number[] = [];
+  readonly maxTaskAttachmentSizeBytes = 2 * 1024 * 1024;
   taskAttachment: File | null = null;
   taskAttachmentName = '';
+  taskAttachmentError = '';
 
   newTask = {
     title: '',
@@ -131,7 +143,7 @@ export class Teacher implements OnInit {
 
   selectSection(section: string): void {
     this.selectedSection = section;
-    this.selectedStudentAction = section === 'students' ? 'add' : '';
+    this.selectedStudentAction = section === 'students' ? 'list' : '';
 
     if (section === 'profile') {
       this.loadProfile();
@@ -145,6 +157,11 @@ export class Teacher implements OnInit {
   selectStudentAction(action: string): void {
     this.selectedSection = 'students';
     this.selectedStudentAction = action;
+  }
+
+  openAddStudentModal(): void {
+    this.showAddStudentModal = true;
+    this.loadSubjects();
   }
 
   // Loads the subjects shown in the student add/update dropdowns.
@@ -214,6 +231,9 @@ export class Teacher implements OnInit {
     this.activeHistory = history;
     if (history === 'announcements') this.loadSentMessages();
     else this.loadAssignedTasks();
+    setTimeout(() => {
+      document.getElementById('teacher-history')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
   openTaskReply(task: TaskResponse): void {
@@ -249,6 +269,11 @@ export class Teacher implements OnInit {
   }
 
   assignTask(): void {
+    if (this.taskAttachmentError) {
+      alert('Unable to assign task: the attachment exceeds the 2 MB file size limit. Choose a smaller file and try again.');
+      return;
+    }
+
     if (!this.selectedTaskStudentIds.length || !this.newTask.title.trim() || !this.newTask.description.trim() || !this.newTask.dueDate) {
       alert('Select students and provide a title, instructions, and due date.');
       return;
@@ -295,12 +320,43 @@ export class Teacher implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] || null;
     this.taskFileInput = input;
+
+    if (file && file.size > this.maxTaskAttachmentSizeBytes) {
+      this.taskAttachment = null;
+      this.taskAttachmentName = '';
+      this.taskAttachmentError = `“${file.name}” is too large. Maximum attachment size is 2 MB.`;
+      input.value = '';
+      return;
+    }
+
     this.taskAttachment = file;
     this.taskAttachmentName = file?.name || '';
+    this.taskAttachmentError = '';
+  }
+
+  clearTaskAttachment(): void {
+    this.taskAttachment = null;
+    this.taskAttachmentName = '';
+    this.taskAttachmentError = '';
+    if (this.taskFileInput) this.taskFileInput.value = '';
   }
 
   toggleStudentSelector(selector: 'announcement' | 'task'): void {
     this.openStudentSelector = this.openStudentSelector === selector ? null : selector;
+  }
+
+  @HostListener('document:mousedown', ['$event'])
+  closeStudentSelectorOnOutsideClick(event: MouseEvent): void {
+    const target = event.target as Node | null;
+    if (!target || !this.openStudentSelector) return;
+
+    const activeSelector = this.openStudentSelector === 'announcement'
+      ? this.announcementSelector?.nativeElement
+      : this.taskSelector?.nativeElement;
+
+    if (!activeSelector?.contains(target)) {
+      this.openStudentSelector = null;
+    }
   }
 
   toggleStudentSelection(selector: 'announcement' | 'task', studentId: number): void {
@@ -310,8 +366,27 @@ export class Teacher implements OnInit {
     else selected.splice(position, 1);
   }
 
+  areAllStudentsSelected(selector: 'announcement' | 'task'): boolean {
+    const availableIds = this.students.map(student => student.id).filter((id): id is number => id !== undefined);
+    return availableIds.length > 0 && availableIds.every(id => this.studentIdsFor(selector).includes(id));
+  }
+
+  toggleAllStudentSelections(selector: 'announcement' | 'task', checked: boolean): void {
+    const selected = this.studentIdsFor(selector);
+    selected.splice(0, selected.length, ...(checked
+      ? this.students.map(student => student.id).filter((id): id is number => id !== undefined)
+      : []));
+  }
+
   isStudentSelected(selector: 'announcement' | 'task', studentId: number | undefined): boolean {
     return studentId !== undefined && this.studentIdsFor(selector).includes(studentId);
+  }
+
+  filteredStudents(selector: 'announcement' | 'task'): Student[] {
+    const search = this.studentSelectorSearch[selector].trim().toLowerCase();
+    if (!search) return this.students;
+    return this.students.filter(student =>
+      student.name.toLowerCase().includes(search) || student.email.toLowerCase().includes(search));
   }
 
   studentSelectorLabel(selector: 'announcement' | 'task'): string {
@@ -340,7 +415,7 @@ export class Teacher implements OnInit {
     return file ? this.messageService.uploadAttachment(file) : of(null);
   }
 
-  addStudent(form: NgForm): void {
+  addStudent(form: FormGroup): void {
     if (form.invalid || !this.newStudent.age || this.newStudent.age <= 0) {
       Object.values(form.controls).forEach((control) => control.markAsTouched());
       return;
@@ -364,11 +439,12 @@ export class Teacher implements OnInit {
     this.studentService.addStudent(studentToAdd).subscribe({
       next: () => {
         alert('Student created and assigned to you successfully.');
-        form.resetForm({ name: '', email: '', username: '', password: '', course: '', age: null });
+        form.reset({ name: '', email: '', username: '', password: '', course: '', age: null });
         this.clearStudentForm();
         this.selectedSubjectIds = [];
         this.studentListRefreshKey++;
         this.selectedStudentAction = 'list';
+        this.showAddStudentModal = false;
         this.loadAssignedStudents();
         this.cdr.detectChanges();
       },
@@ -378,10 +454,10 @@ export class Teacher implements OnInit {
     });
   }
 
-  cancelAddStudent(form: NgForm): void {
-    form.resetForm({ name: '', email: '', username: '', password: '', course: '', age: null });
+  cancelAddStudent(form: FormGroup): void {
+    form.reset({ name: '', email: '', username: '', password: '', course: '', age: null });
     this.clearStudentForm();
-    this.selectedStudentAction = '';
+    this.showAddStudentModal = false;
   }
 
   clearStudentForm(): void {
@@ -414,7 +490,7 @@ export class Teacher implements OnInit {
     this.cdr.detectChanges();
   }
 
-  saveStudentFromModal(form: NgForm): void {
+  saveStudentFromModal(form: FormGroup): void {
     if (!this.selectedStudentForUpdate?.id || form.invalid) return;
 
     if (this.updateSubjectIds.length === 0) {

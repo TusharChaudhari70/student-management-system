@@ -1,7 +1,3 @@
-/* ================================
-   GLOBAL PAGE
-================================ */
-
 :host {
   display: block;
   min-height: 100vh;
@@ -9,11 +5,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-/* ================================
-/* ================================
-   TOP NAVBAR
-================================ */
 
 .top-navbar {
   height: 68px;
@@ -27,7 +18,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Left side */
 .brand {
   display: flex;
   align-items: center;
@@ -47,14 +37,12 @@
   border-radius: 3px;
 }
 
-/* Right side */
 .nav-right {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* User information */
 .admin-user {
   display: flex;
   align-items: center;
@@ -71,7 +59,7 @@
 }
 
 .admin-user::before {
-  content: '◉';
+  content: 'â—‰';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,7 +70,6 @@
   font-size: 13px;
 }
 
-/* Role */
 .admin-role {
   background: rgba(255, 255, 255, 0.16);
   border: 1px solid rgba(255, 255, 255, 0.20);
@@ -93,7 +80,6 @@
   color: white;
 }
 
-/* Logout */
 .logout-btn {
   border: 1px solid rgba(255, 255, 255, 0.25);
   background: rgba(255, 255, 255, 0.12);
@@ -115,16 +101,11 @@
 .logout-btn:active {
   transform: translateY(0);
 }
-/* ================================
-   MAIN LAYOUT
-================================ */
-
 .admin-layout {
   display: flex;
   min-height: calc(100vh - 64px);
 }
 
-/* Horizontal, expandable navigation below the main navbar. */
 .control-panel { padding: 16px 5vw 0; background: transparent; box-shadow: none; }
 .control-tabs { display: flex; align-items: center; gap: 8px; min-height: 44px; }
 .tab-group { position: relative; display: flex; align-items: stretch; }
@@ -136,10 +117,6 @@
 .ctrl-submenu button:hover, .ctrl-submenu button.active { background: #e7e9f2; color: #28243b; }
 .sidebar { display: none; }
 
-
-/* ================================
-   SIDEBAR
-================================ */
 
 .sidebar {
   width: 240px;
@@ -182,10 +159,6 @@
 }
 
 
-/* ================================
-   SUBMENU
-================================ */
-
 .submenu {
   margin: 5px 0 15px 12px;
   padding-left: 10px;
@@ -216,10 +189,6 @@
 }
 
 
-/* ================================
-   MAIN CONTENT
-================================ */
-
 .main-content {
   flex: 1;
   padding: 35px;
@@ -228,10 +197,6 @@
   min-width: 0;
 }
 
-
-/* ================================
-   PAGE HEADER
-================================ */
 
 .page-header {
   margin-bottom: 28px;
@@ -265,10 +230,6 @@
   font-size: 14px;
 }
 
-
-/* ================================
-   DASHBOARD
-================================ */
 
 .dashboard-cards {
   display: flex;
@@ -306,10 +267,6 @@
 }
 
 
-/* ================================
-   ACTION BAR
-================================ */
-
 .action-bar {
   display: flex;
   gap: 10px;
@@ -337,10 +294,6 @@
   border-color: #3867f4;
 }
 
-
-/* ================================
-   MODAL
-================================ */
 
 .modal-overlay {
   position: fixed;
@@ -512,10 +465,6 @@
 }
 
 
-/* ================================
-   CONTENT CARD
-================================ */
-
 .content-card {
   background: white;
   width: 100%;
@@ -536,10 +485,6 @@
 }
 
 
-/* ================================
-   CRUD CARD SIZE
-================================ */
-
 .teacher-card,
 .add-student-card,
 .update-student-card,
@@ -550,10 +495,6 @@
 }
 
 
-/* ================================
-   FORM GRID
-================================ */
-
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -562,10 +503,6 @@
   width: 100%;
 }
 
-
-/* ================================
-   FORM GROUP
-================================ */
 
 .form-group {
   width: 100%;
@@ -584,10 +521,6 @@
   color: red;
 }
 
-
-/* ================================
-   INPUT + SELECT
-================================ */
 
 .form-group input,
 .form-group select {
@@ -615,10 +548,6 @@
 }
 
 
-/* ================================
-   ERROR
-================================ */
-
 .error {
   display: block;
   margin-top: 5px;
@@ -627,20 +556,12 @@
 }
 
 
-/* ================================
-   FORM ACTIONS
-================================ */
-
 .form-actions {
   display: flex;
   gap: 12px;
   margin-top: 25px;
 }
 
-
-/* ================================
-   BUTTONS
-================================ */
 
 .add-btn,
 .cancel-btn,
@@ -717,10 +638,6 @@
 }
 
 
-/* ================================
-   STUDENT / TEACHER SEARCH
-================================ */
-
 .student-search {
   display: flex;
   align-items: flex-end;
@@ -739,10 +656,6 @@
   white-space: nowrap;
 }
 
-
-/* ================================
-   UPDATE FORM SECTION
-================================ */
 
 .update-form-section {
   margin-top: 20px;
@@ -763,10 +676,6 @@
 }
 
 
-/* ================================
-   EMPTY CONTENT
-================================ */
-
 .empty-content {
   background: white;
   border-radius: 10px;
@@ -785,17 +694,11 @@
 }
 
 
-/* ================================
-   TEACHER LIST CARD
-================================ */
-
 .teacher-list-card {
   width: 100%;
   max-width: 1100px;
 }
 
-/* The table is rendered by app-teacher-list. The legacy wrapper remains only
-   as the owner of the existing edit/delete modal markup. */
 .legacy-teacher-table { display: contents; }
 .legacy-teacher-table > .table-header,
 .legacy-teacher-table > .loading-message,
@@ -804,10 +707,6 @@
 .legacy-teacher-table > .table-wrapper,
 .legacy-teacher-table > .table-footer { display: none; }
 
-
-/* ================================
-   TEACHER HEADER + SEARCH
-================================ */
 
 .teacher-list-card .table-header {
   display: flex;
@@ -853,10 +752,6 @@
 }
 
 
-/* ================================
-   TEACHER SUMMARY
-================================ */
-
 .teacher-list-card .student-summary {
   margin-bottom: 15px;
   font-size: 14px;
@@ -872,10 +767,6 @@
   font-weight: 500;
 }
 
-
-/* ================================
-   TEACHER TABLE
-================================ */
 
 .teacher-list-card .table-wrapper {
   width: 100%;
@@ -913,10 +804,6 @@
 }
 
 
-/* ================================
-   ID SORT
-================================ */
-
 .teacher-list-card .sortable-header {
   cursor: pointer;
   user-select: none;
@@ -935,10 +822,6 @@
 }
 
 
-/* ================================
-   ACTIONS
-================================ */
-
 .teacher-list-card .actions {
   white-space: nowrap;
 }
@@ -955,10 +838,6 @@
 }
 
 
-/* ================================
-   ROLE BADGE
-================================ */
-
 .teacher-list-card .role-badge {
   display: inline-block;
   padding: 5px 12px;
@@ -970,10 +849,6 @@
 }
 
 
-/* ================================
-   LOADING / EMPTY
-================================ */
-
 .loading-message,
 .empty-message {
   padding: 35px;
@@ -981,10 +856,6 @@
   color: #6b7280;
 }
 
-
-/* ================================
-   TEACHER FOOTER
-================================ */
 
 .teacher-list-card .table-footer {
   display: flex;
@@ -1020,10 +891,6 @@
   border-color: #2563eb;
 }
 
-
-/* ================================
-   TEACHER PAGINATION
-================================ */
 
 .teacher-list-card .pagination {
   display: flex;
@@ -1061,10 +928,6 @@
   font-weight: 600;
 }
 
-
-/* ================================
-   OLD TEACHER TABLE SUPPORT
-================================ */
 
 .teacher-table-wrapper {
   width: 100%;
@@ -1107,10 +970,6 @@
   background: #f9fafb;
 }
 
-
-/* ================================
-   RESPONSIVE
-================================ */
 
 @media (max-width: 800px) {
 
@@ -1211,7 +1070,6 @@
   .modal-footer { flex-shrink: 0; padding: 12px 16px; }
 }
 
-/* Keep every Admin surface on the active dark palette. */
 :host-context(.theme-dark) {
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -1292,7 +1150,6 @@
 :host-context(.theme-dark) .cancel-btn:hover { background: #64748b; }
 :host-context(.theme-dark) .modal-close { color: var(--text-muted); }
 
-/* Main dashboard welcome area. */
 .dashboard-welcome { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); align-items: center; gap: 24px; max-width: 1100px; margin: 0 auto 28px; padding: 30px 36px; border: 1px solid var(--border-color); border-radius: 16px; background: linear-gradient(120deg, var(--bg-card), var(--bg-surface)); overflow: hidden; }
 .welcome-copy { max-width: 560px; }
 .welcome-kicker { color: #326c8c; font-size: 11px; font-weight: 800; letter-spacing: .12em; }
@@ -1312,7 +1169,6 @@
 :host-context(.theme-dark) .welcome-actions .secondary:hover { background: #284f63; }
 @media (max-width: 700px) { .dashboard-welcome { grid-template-columns: 1fr; padding: 24px; } .dashboard-welcome img { max-height: 180px; } }
 
-/* Minimal, centered subject list. */
 .subject-list-card { max-width: 820px; padding: 24px; }
 .subject-list-card h2 { margin-bottom: 16px; }
 .subject-list-card .search-filter { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }

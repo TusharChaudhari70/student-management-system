@@ -58,8 +58,9 @@
   transition: all 0.2s ease;
 }
 
-.theme-toggle-btn::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: #dff5ff; box-shadow: -4px 3px 0 #28566d; }
-:host-context(.theme-dark) .theme-toggle-btn::before { background: transparent; border: 2px solid #65c3df; box-shadow: none; }
+.theme-icon { font-family: Arial, sans-serif; font-size: 22px; font-weight: 400; line-height: 1; color: #e7f8ff; }
+.theme-icon-moon { font-size: 24px; transform: rotate(-18deg); }
+:host-context(.theme-dark) .theme-icon { color: #ffdd74; }
 
 .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.22);

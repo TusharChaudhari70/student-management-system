@@ -1,27 +1,27 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Auth } from '../../../core/services/auth';
 import { ThemeService } from '../../../core/services/theme.service';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 export type UserRole = 'ADMIN' | 'TEACHER' | 'STUDENT';
 
 @Component({
   selector: 'app-login',
-  imports: [
-    FormsModule,
-    CommonModule
-  ],
+  imports: [ReactiveFormsModule, CommonModule, ButtonModule, InputTextModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.scss',
 })
 export class Login {
-
   selectedRole: UserRole | null = null; // null = Role selection screen, value = Login form screen
-  username = '';
-  password = '';
+  readonly loginForm = new FormGroup({
+    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
 
   errorMessage = '';
   loading = false;
@@ -30,32 +30,38 @@ export class Login {
     private authService: Auth,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public themeService: ThemeService
-  ) { }
+    public themeService: ThemeService,
+  ) {}
 
   selectRole(role: UserRole): void {
     this.selectedRole = role;
-    this.username = '';
-    this.password = '';
+    this.loginForm.reset();
     this.errorMessage = '';
   }
 
   resetRoleSelection(): void {
     this.selectedRole = null;
-    this.username = '';
-    this.password = '';
+    this.loginForm.reset();
     this.errorMessage = '';
   }
 
   login(): void {
     this.errorMessage = '';
 
-    if (!this.username.trim()) {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.errorMessage = 'Username or Email and password are required';
+      return;
+    }
+
+    const { username, password } = this.loginForm.getRawValue();
+
+    if (!username.trim()) {
       this.errorMessage = 'Username or Email is required';
       return;
     }
 
-    if (!this.password) {
+    if (!password) {
       this.errorMessage = 'Password is required';
       return;
     }
@@ -63,8 +69,8 @@ export class Login {
     this.loading = true;
 
     const loginData = {
-      username: this.username.trim(),
-      password: this.password
+      username: username.trim(),
+      password,
     };
 
     this.authService.login(loginData).subscribe({
@@ -108,7 +114,7 @@ export class Login {
           this.errorMessage = 'Login failed. Please verify credentials.';
         }
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 

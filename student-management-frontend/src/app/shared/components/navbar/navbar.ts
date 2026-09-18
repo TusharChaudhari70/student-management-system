@@ -2,15 +2,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ThemeService } from '../../../core/services/theme.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',
+  imports: [ButtonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrl: './navbar.scss'
 })
 export class Navbar {
   @Input({ required: true }) username = '';
   @Input({ required: true }) role = '';
+  @Input() showProfile = true;
   @Output() logoutRequested = new EventEmitter<void>();
   @Output() profileRequested = new EventEmitter<void>();
   @Output() dashboardRequested = new EventEmitter<void>();

@@ -1,0 +1,173 @@
+:root {
+  --bg-primary: #e7f3f8;
+  --bg-card: #ffffff;
+  --bg-surface: #d9edf5;
+  --text-primary: #1e3a4a;
+  --text-secondary: #326c8c;
+  --text-muted: #5c8193;
+  --border-color: #b9dce8;
+  --nav-bg: #1d3b4b;
+  --control-panel-bg: transparent;
+  --control-tab-active: #326c8c;
+  --table-th-bg: #326c8c;
+  --table-th-color: #ffffff;
+  --table-td-border: #e5e7eb;
+  --table-hover: #f9fafb;
+  --input-bg: #ffffff;
+  --input-border: #9bcede;
+  --input-text: #1e3a4a;
+  --modal-bg: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+[data-bs-theme="dark"],
+.theme-dark {
+  --bg-primary: #12232c;
+  --bg-card: #1e3a4a;
+  --bg-surface: #284f63;
+  --text-primary: #eefaff;
+  --text-secondary: #c5e8f4;
+  --text-muted: #95bfce;
+  --border-color: #326c8c;
+  --nav-bg: #10242e;
+  --control-panel-bg: transparent;
+  --control-tab-active: #3e88ab;
+  --table-th-bg: #284f63;
+  --table-th-color: #f8fafc;
+  --table-td-border: #334155;
+  --table-hover: #1e293b;
+  --input-bg: #1e3a4a;
+  --input-border: #4e9abb;
+  --input-text: #eefaff;
+  --modal-bg: #1e3a4a;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.navbar-links { display: flex; align-items: center; gap: 6px; min-width: 0; overflow-x: auto; }
+.top-navbar .navbar-links .control-tabs { display: flex; align-items: center; gap: 6px; }
+.top-navbar .navbar-links .tab-group { position: relative; }
+.top-navbar .navbar-links .ctrl-tab.p-button { position: relative; min-height: 38px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: #b9dce8; padding: 0 12px; box-shadow: none; cursor: pointer; font-size: 13px; font-weight: 700; white-space: nowrap; transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease; }
+.top-navbar .navbar-links .ctrl-tab.p-button:hover { background: rgba(101,195,223,.16); border-color: rgba(101,195,223,.42); color: #fff; transform: translateY(-1px); }
+.top-navbar .navbar-links .ctrl-tab.p-button.active { background: #326c8c; border-color: #65c3df; color: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.2); }
+.top-navbar .navbar-links .ctrl-tab span:not(.tab-badge) { display: none; }
+@media (max-width: 1050px) { .navbar-links { flex: 1 1 auto; } .navbar-links .control-tabs { padding-bottom: 2px; } }
+
+.section-actions { display: flex; align-items: center; gap: 8px; width: fit-content; max-width: calc(100% - 32px); margin: 14px auto 0; padding: 6px; overflow-x: auto; border: 1px solid #b9dce8; border-radius: 12px; background: rgba(255,255,255,.82); box-shadow: 0 4px 12px rgba(50,108,140,.12); }
+.section-actions button { flex: 0 0 auto; border: 0; border-radius: 8px; padding: 9px 13px; background: transparent; color: #326c8c; cursor: pointer; font-size: 13px; font-weight: 700; transition: background .2s ease, color .2s ease, transform .2s ease; }
+.section-actions .p-button { box-shadow: none; }
+.section-actions button:hover { background: #d9edf5; color: #1e3a4a; transform: translateY(-1px); }
+.section-actions button.active { background: #326c8c; color: #fff; box-shadow: 0 2px 5px rgba(50,108,140,.28); }
+.theme-dark .section-actions { border-color: #326c8c; background: #1e3a4a; }
+.theme-dark .section-actions button { color: #c5e8f4; }
+.theme-dark .section-actions button:hover { background: #284f63; color: #fff; }
+.theme-dark .section-actions button.active { background: #3e88ab; color: #fff; }
+
+.module-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.module-toolbar h2 { margin: 0; }
+.module-toolbar .p-button { flex: 0 0 auto; border-radius: 9px; background: #326c8c; border-color: #326c8c; box-shadow: 0 2px 5px rgba(50,108,140,.24); }
+.module-toolbar .p-button:hover { background: #28566d; border-color: #28566d; }
+.theme-dark .module-toolbar .p-button { background: #3e88ab; border-color: #3e88ab; }
+@media (max-width: 560px) { .module-toolbar { align-items: stretch; flex-direction: column; } .module-toolbar .p-button { width: 100%; } }
+
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  display: grid !important;
+  place-items: center !important;
+  box-sizing: border-box !important;
+  padding: 20px !important;
+  overflow: auto !important;
+  background: rgba(7, 25, 35, .58) !important;
+}
+
+.modal-box {
+  width: min(1360px, 100%) !important;
+  min-height: 0;
+  max-height: calc(100dvh - 48px) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: visible !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 14px !important;
+  background: var(--modal-bg) !important;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, .32) !important;
+}
+
+.modal-box > app-student-form,
+.modal-box > app-teacher-form {
+  display: block;
+  min-height: 0;
+  overflow: visible;
+}
+
+.modal-box .modal-body { min-height: 0; overflow-y: auto; padding: 22px; }
+
+.modal-box > app-student-form form,
+.modal-box > app-teacher-form form { padding: 24px 28px; }
+.modal-box .p-multiselect { width: 100%; }
+.modal-box .p-multiselect { position: relative; }
+.modal-box .subject-options-panel {
+  top: calc(100% + 6px) !important;
+  bottom: auto !important;
+  transform: none !important;
+  z-index: 3 !important;
+}
+.modal-box > app-student-form .form-grid,
+.modal-box > app-teacher-form .form-grid,
+.modal-box .modal-body app-student-form .form-grid,
+.modal-box .modal-body app-teacher-form .form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 20px; }
+.modal-box .modal-header { flex: 0 0 auto; margin: 0; }
+.modal-box .modal-close.p-button { min-width: 36px; min-height: 36px; padding: 0; border-radius: 50%; background: transparent; color: var(--text-muted); box-shadow: none; }
+.modal-box .modal-close.p-button:hover { background: var(--bg-surface); color: var(--text-primary); }
+.modal-box.subject-dialog { width: min(560px, 100%) !important; min-height: 0; overflow: hidden !important; }
+.subject-dialog .modal-body { padding: 24px 28px; overflow: visible; }
+.subject-dialog .update-description { margin: 0 0 20px; color: var(--text-muted); font-size: 14px; }
+.subject-dialog .form-group { margin: 0; }
+.subject-dialog .form-group input { width: 100%; box-sizing: border-box; }
+.subject-dialog .modal-footer { flex: 0 0 auto; padding: 16px 28px; border-top: 1px solid var(--border-color); }
+@media (max-width: 760px) { .modal-box app-student-form .form-grid, .modal-box app-teacher-form .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .modal-overlay { padding: 12px !important; } .modal-box { max-height: calc(100dvh - 24px) !important; overflow: hidden !important; border-radius: 12px !important; } .modal-box > app-student-form, .modal-box > app-teacher-form { overflow-y: auto; } .modal-box app-student-form .form-grid, .modal-box app-teacher-form .form-grid { grid-template-columns: 1fr; } .modal-box > app-student-form form, .modal-box > app-teacher-form form, .modal-box .modal-body { padding: 16px; } }
+
+.main-content > .page-header { display: none; }
+
+.content-card, .dashboard-card, .modal-box {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.student-table, .data-table {
+  background-color: var(--bg-card) !important;
+}
+
+.student-table th, .data-table th {
+  background-color: var(--table-th-bg) !important;
+  color: var(--table-th-color) !important;
+}
+
+.student-table td, .data-table td {
+  border-bottom-color: var(--table-td-border) !important;
+  color: var(--text-secondary) !important;
+}
+
+.student-table tbody tr:hover, .data-table tbody tr:hover {
+  background-color: var(--table-hover) !important;
+}
+
+.form-group input, .form-group select, .search-box input, .search-select, .page-size-select {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}

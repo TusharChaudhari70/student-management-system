@@ -41,6 +41,10 @@ public class SecurityConfig {
 
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
 
+            // The Angular app previews assigned PDF files in an in-page iframe.
+            // Disable Spring Security's default DENY frame header for this local web application.
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+
             .authorizeHttpRequests(auth -> auth
 
                 // LOGIN MUST BE PUBLIC

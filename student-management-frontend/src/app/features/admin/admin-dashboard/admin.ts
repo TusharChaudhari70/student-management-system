@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormGroup, FormsModule, NgForm } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { Auth } from '../../../core/services/auth';
@@ -16,6 +16,8 @@ import { Navbar } from '../../../shared/components/navbar/navbar';
 import { StudentForm } from '../../../shared/components/student-form/student-form';
 import { TeacherForm } from '../teacher-management/teacher-form/teacher-form';
 import { TeacherList } from '../teacher-management/teacher-list/teacher-list';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-admin',
@@ -26,10 +28,12 @@ import { TeacherList } from '../teacher-management/teacher-list/teacher-list';
     Navbar,
     StudentForm,
     TeacherForm,
-    TeacherList
+    TeacherList,
+    ButtonModule,
+    InputTextModule
   ],
   templateUrl: './admin.html',
-  styleUrl: './admin.css'
+  styleUrl: './admin.scss'
 })
 export class Admin {
 
@@ -41,6 +45,9 @@ export class Admin {
   selectedSection = 'dashboard';
   selectedStudentAction = '';
   selectedTeacherAction = '';
+  showAddStudentModal = false;
+  showAddTeacherModal = false;
+  showAddSubjectModal = false;
 
   // Student add
   newStudent = {
@@ -210,6 +217,10 @@ export class Admin {
     this.authService.logout();
   }
 
+  openAddStudentModal(): void { this.showAddStudentModal = true; this.loadTeachers(); this.loadSubjects(); }
+  openAddTeacherModal(): void { this.showAddTeacherModal = true; }
+  openAddSubjectModal(): void { this.showAddSubjectModal = true; }
+
   // Controls the main dashboard sections.
   selectSection(section: string) {
 
@@ -223,7 +234,8 @@ export class Admin {
       this.selectedSection = 'subjects';
       this.selectedStudentAction = '';
       this.selectedTeacherAction = '';
-      this.selectedSubjectAction = 'add';
+      this.selectedSubjectAction = 'list';
+      this.loadSubjectList();
       return;
     }
 
@@ -240,7 +252,7 @@ export class Admin {
       }
 
       this.selectedSection = 'students';
-      this.selectedStudentAction = 'add';
+      this.selectedStudentAction = 'list';
       this.selectedTeacherAction = '';
 
       this.resetUpdate();
@@ -270,7 +282,7 @@ export class Admin {
       }
 
       this.selectedSection = 'teachers';
-      this.selectedTeacherAction = 'add';
+      this.selectedTeacherAction = 'view';
       this.selectedStudentAction = '';
 
       this.resetUpdate();
@@ -426,7 +438,7 @@ export class Admin {
   }
 
   // Adds a new student through StudentService.
-  addStudent(form: NgForm) {
+  addStudent(form: FormGroup) {
 
     if (
       form.invalid ||
@@ -464,7 +476,7 @@ export class Admin {
 
           alert('Student added successfully');
 
-          form.resetForm({
+          form.reset({
             name: '',
             email: '',
             username: '',
@@ -477,6 +489,7 @@ export class Admin {
           this.clearStudentForm();
           this.selectedTeacherId = null;
           this.selectedSubjectIds = [];
+          this.showAddStudentModal = false;
 
           // Refresh student table
           this.studentListRefreshKey++;
@@ -505,9 +518,9 @@ export class Admin {
   }
 
   // Cancels the add-student operation and clears the form.
-  cancelAddStudent(form: NgForm) {
+  cancelAddStudent(form: FormGroup) {
 
-    form.resetForm({
+    form.reset({
       name: '',
       email: '',
       username: '',
@@ -518,7 +531,7 @@ export class Admin {
     });
 
     this.clearStudentForm();
-    this.selectedStudentAction = '';
+    this.showAddStudentModal = false;
   }
 
   clearStudentForm() {
@@ -822,7 +835,7 @@ export class Admin {
   }
 
   // Saves student changes from the popup.
-  saveStudentFromModal(form: NgForm) {
+  saveStudentFromModal(form: FormGroup) {
 
     if (
       this.searchedStudentId === null ||
@@ -1166,7 +1179,7 @@ export class Admin {
   }
 
   // Adds a new teacher through TeacherService.
-  addTeacher(form: NgForm) {
+  addTeacher(form: FormGroup) {
 
     if (form.invalid) {
 
@@ -1195,8 +1208,9 @@ export class Admin {
 
           alert('Teacher added successfully');
 
-          form.resetForm();
+          form.reset();
           this.clearTeacherForm();
+          this.showAddTeacherModal = false;
 
           this.cdr.detectChanges();
         },
@@ -1245,9 +1259,10 @@ export class Admin {
     }
   }
 
-  cancelAddTeacher(form: NgForm) {
-    form.resetForm();
+  cancelAddTeacher(form: FormGroup) {
+    form.reset();
     this.clearTeacherForm();
+    this.showAddTeacherModal = false;
   }
 
   // Loads the teacher list for the admin.
@@ -1466,7 +1481,7 @@ closeTeacherUpdateModal() {
   this.cdr.detectChanges();
 }
 
-saveTeacherFromModal(form: NgForm) {
+saveTeacherFromModal(form: FormGroup) {
 
   const teacherId =
     this.selectedTeacherForUpdate?.id;
@@ -2074,6 +2089,7 @@ confirmTeacherDeleteFromModal() {
         next: () => {
           form.resetForm();
           this.newSubject = { name: '' };
+          this.showAddSubjectModal = false;
           this.loadSubjectList();
           alert('Subject added successfully.');
         },
@@ -2084,7 +2100,7 @@ confirmTeacherDeleteFromModal() {
   cancelAddSubjectForm(form: NgForm): void {
     form.resetForm();
     this.newSubject = { name: '' };
-    this.selectedSubjectAction = '';
+    this.showAddSubjectModal = false;
   }
 
   onSubjectSearch(event: Event): void {

@@ -3,19 +3,8 @@
   <!-- SEARCH CONTROLS -->
   <div class="table-header">
     <div class="search-box">
-      <select
-        class="search-select"
-        [value]="searchField"
-        (change)="changeSearchField($any($event.target).value)"
-      >
-        <option value="all">All Fields</option>
-        <option value="id">ID</option>
-        <option value="name">Name</option>
-        <option value="email">Email</option>
-        <option value="course">Course</option>
-        <option value="age">Age</option>
-        <option value="teacher">Teacher</option>
-      </select>
+      <p-select class="search-select" [options]="searchFieldOptions" optionLabel="label" optionValue="value"
+        [ngModel]="searchField" (ngModelChange)="changeSearchField($event)" appendTo="body" />
 
       <input
         type="text"

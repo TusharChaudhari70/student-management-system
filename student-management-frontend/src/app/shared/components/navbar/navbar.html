@@ -1,21 +1,29 @@
 <nav class="top-navbar">
-  <button type="button" class="brand" (click)="navigateToDashboard()" title="Go to dashboard">
+  <button pButton type="button" class="brand" (click)="navigateToDashboard()" title="Go to dashboard">
     <span>Student Management System</span>
   </button>
   <ng-content select="[navbar-nav]"></ng-content>
   <div class="nav-right">
-    <button
+    <button pButton
       type="button"
       class="theme-toggle-btn"
       (click)="themeService.toggleTheme()"
       [title]="'Switch to ' + (themeService.currentTheme() === 'light' ? 'Dark' : 'Light') + ' theme'"
+      [attr.aria-label]="'Switch to ' + (themeService.currentTheme() === 'light' ? 'dark' : 'light') + ' theme'"
     >
+      @if (themeService.currentTheme() === 'light') {
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">&#9680;</span>
+      } @else {
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">&#9788;</span>
+      }
     </button>
-    <button type="button" class="profile-btn" (click)="profileRequested.emit()">
-      <span class="profile-avatar">{{ username.charAt(0).toUpperCase() }}</span>
-      <span class="profile-copy"><strong>{{ username }}</strong><small>{{ role }}</small></span>
-    </button>
-    <button type="button" class="logout-btn" (click)="confirmLogout()">Logout</button>
+    @if (showProfile) {
+      <button pButton type="button" class="profile-btn" (click)="profileRequested.emit()">
+        <span class="profile-avatar">{{ username.charAt(0).toUpperCase() }}</span>
+        <span class="profile-copy"><strong>{{ username }}</strong><small>{{ role }}</small></span>
+      </button>
+    }
+    <button pButton type="button" class="logout-btn" (click)="confirmLogout()">Logout</button>
   </div>
 </nav>
 
@@ -23,7 +31,7 @@
   @for (toast of toastService.messages(); track toast.id) {
     <div class="app-toast" [class.toast-error]="toast.type === 'error'" [class.toast-success]="toast.type === 'success'" [class.toast-closing]="toast.closing">
       <span>{{ toast.text }}</span>
-      <button type="button" aria-label="Close notification" (click)="toastService.dismiss(toast.id)">×</button>
+      <button pButton type="button" aria-label="Close notification" (click)="toastService.dismiss(toast.id)">×</button>
     </div>
   }
 </div>

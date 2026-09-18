@@ -7,8 +7,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HighlightMatchPipe } from '../../pipes/highlight-match.pipe';
+import { SelectModule } from 'primeng/select';
 
 import {
   Student,
@@ -20,9 +22,9 @@ export type StudentSearchField = 'all' | StudentField;
 
 @Component({
   selector: 'app-student-list',
-  imports: [AsyncPipe, HighlightMatchPipe],
+  imports: [AsyncPipe, FormsModule, HighlightMatchPipe, SelectModule],
   templateUrl: './student-list.html',
-  styleUrl: './student-list.css'
+  styleUrl: './student-list.scss'
 })
 export class StudentList implements OnChanges {
 
@@ -35,6 +37,15 @@ export class StudentList implements OnChanges {
   @Output() deleteStudent = new EventEmitter<Student>();
 
   searchField: StudentSearchField = 'all'; // Field selected for search
+  readonly searchFieldOptions = [
+    { label: 'All Fields', value: 'all' },
+    { label: 'ID', value: 'id' },
+    { label: 'Name', value: 'name' },
+    { label: 'Email', value: 'email' },
+    { label: 'Course', value: 'course' },
+    { label: 'Age', value: 'age' },
+    { label: 'Teacher', value: 'teacher' }
+  ];
   searchTerm = ''; // Current search query
   columnFilters: Record<StudentField, string> = { id: '', name: '', email: '', course: '', age: '', teacher: '' };
 

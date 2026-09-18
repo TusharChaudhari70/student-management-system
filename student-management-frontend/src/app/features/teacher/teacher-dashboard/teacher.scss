@@ -79,14 +79,12 @@
   color: #ffffff;
 }
 
-/* Text-only header navigation. */
 .navbar-links .ctrl-tab { font-size: 0 !important; }
 .navbar-links .ctrl-tab::before { font-size: 13px; }
 .navbar-links .control-tabs > .ctrl-tab:nth-child(1)::before { content: 'Dashboard'; }
 .navbar-links .control-tabs > .tab-group:nth-child(2) .ctrl-tab::before { content: 'My Students'; }
 .navbar-links .control-tabs > .ctrl-tab:nth-child(3)::before { content: 'Notices & Tasks'; }
 
-/* Shared single-header navigation treatment. */
 .control-panel { padding: 16px 5vw 0; background: transparent; box-shadow: none; }
 .control-tabs { min-height: 44px; align-items: center; gap: 8px; }
 .ctrl-tab { min-height: 42px; padding: 0 18px; border: 1px solid transparent; border-radius: 10px; background: var(--bg-card); color: var(--text-secondary); box-shadow: var(--shadow-sm); }
@@ -120,10 +118,6 @@
   color: var(--text-muted);
   font-size: 14px;
 }
-
-/* ================================
-   DASHBOARD CARDS
-================================ */
 
 .dashboard-cards {
   display: grid;
@@ -180,10 +174,6 @@
   font-weight: 600;
 }
 
-/* ================================
-   COMMUNICATION GRID
-================================ */
-
 .comm-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -238,10 +228,6 @@
 .sent-history-card {
   margin-top: 20px;
 }
-
-/* ================================
-   PROFILE CARD
-================================ */
 
 .profile-card {
   max-width: 800px;
@@ -316,10 +302,6 @@
 .status-active {
   color: #16a34a;
 }
-
-/* ================================
-   CONTENT CARD & FORMS
-================================ */
 
 .content-card {
   background: var(--bg-card);
@@ -406,10 +388,6 @@
 .badge-read { background: #dcfce7; color: #166534; }
 .badge-unread { background: #dbeafe; color: #1e40af; }
 
-/* ================================
-   MODALS
-================================ */
-
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -464,6 +442,35 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.reply-overlay { background: rgba(15, 23, 42, .68); backdrop-filter: blur(4px); }
+.reply-modal { max-width: 620px; padding: 0; overflow: hidden; border: 0; box-shadow: 0 24px 60px rgba(15, 23, 42, .3); }
+.reply-modal-header { display: flex; justify-content: space-between; gap: 20px; padding: 26px 28px 22px; border-bottom: 1px solid var(--border-color); }
+.reply-eyebrow, .reply-section-label { display: block; color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.reply-modal-header h2 { margin: 5px 0 0; color: var(--text-primary); font-size: 23px; line-height: 1.25; }
+.reply-close { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-surface); font-size: 26px; line-height: 1; }
+.reply-student-card { display: flex; align-items: center; gap: 12px; margin: 22px 28px; padding: 14px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-surface); }
+.reply-avatar { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; font-size: 16px; font-weight: 800; }
+.reply-student-card strong, .reply-file-card strong { display: block; color: var(--text-primary); }
+.reply-student-card div span { display: block; margin-top: 3px; color: var(--text-muted); font-size: 13px; }
+.reply-status { margin-left: auto; padding: 5px 9px; border-radius: 999px; background: #dcfce7; color: #166534; font-size: 12px; font-weight: 700; }
+.reply-content { margin: 0 28px 22px; padding: 18px; border-radius: 12px; background: var(--bg-surface); }
+.reply-content p { margin: 9px 0 0; color: var(--text-primary); line-height: 1.65; white-space: pre-wrap; }
+.reply-file-card { display: flex; align-items: center; gap: 12px; margin: 0 28px 24px; padding: 14px; border: 1px solid #bfdbfe; border-radius: 12px; background: #eff6ff; }
+.reply-file-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9px; background: #2563eb; color: #fff; font-size: 20px; font-weight: 700; }
+.reply-file-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.reply-file-actions a { color: #1d4ed8; font-size: 13px; font-weight: 700; text-decoration: none; }
+.reply-file-actions .reply-download { padding: 8px 11px; border-radius: 7px; background: #2563eb; color: #fff; }
+.reply-modal-footer { display: flex; justify-content: flex-end; padding: 16px 28px; border-top: 1px solid var(--border-color); }
+.reply-done-btn { padding: 9px 18px; border: 0; border-radius: 7px; background: #2563eb; color: #fff; cursor: pointer; font-weight: 700; }
+.reply-done-btn:hover, .reply-file-actions .reply-download:hover { background: #1d4ed8; }
+
+@media (max-width: 560px) {
+  .reply-modal-header, .reply-modal-footer { padding-left: 18px; padding-right: 18px; }
+  .reply-student-card, .reply-content, .reply-file-card { margin-left: 18px; margin-right: 18px; }
+  .reply-file-card { align-items: flex-start; flex-wrap: wrap; }
+  .reply-file-actions { width: 100%; margin-left: 48px; }
 }
 
 .cancel-btn, .save-btn, .delete-confirm-btn {
@@ -531,6 +538,17 @@
 }
 
 .student-checklist-option:hover { background: var(--bg-surface); }
+.student-checklist-option.select-all-option { margin-bottom: 4px; border-bottom: 1px solid var(--border-color); border-radius: 7px 7px 0 0; color: var(--text-primary); font-weight: 700; }
+.student-checklist-menu-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 8px; margin-bottom: 4px; border-bottom: 1px solid var(--border-color); }
+.student-checklist-menu-header .select-all-option { display: flex; align-items: center; gap: 8px; color: var(--text-primary); font-weight: 700; white-space: nowrap; }
+.selector-search { display: flex; align-items: center; width: 150px; min-width: 0; padding: 4px 8px; border: 1px solid #65c3df; border-radius: 7px; background: var(--bg-card); box-sizing: border-box; }
+.selector-search:focus-within { border-color: #3e88ab; box-shadow: 0 0 0 2px rgba(101, 195, 223, .18); }
+.selector-search input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text-primary); font-size: 13px; }
+.no-student-match { margin: 0; padding: 12px; color: var(--text-muted); font-size: 13px; text-align: center; }
+.file-upload-error { display: block; margin-top: 5px; color: #b42318; font-size: 12px; font-weight: 600; }
+.selected-file-hint { display: flex; align-items: center; gap: 6px; }
+.clear-file-btn.p-button { width: 18px; min-width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; background: #e8f3f8; color: #326c8c; font-size: 17px; line-height: 1; box-shadow: none; }
+.clear-file-btn.p-button:hover { background: #d6eaf3; color: #1d3b4b; }
 
 
 @media (max-width: 768px) {

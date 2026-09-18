@@ -2,18 +2,8 @@
 
   <div class="table-header">
     <div class="search-box">
-      <select
-        [value]="searchField"
-        (change)="changeSearchField($any($event.target).value)"
-        class="search-select"
-      >
-        <option value="all">All Fields</option>
-        <option value="id">ID</option>
-        <option value="username">Username</option>
-        <option value="name">Name</option>
-        <option value="email">Email</option>
-        <option value="role">Role</option>
-      </select>
+      <p-select class="search-select" [options]="searchFieldOptions" optionLabel="label" optionValue="value"
+        [ngModel]="searchField" (ngModelChange)="changeSearchField($event)" appendTo="body" />
 
       <input
         type="text"

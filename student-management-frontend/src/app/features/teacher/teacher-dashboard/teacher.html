@@ -1,48 +1,29 @@
-<app-navbar
-  [username]="profile?.name || username || 'Teacher'"
-  [role]="role || 'TEACHER'"
-  (dashboardRequested)="selectSection('dashboard')"
-  (profileRequested)="selectSection('profile')"
+<app-navbar [username]="profile?.name || username || 'Teacher'" [role]="role || 'TEACHER'"
+  (dashboardRequested)="selectSection('dashboard')" (profileRequested)="selectSection('profile')"
   (logoutRequested)="logout()">
   <div navbar-nav class="navbar-links" aria-label="Teacher sections">
-  <div class="control-tabs">
-    <button
-      type="button"
-      class="ctrl-tab"
-      [class.active]="selectedSection === 'dashboard'"
-      (click)="selectSection('dashboard')">
-      📊 Dashboard
-    </button>
+    <div class="control-tabs">
+      <button pButton type="button" class="ctrl-tab" [class.active]="selectedSection === 'dashboard'"
+        (click)="selectSection('dashboard')">
+        📊 Dashboard
+      </button>
 
-    <div class="tab-group">
-      <button
-        type="button"
-        class="ctrl-tab"
-        [class.active]="selectedSection === 'students'"
-        (click)="selectSection('students')">
-        👨‍🎓 My Students <span>{{ selectedSection === 'students' ? '−' : '+' }}</span>
+      <div class="tab-group">
+        <button pButton type="button" class="ctrl-tab" [class.active]="selectedSection === 'students'"
+          (click)="selectSection('students')">
+          👨‍🎓 My Students <span>{{ selectedSection === 'students' ? '−' : '+' }}</span>
+        </button>
+
+      </div>
+
+      <button pButton type="button" class="ctrl-tab" [class.active]="selectedSection === 'communication'"
+        (click)="selectSection('communication')">
+        📢 Send Notice & Task
       </button>
 
     </div>
-
-    <button
-      type="button"
-      class="ctrl-tab"
-      [class.active]="selectedSection === 'communication'"
-      (click)="selectSection('communication')">
-      📢 Send Notice & Task
-    </button>
-
-  </div>
   </div>
 </app-navbar>
-
-@if (selectedSection === 'students') {
-  <div class="section-actions" aria-label="Student actions">
-    <button [class.active]="selectedStudentAction === 'add'" (click)="selectStudentAction('add')">Add Student</button>
-    <button [class.active]="selectedStudentAction === 'list'" (click)="selectStudentAction('list')">View Assigned Students</button>
-  </div>
-}
 
 <!-- MAIN CONTENT -->
 <main class="main-content">
@@ -51,311 +32,362 @@
        1. INTERACTIVE DASHBOARD
   ================================= -->
   @if (selectedSection === 'dashboard') {
-    <div class="page-header">
-      <h1>Teacher Dashboard</h1>
-      <p>Welcome back, {{ profile?.name || username }}! Here is your classroom overview.</p>
-    </div>
+  <div class="page-header">
+    <h1>Teacher Dashboard</h1>
+    <p>Welcome back, {{ profile?.name || username }}! Here is your classroom overview.</p>
+  </div>
 
-    <div class="dashboard-cards">
-      <!-- ASSIGNED STUDENTS CARD -->
-      <div class="dashboard-card" (click)="selectSection('students'); selectStudentAction('list')">
-        <div class="card-icon">🎓</div>
-        <div class="card-details">
-          <h3>Assigned Students</h3>
-          <p>{{ students.length }} Students Enrolled</p>
-          <span class="card-stat-text">View and manage class list →</span>
-        </div>
-      </div>
-
-      <!-- MESSAGING & TASKS CARD -->
-      <div class="dashboard-card" (click)="selectSection('communication')">
-        <div class="card-icon">📢</div>
-        <div class="card-details">
-          <h3>Communication & Tasks</h3>
-          <p>{{ sentMessages.length }} Sent Notices</p>
-          <span class="card-stat-text">Send 1-way message / assign task →</span>
-        </div>
-      </div>
-
-      <!-- PROFILE CARD -->
-      <div class="dashboard-card" (click)="selectSection('profile')">
-        <div class="card-icon">👤</div>
-        <div class="card-details">
-          <h3>Instructor Profile</h3>
-          <p>{{ profile?.email || username }}</p>
-          <span class="card-stat-text">View account details →</span>
-        </div>
+  <div class="dashboard-cards">
+    <!-- ASSIGNED STUDENTS CARD -->
+    <div class="dashboard-card" (click)="selectSection('students'); selectStudentAction('list')">
+      <div class="card-icon">🎓</div>
+      <div class="card-details">
+        <h3>Assigned Students</h3>
+        <p>{{ students.length }} Students Enrolled</p>
+        <span class="card-stat-text">View and manage class list →</span>
       </div>
     </div>
+
+    <!-- MESSAGING & TASKS CARD -->
+    <div class="dashboard-card" (click)="selectSection('communication')">
+      <div class="card-icon">📢</div>
+      <div class="card-details">
+        <h3>Communication & Tasks</h3>
+        <p>{{ sentMessages.length }} Sent Notices</p>
+        <span class="card-stat-text">Send message / assign task →</span>
+      </div>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="dashboard-card" (click)="selectSection('profile')">
+      <div class="card-icon">👤</div>
+      <div class="card-details">
+        <h3>Instructor Profile</h3>
+        <p>{{ profile?.email || username }}</p>
+        <span class="card-stat-text">View account details →</span>
+      </div>
+    </div>
+  </div>
   }
 
   <!-- ================================
        2. STUDENTS SECTION
   ================================= -->
   @if (selectedSection === 'students') {
-    <div class="page-header">
-      <h1>My Students</h1>
-      <p>Manage students assigned to your courses</p>
+  <div class="page-header">
+    <h1>My Students</h1>
+    <p>Manage students assigned to your courses</p>
+  </div>
+
+  <!-- ADD STUDENT -->
+  @if (showAddStudentModal) {
+  <div class="modal-overlay" (click)="showAddStudentModal = false">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Add New Student</h2><button pButton type="button" class="modal-close"
+          (click)="showAddStudentModal = false">×</button>
+      </div>
+      <p class="form-description">Student will automatically be assigned to your instructor account.</p>
+
+      <app-student-form [student]="newStudent" [subjects]="subjects" [subjectIds]="selectedSubjectIds"
+        [loadingSubjects]="loadingSubjects" submitLabel="Create Student" formName="teacherCreateStudent"
+        (subjectIdsChange)="selectedSubjectIds = $event" (submitted)="addStudent($event)"
+        (cancelled)="cancelAddStudent($event)">
+      </app-student-form>
+    </div>
+  </div>
+  }
+
+  <!-- ALL STUDENTS LIST -->
+  @if (selectedStudentAction === 'list' || selectedStudentAction === '') {
+  <div class="content-card">
+    <div class="module-toolbar">
+      <h2>Assigned Students</h2><button pButton type="button" icon="pi pi-plus" label="Add Student"
+        (click)="openAddStudentModal()"></button>
     </div>
 
-    <!-- ADD STUDENT -->
-    @if (selectedStudentAction === 'add') {
-      <div class="content-card">
-        <h2>Add New Student</h2>
-        <p class="form-description">Student will automatically be assigned to your instructor account.</p>
-
-        <app-student-form
-          [student]="newStudent"
-          [subjects]="subjects"
-          [subjectIds]="selectedSubjectIds"
-          [loadingSubjects]="loadingSubjects"
-          submitLabel="Create Student"
-          formName="teacherCreateStudent"
-          (subjectIdsChange)="selectedSubjectIds = $event"
-          (submitted)="addStudent($event)"
-          (cancelled)="cancelAddStudent($event)">
-        </app-student-form>
-      </div>
-    }
-
-    <!-- ALL STUDENTS LIST -->
-    @if (selectedStudentAction === 'list' || selectedStudentAction === '') {
-      <div class="content-card">
-        <h2>Assigned Students</h2>
-
-        <app-student-list
-          [refreshKey]="studentListRefreshKey"
-          [canDelete]="true"
-          (updateStudent)="openStudentUpdateModal($event)"
-          (deleteStudent)="openStudentDeleteModal($event)">
-        </app-student-list>
-      </div>
-    }
+    <app-student-list [refreshKey]="studentListRefreshKey" [canDelete]="true"
+      (updateStudent)="openStudentUpdateModal($event)" (deleteStudent)="openStudentDeleteModal($event)">
+    </app-student-list>
+  </div>
+  }
   }
 
   <!-- ================================
        3. SEND NOTICE / ASSIGN TASK
   ================================= -->
   @if (selectedSection === 'communication') {
-    <div class="page-header">
-      <h1>Announcements, Attachments & Tasks</h1>
-      <p>Share an attachment, send an announcement, or assign a task to selected students.</p>
+  <div class="page-header">
+    <h1>Announcements, Attachments & Tasks</h1>
+    <p>Share an attachment, send an announcement, or assign a task to selected students.</p>
+  </div>
+
+  <div class="comm-grid">
+
+    <!-- SEND MESSAGE CARD -->
+    <div class="content-card">
+      <h2>💬 Send Announcement to Student</h2>
+      <div class="form-group">
+        <label>Select Students <span>*</span></label>
+        <div #announcementSelector class="student-checklist"><button type="button" class="student-checklist-toggle"
+            (click)="toggleStudentSelector('announcement')">{{ studentSelectorLabel('announcement') }}</button>@if
+          (openStudentSelector === 'announcement') { <div class="student-checklist-menu">
+            <div class="student-checklist-menu-header"><label class="select-all-option"><input type="checkbox"
+                  [checked]="areAllStudentsSelected('announcement')"
+                  (change)="toggleAllStudentSelections('announcement', $any($event.target).checked)" /> Select all
+                students</label><label class="selector-search"><input pInputText type="search"
+                  [(ngModel)]="studentSelectorSearch.announcement" placeholder="Search"
+                  aria-label="Search students" /></label></div>@for (s of filteredStudents('announcement'); track s.id)
+            { <label class="student-checklist-option"><input type="checkbox"
+                [checked]="isStudentSelected('announcement', s.id)"
+                (change)="toggleStudentSelection('announcement', s.id!)" /> {{ s.name }} ({{ s.email }})</label> } @if
+            (!filteredStudents('announcement').length) { <p class="no-student-match">No students found</p> }
+          </div> }</div>
+      </div>
+
+      <div class="form-group">
+        <label>Message / Announcement <span>*</span></label>
+        <textarea pTextarea class="form-control" rows="4" [(ngModel)]="newMessageText"
+          placeholder="Write your announcement or notice here..."></textarea>
+      </div>
+
+      <button pButton type="button" class="btn-action"
+        [disabled]="sendingMessage || !selectedAnnouncementStudentIds.length || !newMessageText.trim()"
+        (click)="sendMessage()">
+        {{ sendingMessage ? 'Sending...' : 'Send Announcement' }}
+      </button>
+      <button pButton type="button" class="history-btn" (click)="showHistory('announcements')">View Announcement
+        History</button>
     </div>
 
-    <div class="comm-grid">
-
-      <!-- SEND MESSAGE CARD -->
-      <div class="content-card">
-        <h2>💬 Send Announcement to Student</h2>
-        <div class="form-group">
-          <label>Select Students <span>*</span></label>
-          <div class="student-checklist"><button type="button" class="student-checklist-toggle" (click)="toggleStudentSelector('announcement')">{{ studentSelectorLabel('announcement') }}</button>@if (openStudentSelector === 'announcement') { <div class="student-checklist-menu">@for (s of students; track s.id) { <label class="student-checklist-option"><input type="checkbox" [checked]="isStudentSelected('announcement', s.id)" (change)="toggleStudentSelection('announcement', s.id!)" /> {{ s.name }} ({{ s.email }})</label> }</div> }</div>
-        </div>
-
-        <div class="form-group">
-          <label>Message / Announcement <span>*</span></label>
-          <textarea
-            class="form-control"
-            rows="4"
-            [(ngModel)]="newMessageText"
-            placeholder="Write your announcement or notice here..."></textarea>
-        </div>
-
-        <button
-          type="button"
-          class="btn-action"
-          [disabled]="sendingMessage || !selectedAnnouncementStudentIds.length || !newMessageText.trim()"
-          (click)="sendMessage()">
-          {{ sendingMessage ? 'Sending...' : 'Send Announcement' }}
-        </button>
-        <button type="button" class="history-btn" (click)="showHistory('announcements')">View Announcement History</button>
+    <!-- ASSIGN TASK CARD -->
+    <div class="content-card">
+      <h2>📝 Assign Case Study / Task</h2>
+      <div class="form-group">
+        <label>Select Students <span>*</span></label>
+        <div #taskSelector class="student-checklist"><button type="button" class="student-checklist-toggle"
+            (click)="toggleStudentSelector('task')">{{ studentSelectorLabel('task') }}</button>@if (openStudentSelector
+          === 'task') { <div class="student-checklist-menu">
+            <div class="student-checklist-menu-header"><label class="select-all-option"><input type="checkbox"
+                  [checked]="areAllStudentsSelected('task')"
+                  (change)="toggleAllStudentSelections('task', $any($event.target).checked)" /> Select all
+                students</label><label class="selector-search"><input pInputText type="search"
+                  [(ngModel)]="studentSelectorSearch.task" placeholder="Search" aria-label="Search students" /></label>
+            </div>@for (s of filteredStudents('task'); track s.id) { <label class="student-checklist-option"><input
+                type="checkbox" [checked]="isStudentSelected('task', s.id)"
+                (change)="toggleStudentSelection('task', s.id!)" /> {{ s.name }} ({{ s.email }})</label> } @if
+            (!filteredStudents('task').length) { <p class="no-student-match">No students found</p> }
+          </div> }</div>
+        <small class="hint">A separate task is created for every selected student.</small>
       </div>
 
-      <!-- ASSIGN TASK CARD -->
-      <div class="content-card">
-        <h2>📝 Assign Case Study / Task</h2>
-        <div class="form-group">
-          <label>Select Students <span>*</span></label>
-          <div class="student-checklist"><button type="button" class="student-checklist-toggle" (click)="toggleStudentSelector('task')">{{ studentSelectorLabel('task') }}</button>@if (openStudentSelector === 'task') { <div class="student-checklist-menu">@for (s of students; track s.id) { <label class="student-checklist-option"><input type="checkbox" [checked]="isStudentSelected('task', s.id)" (change)="toggleStudentSelection('task', s.id!)" /> {{ s.name }} ({{ s.email }})</label> }</div> }</div>
-          <small class="hint">A separate task is created for every selected student.</small>
-        </div>
-
-        <div class="form-group">
-          <label>Task Title <span>*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="newTask.title"
-            placeholder="e.g. Case Study 1: Spring Boot Architecture" />
-        </div>
-
-        <div class="form-group">
-          <label>Instructions <span>*</span></label>
-          <textarea
-            class="form-control"
-            rows="2"
-            [(ngModel)]="newTask.description"
-            placeholder="Instructions and requirements..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Due Date <span>*</span></label>
-          <input type="date" class="form-control" [min]="minimumDueDate" [(ngModel)]="newTask.dueDate" />
-          <small class="hint">Due date must be later than today.</small>
-        </div>
-
-        <div class="form-group">
-          <label>Optional task file or PDF</label>
-          <input type="file" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,image/*" (change)="onAttachmentSelected($event)" />
-          @if (taskAttachmentName) { <small class="hint">Selected: {{ taskAttachmentName }}</small> }
-        </div>
-
-        <button
-          type="button"
-          class="btn-action"
-          [disabled]="assigningTask || !selectedTaskStudentIds.length || !newTask.title || !newTask.description || !newTask.dueDate"
-          (click)="assignTask()">
-          {{ assigningTask ? 'Assigning...' : 'Assign Task' }}
-        </button>
-        <button type="button" class="history-btn" (click)="showHistory('tasks')">View Task History</button>
+      <div class="form-group">
+        <label>Task Title <span>*</span></label>
+        <input pInputText type="text" class="form-control" [(ngModel)]="newTask.title"
+          placeholder="e.g. Case Study 1: Spring Boot Architecture" />
       </div>
 
+      <div class="form-group">
+        <label>Instructions <span>*</span></label>
+        <textarea pTextarea class="form-control" rows="2" [(ngModel)]="newTask.description"
+          placeholder="Instructions and requirements..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Due Date <span>*</span></label>
+        <input pInputText type="date" class="form-control" [min]="minimumDueDate" [(ngModel)]="newTask.dueDate" />
+        <small class="hint">Due date must be later than today.</small>
+      </div>
+
+      <div class="form-group">
+        <label>Optional task file or PDF</label>
+        <input type="file" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,image/*"
+          (change)="onAttachmentSelected($event)" />
+        <small class="hint">Maximum file size: 2 MB.</small>
+        @if (taskAttachmentName) { <small class="hint selected-file-hint">Selected: {{ taskAttachmentName }} <button
+            pButton type="button" class="clear-file-btn" aria-label="Remove selected attachment" title="Remove file"
+            (click)="clearTaskAttachment()">&times;</button></small> }
+        @if (taskAttachmentError) { <small class="file-upload-error">{{ taskAttachmentError }}</small> }
+      </div>
+
+      <button pButton type="button" class="btn-action"
+        [disabled]="assigningTask || !selectedTaskStudentIds.length || !newTask.title || !newTask.description || !newTask.dueDate"
+        (click)="assignTask()">
+        {{ assigningTask ? 'Assigning...' : 'Assign Task' }}
+      </button>
+      <button pButton type="button" class="history-btn" (click)="showHistory('tasks')">View Task History</button>
     </div>
 
-    @if (activeHistory === 'tasks') {
-      <div class="content-card sent-history-card">
-        <h2>Assigned Task History</h2>
-        @if (assignedTasks.length === 0) { <p class="form-description">No tasks assigned yet.</p> } @else { <div class="table-wrapper"><table class="student-table"><thead><tr><th>Student</th><th>Task</th><th>Due Date</th><th>Submission</th><th>Reply</th></tr></thead>
-          <tbody>@for (task of assignedTasks; track task.id) { <tr><td>{{ studentName(task.student.id) }}</td><td>{{ task.title }}</td><td>{{ task.dueDate | date:'mediumDate' }}</td><td><span class="badge" [class.badge-read]="task.isSubmitted" [class.badge-unread]="!task.isSubmitted">{{ task.isSubmitted ? 'Submitted' : 'Pending' }}</span></td><td>@if (task.isSubmitted) { <button type="button" class="history-btn" (click)="openTaskReply(task)">View Reply</button> } @else { <span class="text-muted">—</span> }</td></tr> }</tbody>
-        </table></div> }
-      </div>
-    }
+  </div>
 
-    @if (selectedTaskReply) {
-      <div class="modal-overlay" (click)="closeTaskReply()"><div class="modal-box" (click)="$event.stopPropagation()"><div class="modal-header"><h2>Student Reply: {{ selectedTaskReply.title }}</h2><button type="button" class="modal-close" (click)="closeTaskReply()">×</button></div><div class="modal-body"><p><strong>{{ studentName(selectedTaskReply.student.id) }}</strong></p><p>{{ selectedTaskReply.submissionText || 'No text reply was provided.' }}</p>@if (selectedTaskReply.submissionFileUrl) { <div class="attachment-actions"><a class="task-attachment-link" [href]="selectedTaskReply.submissionFileUrl + '?download=false'" target="_blank" rel="noopener">View</a><a class="task-attachment-link" [href]="selectedTaskReply.submissionFileUrl + '?download=true'">Download {{ selectedTaskReply.submissionFileName || 'attachment' }}</a></div> }</div></div></div>
-    }
+  @if (activeHistory === 'tasks') {
+  <div id="teacher-history" class="content-card sent-history-card">
+    <h2>Assigned Task History</h2>
+    @if (assignedTasks.length === 0) { <p class="form-description">No tasks assigned yet.</p> } @else { <div
+      class="table-wrapper">
+      <table class="student-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Task</th>
+            <th>Due Date</th>
+            <th>Submission</th>
+            <th>Reply</th>
+          </tr>
+        </thead>
+        <tbody>@for (task of assignedTasks; track task.id) { <tr>
+            <td>{{ studentName(task.student.id) }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.dueDate | date:'mediumDate' }}</td>
+            <td><span class="badge" [class.badge-read]="task.isSubmitted" [class.badge-unread]="!task.isSubmitted">{{
+                task.isSubmitted ? 'Submitted' : 'Pending' }}</span></td>
+            <td>@if (task.isSubmitted) { <button type="button" class="history-btn" (click)="openTaskReply(task)">View
+                Reply</button> } @else { <span class="text-muted">—</span> }</td>
+          </tr> }</tbody>
+      </table>
+    </div> }
+  </div>
+  }
 
-    <!-- SENT NOTICES HISTORY -->
-    @if (activeHistory === 'announcements') {
-      <div class="content-card sent-history-card">
-        <h2>Recent Sent Notices</h2>
-        @if (sentMessages.length === 0) { <p class="form-description">No announcements sent yet.</p> } @else { <div class="table-wrapper">
-          <table class="student-table">
-            <thead>
-              <tr>
-                <th>Recipient</th>
-                <th>Notice Content</th>
-                <th>Sent Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (msg of sentMessages; track msg.id) {
-                <tr>
-                  <td>{{ msg.student?.name || 'Student' }}</td>
-                  <td>{{ msg.message }}</td>
-                  <td>{{ msg.sentAt | date:'short' }}</td>
-                  <td>
-                    <span class="badge" [class.badge-read]="msg.isRead" [class.badge-unread]="!msg.isRead">
-                      {{ msg.isRead ? 'Seen' : 'Delivered' }}
-                    </span>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div> }
+  @if (selectedTaskReply) {
+  <div class="modal-overlay" (click)="closeTaskReply()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Student Reply: {{ selectedTaskReply.title }}</h2><button type="button" class="modal-close"
+          (click)="closeTaskReply()">×</button>
       </div>
-    }
+      <div class="modal-body">
+        <p><strong>{{ studentName(selectedTaskReply.student.id) }}</strong></p>
+        <p>{{ selectedTaskReply.submissionText || 'No text reply was provided.' }}</p>@if
+        (selectedTaskReply.submissionFileUrl) { <div class="attachment-actions"><a class="task-attachment-link"
+            [href]="selectedTaskReply.submissionFileUrl + '?download=false'" target="_blank" rel="noopener">View</a><a
+            class="task-attachment-link" [href]="selectedTaskReply.submissionFileUrl + '?download=true'">Download {{
+            selectedTaskReply.submissionFileName || 'attachment' }}</a></div> }
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- SENT NOTICES HISTORY -->
+  @if (activeHistory === 'announcements') {
+  <div id="teacher-history" class="content-card sent-history-card">
+    <h2>Recent Sent Notices</h2>
+    @if (sentMessages.length === 0) { <p class="form-description">No announcements sent yet.</p> } @else { <div
+      class="table-wrapper">
+      <table class="student-table">
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>Notice Content</th>
+            <th>Sent Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (msg of sentMessages; track msg.id) {
+          <tr>
+            <td>{{ msg.student?.name || 'Student' }}</td>
+            <td>{{ msg.message }}</td>
+            <td>{{ msg.sentAt | date:'short' }}</td>
+            <td>
+              <span class="badge" [class.badge-read]="msg.isRead" [class.badge-unread]="!msg.isRead">
+                {{ msg.isRead ? 'Seen' : 'Delivered' }}
+              </span>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div> }
+  </div>
+  }
   }
 
   <!-- ================================
        4. TEACHER PROFILE
   ================================= -->
   @if (selectedSection === 'profile') {
-    <div class="page-header">
-      <h1>Teacher Profile</h1>
-      <p>Your instructor account credentials and details</p>
+  <div class="page-header">
+    <h1>Teacher Profile</h1>
+    <p>Your instructor account credentials and details</p>
+  </div>
+
+  @if (loadingProfile) {
+  <div class="loading-state">Loading profile details...</div>
+  } @else if (profile) {
+  <div class="content-card profile-card">
+    <div class="profile-header-block">
+      <div class="profile-avatar">
+        {{ (profile.name || username || 'T').charAt(0).toUpperCase() }}
+      </div>
+      <div class="profile-info-block">
+        <h2>{{ profile.name || username }}</h2>
+        <span class="role-badge">INSTRUCTOR / TEACHER</span>
+      </div>
     </div>
 
-    @if (loadingProfile) {
-      <div class="loading-state">Loading profile details...</div>
-    } @else if (profile) {
-      <div class="content-card profile-card">
-        <div class="profile-header-block">
-          <div class="profile-avatar">
-            {{ (profile.name || username || 'T').charAt(0).toUpperCase() }}
-          </div>
-          <div class="profile-info-block">
-            <h2>{{ profile.name || username }}</h2>
-            <span class="role-badge">INSTRUCTOR / TEACHER</span>
-          </div>
-        </div>
-
-        <div class="profile-details-grid">
-          <div class="detail-item">
-            <span class="detail-label">Username</span>
-            <span class="detail-value">{{ profile.username || username }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Email</span>
-            <span class="detail-value">{{ profile.email || 'Not provided' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">System Role</span>
-            <span class="detail-value">{{ profile.role || role }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Assigned Students</span>
-            <span class="detail-value">{{ students.length }} Students</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Account Status</span>
-            <span class="detail-value status-active">● Active</span>
-          </div>
-        </div>
+    <div class="profile-details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Username</span>
+        <span class="detail-value">{{ profile.username || username }}</span>
       </div>
-    }
+      <div class="detail-item">
+        <span class="detail-label">Email</span>
+        <span class="detail-value">{{ profile.email || 'Not provided' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">System Role</span>
+        <span class="detail-value">{{ profile.role || role }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Assigned Students</span>
+        <span class="detail-value">{{ students.length }} Students</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Account Status</span>
+        <span class="detail-value status-active">● Active</span>
+      </div>
+    </div>
+  </div>
+  }
   }
 
 </main>
 
 <!-- UPDATE STUDENT MODAL -->
 @if (showStudentUpdateModal) {
-  <div class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2>Update Student</h2>
-        <button type="button" class="modal-close" (click)="closeStudentUpdateModal()">×</button>
-      </div>
-
-      <div class="modal-body teacher-update-form">
-        <app-student-form [student]="updateStudent" [subjects]="subjects" [subjectIds]="updateSubjectIds"
-          [loadingSubjects]="loadingSubjects" submitLabel="Update Student" [passwordRequired]="false"
-          formName="teacherUpdateStudent" (subjectIdsChange)="updateSubjectIds = $event"
-          (submitted)="saveStudentFromModal($event)" (cancelled)="closeStudentUpdateModal()">
-        </app-student-form>
-      </div>
+<div class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Update Student</h2>
+      <button type="button" class="modal-close" (click)="closeStudentUpdateModal()">×</button>
     </div>
+
+    <app-student-form [student]="updateStudent" [subjects]="subjects" [subjectIds]="updateSubjectIds"
+      [loadingSubjects]="loadingSubjects" submitLabel="Update Student" [passwordRequired]="false"
+      formName="teacherUpdateStudent" (subjectIdsChange)="updateSubjectIds = $event"
+      (submitted)="saveStudentFromModal($event)" (cancelled)="closeStudentUpdateModal()">
+    </app-student-form>
   </div>
+</div>
 }
 
 <!-- DELETE STUDENT MODAL -->
 @if (showStudentDeleteModal) {
-  <div class="modal-overlay">
-    <div class="modal-box delete-modal">
-      <div class="modal-header">
-        <h2>Delete Student</h2>
-        <button type="button" class="modal-close" (click)="closeStudentDeleteModal()">×</button>
-      </div>
-      <div class="modal-body">
-        <p class="delete-warning">Are you sure you want to soft-delete this student?</p>
-        <p><strong>{{ deleteStudent.name }}</strong> ({{ deleteStudent.email }})</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="cancel-btn" (click)="closeStudentDeleteModal()">Cancel</button>
-        <button type="button" class="delete-confirm-btn" (click)="confirmStudentDeleteFromModal()">Delete</button>
-      </div>
+<div class="modal-overlay">
+  <div class="modal-box delete-modal">
+    <div class="modal-header">
+      <h2>Delete Student</h2>
+      <button type="button" class="modal-close" (click)="closeStudentDeleteModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="delete-warning">Are you sure you want to soft-delete this student?</p>
+      <p><strong>{{ deleteStudent.name }}</strong> ({{ deleteStudent.email }})</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="cancel-btn" (click)="closeStudentDeleteModal()">Cancel</button>
+      <button type="button" class="delete-confirm-btn" (click)="confirmStudentDeleteFromModal()">Delete</button>
     </div>
   </div>
+</div>
 }

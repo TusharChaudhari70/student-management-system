@@ -7,7 +7,7 @@
   (logoutRequested)="logout()">
   <div navbar-nav class="navbar-links" aria-label="Student sections">
   <div class="control-tabs">
-    <button
+    <button pButton
       type="button"
       class="ctrl-tab"
       [class.active]="selectedSection === 'dashboard'"
@@ -15,15 +15,15 @@
       📊 Dashboard
     </button>
 
-    <button
+    <button pButton
       type="button"
-      class="ctrl-tab"
+      class="ctrl-tab profile-nav-tab"
       [class.active]="selectedSection === 'profile'"
       (click)="selectSection('profile')">
       👤 My Profile
     </button>
 
-    <button
+    <button pButton
       type="button"
       class="ctrl-tab"
       [class.active]="selectedSection === 'messages'"
@@ -34,7 +34,7 @@
       }
     </button>
 
-    <button
+    <button pButton
       type="button"
       class="ctrl-tab"
       [class.active]="selectedSection === 'documents'"
@@ -42,7 +42,7 @@
       📄 Documents
     </button>
 
-    <button
+    <button pButton
       type="button"
       class="ctrl-tab"
       [class.active]="selectedSection === 'tasks'"
@@ -201,7 +201,7 @@
               </div>
               <div class="message-status">
                 @if (!msg.isRead) {
-                  <button type="button" class="mark-read-btn" (click)="markMessageAsRead(msg.id)">Mark Read</button>
+                  <button pButton type="button" class="mark-read-btn" (click)="markMessageAsRead(msg.id)">Mark Read</button>
                 } @else {
                   <span class="read-tag">Read</span>
                 }
@@ -266,7 +266,7 @@
                   </td>
                   <td>
                     @if (!doc.isRead) {
-                      <button type="button" class="btn-read" (click)="markDocumentAsRead(doc.id)">Mark Read</button>
+                      <button pButton type="button" class="btn-read" (click)="markDocumentAsRead(doc.id)">Mark Read</button>
                     }
                   </td>
                 </tr>
@@ -319,8 +319,8 @@
                   <td>
                     @if (task.attachmentUrl) {
                       <div class="attachment-actions">
-                        <a class="task-attachment-link" [href]="task.attachmentUrl + '?download=false'" target="_blank" rel="noopener">View</a>
-                        <a class="task-attachment-link" [href]="task.attachmentUrl + '?download=true'">Download {{ task.attachmentName || 'file' }}</a>
+                        <button pButton type="button" class="task-attachment-link attachment-view-btn" (click)="openTaskAttachment(task)">View</button>
+                        <a class="task-attachment-link" [href]="task.attachmentUrl + '?download=true'">Download</a>
                       </div>
                     } @else { <span class="text-muted">No attachment</span> }
                   </td>
@@ -332,7 +332,7 @@
                   </td>
                   <td>
                     @if (!task.isSubmitted) {
-                      <button type="button" class="btn-submit" (click)="openSubmissionForm(task)">
+                      <button pButton type="button" class="btn-submit" (click)="openSubmissionForm(task)">
                         Submit
                       </button>
                     } @else {
@@ -353,10 +353,38 @@
       </div>
     }
 
+    @if (selectedTaskAttachment) {
+      <div class="modal-overlay" (click)="closeTaskAttachment()">
+        <div class="modal-box attachment-preview-modal" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <div>
+              <h2>{{ selectedTaskAttachment.attachmentName || 'Assigned attachment' }}</h2>
+              <span class="attachment-preview-subtitle">Teacher attachment preview</span>
+            </div>
+            <button pButton type="button" class="modal-close" aria-label="Close attachment preview" (click)="closeTaskAttachment()">&times;</button>
+          </div>
+          <div class="modal-body attachment-preview-body">
+            @if (isImageAttachment(selectedTaskAttachment)) {
+              <img [src]="taskAttachmentImageUrl" [alt]="selectedTaskAttachment.attachmentName || 'Assigned attachment preview'">
+            } @else {
+              <iframe
+                [src]="taskAttachmentPreviewUrl"
+                [title]="selectedTaskAttachment.attachmentName || 'Assigned attachment preview'">
+              </iframe>
+            }
+          </div>
+          <div class="modal-footer">
+            <a pButton class="p-button-outlined" [href]="taskAttachmentDownloadUrl">Download attachment</a>
+            <button pButton type="button" class="cancel-btn" (click)="closeTaskAttachment()">Close</button>
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- SUBMISSION MODAL -->
     @if (selectedTaskToSubmit) {
       <div class="modal-overlay" (click)="clearSubmissionForm()">
-        <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-box task-submission-modal" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h2>Submit Task: {{ selectedTaskToSubmit.title }}</h2>
             <button type="button" class="modal-close" (click)="clearSubmissionForm()">×</button>
@@ -364,11 +392,11 @@
           <div class="modal-body">
             <div class="form-group">
               <label>Task</label>
-              <input type="text" [value]="caseStudyTitle" readonly />
+              <input pInputText type="text" [value]="caseStudyTitle" readonly />
             </div>
             <div class="form-group">
               <label>Reply / Submission Message</label>
-              <textarea class="submission-text" rows="4" [(ngModel)]="caseStudyContent" placeholder="Write your response for the teacher..."></textarea>
+              <textarea pTextarea class="submission-text" rows="4" [(ngModel)]="caseStudyContent" placeholder="Write your response for the teacher..."></textarea>
             </div>
             <div class="form-group">
               <label>Attach File or PDF <small>(optional)</small></label>
@@ -376,8 +404,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="cancel-btn" (click)="clearSubmissionForm()">Cancel</button>
-            <button type="button" class="save-btn" [disabled]="submittingTask || (!caseStudyFile && !caseStudyContent.trim())" (click)="submitCaseStudy()">
+            <button pButton type="button" class="cancel-btn" (click)="clearSubmissionForm()">Cancel</button>
+            <button pButton type="button" class="save-btn" [disabled]="submittingTask || (!caseStudyFile && !caseStudyContent.trim())" (click)="submitCaseStudy()">
               {{ submittingTask ? 'Submitting...' : 'Submit Reply' }}
             </button>
           </div>

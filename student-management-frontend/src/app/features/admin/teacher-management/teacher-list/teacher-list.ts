@@ -1,15 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Teacher } from '../../../../shared/models/teacher.model';
 import { HighlightMatchPipe } from '../../../../shared/pipes/highlight-match.pipe';
+import { SelectModule } from 'primeng/select';
 
 export type TeacherField = 'id' | 'username' | 'name' | 'email' | 'role';
 export type TeacherSearchField = 'all' | TeacherField;
 
 @Component({
   selector: 'app-teacher-list',
-  imports: [HighlightMatchPipe],
+  imports: [FormsModule, HighlightMatchPipe, SelectModule],
   templateUrl: './teacher-list.html',
-  styleUrl: './teacher-list.css'
+  styleUrl: './teacher-list.scss'
 })
 export class TeacherList {
   @Input() teachers: Teacher[] = [];
@@ -19,6 +21,14 @@ export class TeacherList {
 
   searchTerm = '';
   searchField: TeacherSearchField = 'all';
+  readonly searchFieldOptions = [
+    { label: 'All Fields', value: 'all' },
+    { label: 'ID', value: 'id' },
+    { label: 'Username', value: 'username' },
+    { label: 'Name', value: 'name' },
+    { label: 'Email', value: 'email' },
+    { label: 'Role', value: 'role' }
+  ];
   columnFilters: Record<TeacherField, string> = { id: '', username: '', name: '', email: '', role: '' };
   sortField: TeacherField = 'id';
   sortDirection: 'asc' | 'desc' = 'asc';

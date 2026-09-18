@@ -1,33 +1,44 @@
 <div class="login-wrapper">
-
   <!-- TOP BAR WITH BRAND & THEME TOGGLE -->
   <div class="login-topbar">
     <div class="brand">
       <span class="brand-icon">🎓</span>
-      <img class="login-emblem" src="assets/sms-academic-emblem.png" alt="Student Management System">
+      <img
+        class="login-emblem"
+        src="assets/sms-academic-emblem.png"
+        alt="Student Management System"
+      />
       <span class="brand-text">Student Management System</span>
     </div>
     <button
       type="button"
       class="theme-toggle-btn"
       (click)="themeService.toggleTheme()"
-      [title]="'Switch to ' + (themeService.currentTheme() === 'light' ? 'Dark' : 'Light') + ' theme'"
+      [title]="
+        'Switch to ' + (themeService.currentTheme() === 'light' ? 'Dark' : 'Light') + ' theme'
+      "
+      [attr.aria-label]="
+        'Switch to ' + (themeService.currentTheme() === 'light' ? 'dark' : 'light') + ' theme'
+      "
     >
+      @if (themeService.currentTheme() === 'light') {
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">&#9680;</span>
+      } @else {
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">&#9788;</span>
+      }
       {{ themeService.currentTheme() === 'light' ? '🌙' : '☀️' }}
     </button>
   </div>
 
   <div class="login-container">
-
     <!-- STEP 1: ROLE SELECTION -->
     @if (!selectedRole) {
       <div class="role-selection-card">
-        <img class="role-selection-emblem" src="assets/sms-academic-emblem.png" alt="">
+        <img class="role-selection-emblem" src="assets/sms-academic-emblem.png" alt="" />
         <h2 class="welcome-title">Welcome Back</h2>
         <p class="role-subtitle">Select your account role to continue</p>
 
         <div class="role-cards-grid">
-
           <!-- ADMIN CARD -->
           <div class="role-card admin-role-card" (click)="selectRole('ADMIN')">
             <div class="role-icon">👑</div>
@@ -57,7 +68,6 @@
             </div>
             <div class="role-arrow">→</div>
           </div>
-
         </div>
       </div>
     }
@@ -65,39 +75,45 @@
     <!-- STEP 2: LOGIN FORM -->
     @if (selectedRole) {
       <div class="login-card">
-
         <div class="login-card-header">
           <button type="button" class="back-btn" (click)="resetRoleSelection()" title="Change Role">
             ← Change Role
           </button>
           <div class="selected-role-badge" [ngClass]="'badge-' + selectedRole.toLowerCase()">
-            {{ selectedRole === 'ADMIN' ? '👑 Admin' : (selectedRole === 'TEACHER' ? '👨‍🏫 Teacher' : '🎓 Student') }}
+            {{
+              selectedRole === 'ADMIN'
+                ? '👑 Admin'
+                : selectedRole === 'TEACHER'
+                  ? '👨‍🏫 Teacher'
+                  : '🎓 Student'
+            }}
           </div>
         </div>
 
         <h2 class="form-title">
-          {{ selectedRole === 'ADMIN' ? 'Admin Login' : (selectedRole === 'TEACHER' ? 'Teacher Login' : 'Student Login') }}
+          {{
+            selectedRole === 'ADMIN'
+              ? 'Admin Login'
+              : selectedRole === 'TEACHER'
+                ? 'Teacher Login'
+                : 'Student Login'
+          }}
         </h2>
         <p class="form-subtitle">Enter your credentials to access your dashboard</p>
 
         <!-- Error Alert -->
         @if (errorMessage) {
-          <div class="alert-box">
-            ⚠️ {{ errorMessage }}
-          </div>
+          <div class="alert-box">⚠️ {{ errorMessage }}</div>
         }
 
-        <form (ngSubmit)="login()">
-
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="form-group">
-            <label class="form-label">
-              Username or Email
-            </label>
+            <label class="form-label"> Username or Email </label>
             <input
               type="text"
+              pInputText
               class="form-control"
-              name="username"
-              [(ngModel)]="username"
+              formControlName="username"
               (input)="clearError()"
               placeholder="Enter username or email"
               autocomplete="username"
@@ -109,9 +125,9 @@
             <label class="form-label">Password</label>
             <input
               type="password"
+              pInputText
               class="form-control"
-              name="password"
-              [(ngModel)]="password"
+              formControlName="password"
               (input)="clearError()"
               placeholder="Enter password"
               autocomplete="current-password"
@@ -119,19 +135,14 @@
             />
           </div>
 
-          <button
+          <p-button
             type="submit"
-            class="submit-login-btn"
+            styleClass="submit-login-btn"
             [disabled]="loading"
-          >
-            {{ loading ? 'Signing in...' : 'Sign In as ' + selectedRole }}
-          </button>
-
+            [label]="loading ? 'Signing in...' : 'Sign In as ' + selectedRole"
+          />
         </form>
-
       </div>
     }
-
   </div>
-
 </div>

@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { environment } from '../../../../../environments/environment';
 
 import { Auth } from '../../../../core/services/auth';
 import { StudentService } from '../../../../services/student.service';
@@ -13,13 +15,16 @@ import { Student as StudentModel } from '../../../../shared/models/student.model
 import { DocumentResponse } from '../../../../shared/models/document.model';
 import { TaskResponse } from '../../../../shared/models/task.model';
 import { Message } from '../../../../shared/models/message.model';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-student',
   standalone: true,
-  imports: [FormsModule, CommonModule, Navbar],
+  imports: [FormsModule, CommonModule, Navbar, ButtonModule, InputTextModule, TextareaModule],
   templateUrl: './student.html',
-  styleUrl: './student.css'
+  styleUrl: './student.scss'
 })
 export class Student implements OnInit {
 
@@ -38,6 +43,10 @@ export class Student implements OnInit {
   // Tasks
   tasks: TaskResponse[] = [];
   loadingTasks = false;
+  selectedTaskAttachment: TaskResponse | null = null;
+  taskAttachmentPreviewUrl: SafeResourceUrl | null = null;
+  taskAttachmentImageUrl = '';
+  taskAttachmentDownloadUrl = '';
 
   // Messages
   messages: Message[] = [];
@@ -56,6 +65,7 @@ export class Student implements OnInit {
     private documentService: DocumentService,
     private taskService: TaskService,
     private messageService: MessageService,
+    private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -184,6 +194,33 @@ export class Student implements OnInit {
     this.caseStudyContent = '';
     this.caseStudyFile = null;
     this.cdr.detectChanges();
+  }
+
+  openTaskAttachment(task: TaskResponse): void {
+    if (!task.attachmentUrl) return;
+    this.selectedTaskAttachment = task;
+    const previewUrl = this.buildAttachmentUrl(task.attachmentUrl, false);
+    this.taskAttachmentPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl);
+    this.taskAttachmentImageUrl = previewUrl;
+    this.taskAttachmentDownloadUrl = this.buildAttachmentUrl(task.attachmentUrl, true);
+  }
+
+  closeTaskAttachment(): void {
+    this.selectedTaskAttachment = null;
+    this.taskAttachmentPreviewUrl = null;
+    this.taskAttachmentImageUrl = '';
+    this.taskAttachmentDownloadUrl = '';
+  }
+
+  isImageAttachment(task: TaskResponse): boolean {
+    return /\.(avif|gif|jpe?g|png|svg|webp)(?:\?|$)/i.test(task.attachmentName || task.attachmentUrl || '');
+  }
+
+  private buildAttachmentUrl(url: string, download: boolean): string {
+    const absoluteUrl = /^https?:\/\//i.test(url)
+      ? url
+      : `${environment.apiBaseUrl}/${url.replace(/^\/+/, '')}`;
+    return `${absoluteUrl}${absoluteUrl.includes('?') ? '&' : '?'}download=${download}`;
   }
 
   clearSubmissionForm(): void {
