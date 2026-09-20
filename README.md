@@ -16,7 +16,7 @@ From the project root:
 Copy-Item .env.docker.example Student_Management\.env
 ```
 
-Open `Student_Management/.env` and replace every placeholder password and secret. For a fresh installation, configure the first Admin account:
+Open `Student_Management/.env` and replace the database passwords and JWT secret. The committed Docker example enables local test accounts so a new clone is ready to use immediately.
 
 ```env
 INITIAL_ADMIN_ENABLED=true
@@ -25,7 +25,7 @@ INITIAL_ADMIN_PASSWORD=Admin@12345
 INITIAL_ADMIN_NAME=Administrator
 ```
 
-Use a strong, unique password instead of the example above. Never commit `Student_Management/.env`.
+Never commit `Student_Management/.env`. The included login passwords are deliberately predictable for local testing only; change them or disable demo data before sharing a deployed environment.
 
 ### 2. Start the application
 
@@ -38,7 +38,17 @@ Open:
 - Frontend: http://localhost:4200
 - API Swagger: http://localhost:8080/swagger-ui.html
 
-For a fresh database, sign in with the Admin username and password configured in `.env`. The Admin is created only when no Admin exists, so existing accounts are never replaced.
+For a fresh database, these accounts are created automatically. Existing accounts are never changed or duplicated.
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Admin | `admin` | `Admin@12345` |
+| Teacher | `teacher1` | `Demo@12345` |
+| Teacher | `teacher2` | `Demo@12345` |
+| Student | `student1` | `Demo@12345` |
+| Student | `student2` | `Demo@12345` |
+
+Set `DEMO_DATA_ENABLED=false` in `Student_Management/.env` to skip the teacher/student test data. Set `INITIAL_ADMIN_ENABLED=false` to skip the initial Admin. To recreate the full demo database, run `docker compose down -v` and start the stack again.
 
 ### Everyday Docker commands
 

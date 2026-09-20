@@ -34,4 +34,7 @@ app:
     username: ${INITIAL_ADMIN_USERNAME:}
     password: ${INITIAL_ADMIN_PASSWORD:}
     name: ${INITIAL_ADMIN_NAME:Administrator}
+  demo-data:
+    enabled: ${DEMO_DATA_ENABLED:false}
+    password: ${DEMO_DATA_PASSWORD:}
     
