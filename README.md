@@ -110,7 +110,6 @@ The frontend runs at http://localhost:4200.
 
 Docker creates a separate SQL Server database. It does not automatically copy users from a local SQL Server instance.
 
-To use existing users/data on another machine, transfer a SQL Server `.bak` backup privately and restore it into the Docker SQL Server. Do not upload database backups to GitHub.
 
 ## Project structure
 
