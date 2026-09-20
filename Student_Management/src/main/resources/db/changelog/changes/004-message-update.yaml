@@ -1,27 +1,6 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 004-message-update-1
-      author: Tushar
-      changes:
-
-        - addColumn:
-            tableName: messages
-            columns:
-
-              - column:
-                  name: teacher_id
-                  type: bigint
-
-              - column:
-                  name: file_name
-                  type: varchar(255)
-
-              - column:
-                  name: file_url
-                  type: varchar(1000)
-
-  - changeSet:
       id: 004-message-update-2
       author: Tushar
       changes:

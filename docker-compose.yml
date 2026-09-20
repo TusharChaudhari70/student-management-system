@@ -1,0 +1,63 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    env_file:
+      - ./Student_Management/.env
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  database-init:
+    # sqlcmd is included in the SQL Server 2025 container image.
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    entrypoint: ["/bin/bash"]
+    env_file:
+      - ./Student_Management/.env
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    volumes:
+      - ./docker/init-db.sql:/init-db.sql:ro
+    command:
+      - -c
+      - >-
+        until /opt/mssql-tools18/bin/sqlcmd -C -S sqlserver -U sa -P "$$MSSQL_SA_PASSWORD" -Q "SELECT 1"; do echo "Waiting for SQL Server..."; sleep 5; done; /opt/mssql-tools18/bin/sqlcmd -C -S sqlserver -U sa -P "$$MSSQL_SA_PASSWORD" -v DB_NAME="StudentManagementDB" DB_USERNAME="$$DB_USERNAME" DB_PASSWORD="$$DB_PASSWORD" -i /init-db.sql
+
+  backend:
+    build:
+      context: ./Student_Management
+    env_file:
+      - ./Student_Management/.env
+    environment:
+      DB_URL: jdbc:sqlserver://sqlserver:1433;databaseName=StudentManagementDB;encrypt=true;trustServerCertificate=true
+      CORS_ALLOWED_ORIGINS: http://localhost:4200
+      PUBLIC_BASE_URL: http://localhost:8080
+    depends_on:
+      database-init:
+        condition: service_completed_successfully
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend-uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./student-management-frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  sqlserver-data:
+  backend-uploads:

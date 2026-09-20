@@ -17,7 +17,7 @@ export type UserRole = 'ADMIN' | 'TEACHER' | 'STUDENT';
   styleUrl: './login.scss',
 })
 export class Login {
-  selectedRole: UserRole | null = null; // null = Role selection screen, value = Login form screen
+  selectedRole: UserRole | null = null;
   readonly loginForm = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),

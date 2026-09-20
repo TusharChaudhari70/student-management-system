@@ -9,9 +9,6 @@ databaseChangeLog:
       file: db/changelog/changes/003-message.yaml
 
   - include:
-      file: db/changelog/changes/004-message-update.yaml
-
-  - include:
       file: db/changelog/changes/005-student-soft-delete.yaml
 
   - include:
