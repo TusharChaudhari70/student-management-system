@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-stored-files-1
+      author: Codex
+      comment: Store uploaded attachment bytes and metadata in SQL Server
+      changes:
+        - createTable:
+            tableName: stored_files
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: nvarchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content_type
+                  type: nvarchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_size
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_content
+                  type: varbinary(max)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uploaded_at
+                  type: datetime2
+                  constraints:
+                    nullable: false

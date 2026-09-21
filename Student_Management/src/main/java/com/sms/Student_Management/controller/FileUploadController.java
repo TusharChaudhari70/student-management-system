@@ -1,12 +1,13 @@
 package com.sms.Student_Management.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -23,15 +24,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.sms.Student_Management.entity.StoredFile;
+import com.sms.Student_Management.repository.StoredFileRepo;
+
 @RestController
 @RequestMapping("/files")
 public class FileUploadController {
 
     private static final Path UPLOAD_DIRECTORY = Path.of("uploads").toAbsolutePath().normalize();
     private final String publicBaseUrl;
+    private final StoredFileRepo storedFileRepo;
 
-    public FileUploadController(@Value("${app.public-base-url}") String publicBaseUrl) {
+    public FileUploadController(@Value("${app.public-base-url}") String publicBaseUrl, StoredFileRepo storedFileRepo) {
         this.publicBaseUrl = publicBaseUrl.replaceAll("/+$", "");
+        this.storedFileRepo = storedFileRepo;
     }
 
     @PostMapping("/upload")
@@ -41,11 +47,17 @@ public class FileUploadController {
         }
 
         String originalName = file.getOriginalFilename() == null ? "attachment" : file.getOriginalFilename();
-        String safeName = originalName.replaceAll("[^a-zA-Z0-9._-]", "_");
-        String storedName = UUID.randomUUID() + "-" + safeName;
+        String storedName = UUID.randomUUID().toString();
         try {
-            Files.createDirectories(UPLOAD_DIRECTORY);
-            Files.copy(file.getInputStream(), UPLOAD_DIRECTORY.resolve(storedName), StandardCopyOption.REPLACE_EXISTING);
+            StoredFile storedFile = new StoredFile();
+            storedFile.setId(storedName);
+            storedFile.setFileName(originalName);
+            storedFile.setContentType(file.getContentType() == null
+                    ? MediaType.APPLICATION_OCTET_STREAM_VALUE : file.getContentType());
+            storedFile.setFileSize(file.getSize());
+            storedFile.setFileContent(file.getBytes());
+            storedFile.setUploadedAt(LocalDateTime.now());
+            storedFileRepo.save(storedFile);
         } catch (IOException exception) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not save the attachment", exception);
         }
@@ -59,6 +71,24 @@ public class FileUploadController {
         if (storedName.contains("/") || storedName.contains("\\")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file name");
         }
+        StoredFile storedFile = storedFileRepo.findById(storedName).orElse(null);
+        if (storedFile != null) {
+            MediaType contentType;
+            try {
+                contentType = MediaType.parseMediaType(storedFile.getContentType());
+            } catch (IllegalArgumentException exception) {
+                contentType = MediaType.APPLICATION_OCTET_STREAM;
+            }
+            return ResponseEntity.ok()
+                    .contentType(contentType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, (download
+                            ? ContentDisposition.attachment()
+                            : ContentDisposition.inline()).filename(storedFile.getFileName()).build().toString())
+                    .contentLength(storedFile.getFileSize())
+                    .body(new ByteArrayResource(storedFile.getFileContent()));
+        }
+
+        // Keep links to files uploaded before database storage was introduced working.
         Path file = UPLOAD_DIRECTORY.resolve(storedName).normalize();
         if (!file.startsWith(UPLOAD_DIRECTORY) || !Files.exists(file)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attachment not found");
