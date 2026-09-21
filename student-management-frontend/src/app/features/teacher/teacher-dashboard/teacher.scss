@@ -459,7 +459,9 @@
 .reply-content p { margin: 9px 0 0; color: var(--text-primary); line-height: 1.65; white-space: pre-wrap; }
 .reply-file-card { display: flex; align-items: center; gap: 12px; margin: 0 28px 24px; padding: 14px; border: 1px solid #bfdbfe; border-radius: 12px; background: #eff6ff; }
 .reply-file-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9px; background: #2563eb; color: #fff; font-size: 20px; font-weight: 700; }
-.reply-file-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.reply-file-card > div:not(.reply-file-actions) { min-width: 0; flex: 1 1 auto; }
+.reply-file-card strong { overflow-wrap: anywhere; }
+.reply-file-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 12px; margin-left: auto; white-space: nowrap; }
 .reply-file-actions a { color: #1d4ed8; font-size: 13px; font-weight: 700; text-decoration: none; }
 .reply-file-actions .reply-download { padding: 8px 11px; border-radius: 7px; background: #2563eb; color: #fff; }
 .reply-modal-footer { display: flex; justify-content: flex-end; padding: 16px 28px; border-top: 1px solid var(--border-color); }
