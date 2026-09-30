@@ -31,7 +31,8 @@ login(data: LoginRequest): Observable<LoginResponse> {
     `${this.apiUrl}/login`,
     data,
     {
-      timeout: 10000
+      // Render's Free web services can take about a minute to wake after idling.
+      timeout: 90000
     }
   );
 }
