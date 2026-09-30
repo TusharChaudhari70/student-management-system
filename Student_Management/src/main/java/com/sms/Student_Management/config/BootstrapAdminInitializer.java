@@ -20,6 +20,7 @@ public class BootstrapAdminInitializer implements ApplicationRunner {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final boolean enabled;
+    private final boolean resetPassword;
     private final String username;
     private final String password;
     private final String name;
@@ -28,12 +29,14 @@ public class BootstrapAdminInitializer implements ApplicationRunner {
             UserRepo userRepo,
             PasswordEncoder passwordEncoder,
             @Value("${app.bootstrap-admin.enabled:false}") boolean enabled,
+            @Value("${app.bootstrap-admin.reset-password:false}") boolean resetPassword,
             @Value("${app.bootstrap-admin.username:}") String username,
             @Value("${app.bootstrap-admin.password:}") String password,
             @Value("${app.bootstrap-admin.name:Administrator}") String name) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.enabled = enabled;
+        this.resetPassword = resetPassword;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -41,12 +44,25 @@ public class BootstrapAdminInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        if (!enabled || !userRepo.findByRole("ADMIN").isEmpty()) {
+        if (!enabled) {
             return;
         }
 
         if (!StringUtils.hasText(username) || !StringUtils.hasText(password)) {
             log.warn("Initial Admin creation is enabled, but username or password is missing.");
+            return;
+        }
+
+        if (!userRepo.findByRole("ADMIN").isEmpty()) {
+            if (resetPassword) {
+                userRepo.findByUsername(username.trim())
+                        .filter(user -> "ADMIN".equals(user.getRole()))
+                        .ifPresentOrElse(user -> {
+                            user.setPassword(passwordEncoder.encode(password));
+                            userRepo.save(user);
+                            log.info("Initial Administrator password reset for username '{}'.", user.getUsername());
+                        }, () -> log.warn("Admin password reset skipped because username '{}' is not an administrator.", username.trim()));
+            }
             return;
         }
 

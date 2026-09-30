@@ -34,6 +34,7 @@ app:
   public-base-url: ${PUBLIC_BASE_URL}
   bootstrap-admin:
     enabled: ${INITIAL_ADMIN_ENABLED:false}
+    reset-password: ${INITIAL_ADMIN_RESET_PASSWORD:false}
     username: ${INITIAL_ADMIN_USERNAME:}
     password: ${INITIAL_ADMIN_PASSWORD:}
     name: ${INITIAL_ADMIN_NAME:Administrator}
