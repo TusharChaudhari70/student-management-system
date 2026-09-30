@@ -2,5 +2,5 @@
 // The browser reaches the mapped Spring Boot port on the host machine.
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://localhost:8080'
+  apiBaseUrl: 'https://student-management-api-zimk.onrender.com'
 };
